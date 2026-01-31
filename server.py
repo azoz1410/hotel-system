@@ -222,5 +222,6 @@ if __name__ == '__main__':
     else:
         print('✅ قاعدة البيانات موجودة: hotel.db')
     
-    print('🚀 تشغيل السيرفر على http://localhost:5000')
-    app.run(debug=True, port=5000)
+    print('🚀 تشغيل السيرفر على http://localhost:5001')
+    print('📡 يمكن الوصول من: http://127.0.0.1:5001')
+    app.run(debug=True, host='0.0.0.0', port=5001)

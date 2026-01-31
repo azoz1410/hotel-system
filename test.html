@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>اختبار API</title>
+</head>
+<body>
+    <h1>اختبار API</h1>
+    <button onclick="testAPI()">اختبار الاتصال</button>
+    <pre id="result"></pre>
+
+    <script>
+        async function testAPI() {
+            const resultEl = document.getElementById('result');
+            resultEl.textContent = 'جاري الاختبار...';
+            
+            try {
+                const response = await fetch('http://localhost:5000/api/rooms');
+                const data = await response.json();
+                resultEl.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultEl.textContent = 'خطأ: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>
