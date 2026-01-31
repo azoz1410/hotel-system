@@ -45,8 +45,8 @@ async function displayRoomsTable() {
     });
 }
 
-// إضافة أو تعديل غرفةmber').value);
-    const roomType = document.getElementById('roomType').value;async function(e) {
+// إضافة أو تعديل غرفة
+document.getElementById('roomForm').addEventListener('submit', async function(e) {
     e.preventDefault();
 
     const roomNumber = parseInt(document.getElementById('roomNumber').value);
@@ -87,14 +87,14 @@ async function displayRoomsTable() {
     } catch (error) {
         console.error('❌ خطأ في حفظ الغرفة:', error);
         alert('❌ حدث خطأ أثناء حفظ الغرفة');
-    }(roomNumber) {
-    const room = rooms.find(r => r.number === roomNumber);
-    if (room) {
-async function editRoom(roomNumber) {
-    c
+    }
 });
 
-// تعديل غرفةt.getElementById('roomNumber').value = room.number;
+// تعديل غرفة
+async function editRoom(roomNumber) {
+    const room = await hotelDB.getRoom(roomNumber);
+    if (room) {
+        document.getElementById('roomNumber').value = room.number;
         document.getElementById('roomType').value = room.type;
         document.getElementById('roomStatus').value = room.status;
         document.getElementById('roomPrice').value = room.price;
@@ -139,3 +139,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (error) {
         console.error('❌ خطأ في تهيئة لوحة التحكم:', error);
     }
+});
