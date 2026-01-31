@@ -245,7 +245,7 @@ class HotelDatabase {
         });
     }
 
-    // إضافة بيانات افتراضية
+    // إضافة بيانات افتراضية (للاختبار فقط - يجب استدعاؤها يدوياً)
     async seedDefaultData() {
         const defaultRooms = [
             { number: 101, type: 'غرفة مفردة', status: 'available', price: 150 },
@@ -265,14 +265,15 @@ class HotelDatabase {
             { number: 305, type: 'جناح', status: 'occupied', price: 500 },
         ];
 
-        const rooms = await this.getAllRooms();
-        if (rooms.length === 0) {
-            console.log('📦 إضافة البيانات الافتراضية...');
-            for (const room of defaultRooms) {
+        console.log('📦 إضافة البيانات الافتراضية للاختبار...');
+        for (const room of defaultRooms) {
+            try {
                 await this.addRoom(room);
+            } catch (error) {
+                console.log(`⚠️ الغرفة ${room.number} موجودة بالفعل`);
             }
-            console.log('✅ تم إضافة البيانات الافتراضية');
         }
+        console.log('✅ تم إضافة البيانات الافتراضية');
     }
 
     // إحصائيات قاعدة البيانات

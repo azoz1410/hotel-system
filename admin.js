@@ -126,16 +126,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         // تهيئة قاعدة البيانات
         await hotelDB.init();
         
-        // إضافة البيانات الافتراضية إذا لزم الأمر
-        await hotelDB.seedDefaultData();
-        
-        // عرض الغرف
+        // عرض الغرف من قاعدة البيانات
         await displayRoomsTable();
         
         // عرض الإحصائيات
         const stats = await hotelDB.getStats();
         console.log('📊 إحصائيات النظام:', stats);
-        console.log('✅ لوحة التحكم جاهزة');
+        console.log('✅ لوحة التحكم جاهزة - عرض الغرف من قاعدة البيانات');
     } catch (error) {
         console.error('❌ خطأ في تهيئة لوحة التحكم:', error);
     }
