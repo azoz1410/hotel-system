@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>إرسال رقم سري عبر NFC</title>
+</head>
+<body>
+
+  <h2>إرسال الرقم السري عبر NFC</h2>
+  <button id="writeNfc">إرسال الرقم 1733</button>
+
+  <p id="status"></p>
+
+  <script>
+    const button = document.getElementById("writeNfc");
+    const status = document.getElementById("status");
+
+    button.addEventListener("click", async () => {
+      if (!("NDEFReader" in window)) {
+        status.textContent = "❌ NFC غير مدعوم على هذا الجهاز";
+        return;
+      }
+
+      try {
+        const ndef = new NDEFReader();
+
+        await ndef.write({
+          records: [
+            {
+              recordType: "text",
+              data: "1733",
+              lang: "ar"
+            }
+          ]
+        });
+
+        status.textContent = "✅ تم إرسال الرقم السري بنجاح، قرّب الـ NFC Tag";
+      } catch (error) {
+        status.textContent = "❌ فشل الإرسال: " + error;
+        console.error(error);
+      }
+    });
+  </script>
+
+</body>
+</html>
