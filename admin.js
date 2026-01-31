@@ -14,8 +14,8 @@ let editingRoomNumber = null;
 // تحميل الغرف من قاعدة البيانات
 async function loadRooms() {
     try {
-        rooms = await hotelDB.getAllRooms();
-        console.log('✅ تم تحميل الغرف:', rooms.length);
+        rooms = await hotelAPI.getAllRooms();
+        console.log('✅ تم تحميل الغرف من SQLite:', rooms.length);
     } catch (error) {
         console.error('❌ خطأ في تحميل الغرف:', error);
         rooms = [];
@@ -64,18 +64,12 @@ document.getElementById('roomForm').addEventListener('submit', async function(e)
     try {
         if (editingRoomNumber !== null) {
             // تعديل غرفة موجودة
-            await hotelDB.updateRoom(roomData);
+            await hotelAPI.updateRoom(roomData);
             alert('✅ تم تعديل الغرفة بنجاح!');
             editingRoomNumber = null;
         } else {
             // إضافة غرفة جديدة
-            const existingRoom = await hotelDB.getRoom(roomNumber);
-            if (existingRoom) {
-                alert('❌ رقم الغرفة موجود بالفعل!');
-                return;
-            }
-
-            await hotelDB.addRoom(roomData);
+            await hotelAPI.addRoom(roomData);
             alert('✅ تم إضافة الغرفة بنجاح!');
         }
 
@@ -98,7 +92,7 @@ async function editRoom(roomNumber) {
         document.getElementById('roomType').value = room.type;
         document.getElementById('roomStatus').value = room.status;
         document.getElementById('roomPrice').value = room.price;
-        
+        API
         editingRoomNumber = roomNumber;
         
         // تمرير النموذج إلى الأعلى
@@ -116,7 +110,7 @@ async function deleteRoom(roomNumber) {
         } catch (error) {
             console.error('❌ خطأ في حذف الغرفة:', error);
             alert('❌ حدث خطأ أثناء حذف الغرفة');
-        }
+        }API
     }
 }
 
@@ -129,11 +123,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         // عرض الغرف من قاعدة البيانات
         await displayRoomsTable();
         
+        // عرض الغرف من قاعدة البيانات SQLite
+        await displayRoomsTable();
+        
         // عرض الإحصائيات
-        const stats = await hotelDB.getStats();
+        const stats = await hotelAPI.getStats();
         console.log('📊 إحصائيات النظام:', stats);
-        console.log('✅ لوحة التحكم جاهزة - عرض الغرف من قاعدة البيانات');
+        console.log('✅ لوحة التحكم جاهزة - متصلة بقاعدة بيانات SQLite (hotel.db)');
     } catch (error) {
         console.error('❌ خطأ في تهيئة لوحة التحكم:', error);
-    }
-});
+        console.error('⚠️ تأكد من تشغيل السيرفر: python3 server.py'

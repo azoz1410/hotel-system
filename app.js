@@ -4,8 +4,8 @@ let rooms = [];
 // تحميل الغرف من قاعدة البيانات
 async function loadRooms() {
     try {
-        rooms = await hotelDB.getAllRooms();
-        console.log('✅ تم تحميل الغرف من قاعدة البيانات:', rooms.length);
+        rooms = await hotelAPI.getAllRooms();
+        console.log('✅ تم تحميل الغرف من قاعدة البيانات SQLite:', rooms.length);
     } catch (error) {
         console.error('❌ خطأ في تحميل الغرف:', error);
         rooms = [];
@@ -102,20 +102,18 @@ function simulateRealTimeUpdates() {
 // تهيئة التطبيق
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        // تهيئة قاعدة البيانات
-        await hotelDB.init();
-        
-        // عرض الغرف من قاعدة البيانات
+        // عرض الغرف من قاعدة البيانات SQLite
         await displayRooms();
         
         // بدء التحديث التلقائي
         simulateRealTimeUpdates();
         
         // عرض الإحصائيات
-        const stats = await hotelDB.getStats();
+        const stats = await hotelAPI.getStats();
         console.log('📊 إحصائيات قاعدة البيانات:', stats);
-        console.log('✅ نظام إدارة الفندق جاهز - عرض الغرف من قاعدة البيانات');
+        console.log('✅ نظام إدارة الفندق جاهز - متصل بقاعدة بيانات SQLite (hotel.db)');
     } catch (error) {
         console.error('❌ خطأ في تهيئة النظام:', error);
+        console.error('⚠️ تأكد من تشغيل السيرفر: python3 server.py');
     }
 });
