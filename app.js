@@ -1,30 +1,14 @@
-// بيانات الغرف الافتراضية
-const defaultRooms = [
-    { number: 101, type: 'غرفة مفردة', status: 'available', price: 150 },
-    { number: 102, type: 'غرفة مفردة', status: 'occupied', price: 150 },
-    { number: 103, type: 'غرفة مزدوجة', status: 'available', price: 250 },
-    { number: 104, type: 'غرفة مزدوجة', status: 'available', price: 250 },
-    { number: 105, type: 'جناح', status: 'occupied', price: 500 },
-    { number: 201, type: 'غرفة مفردة', status: 'available', price: 150 },
-    { number: 202, type: 'غرفة مفردة', status: 'available', price: 150 },
-    { number: 203, type: 'غرفة مزدوجة', status: 'occupied', price: 250 },
-    { number: 204, type: 'غرفة مزدوجة', status: 'available', price: 250 },
-    { number: 205, type: 'جناح', status: 'available', price: 500 },
-    { number: 301, type: 'غرفة مفردة', status: 'available', price: 150 },
-    { number: 302, type: 'غرفة مفردة', status: 'maintenance', price: 150 },
-    { number: 303, type: 'غرفة مزدوجة', status: 'available', price: 250 },
-    { number: 304, type: 'غرفة مزدوجة', status: 'available', price: 250 },
-    { number: 305, type: 'جناح', status: 'occupied', price: 500 },
-];
-
-// تحميل الغرف من localStorage أو استخدام البيانات الافتراضية
+// متغير لتخزين الغرف
 let rooms = [];
-function loadRooms() {
-    const savedData = localStorage.getItem('hotelRooms');
-    if (savedData) {
-        rooms = JSON.parse(savedData);
-    } else {
-        rooms = [...defaultRooms];
+
+// تحميل الغرف من قاعدة البيانات
+async function loadRooms() {
+    try {
+        rooms = await hotelDB.getAllRooms();
+        console.log('✅ تم تحميل الغرف من قاعدة البيانات:', rooms.length);
+    } catch (error) {
+        console.error('❌ خطأ في تحميل الغرف:', error);
+        rooms = [];
     }
 }
 
@@ -52,7 +36,9 @@ function displayRooms(filter = 'all') {
         
         roomCard.innerHTML = `
             <div class="room-number">${room.number}</div>
-            <div class="room-type">${room.type}</div>
+async function displayRooms(filter = 'all') {
+    // تحميل الغرف من قاعدة البيانات
+    await loadRooms();om.type}</div>
             <div class="room-status">${statusTranslations[room.status]}</div>
             <div class="room-price">${room.price} ريال</div>
         `;
@@ -104,23 +90,36 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
         displayRooms(filter);
     });
 });
-
-// تحديث تلقائي للحالة كل 30 ثانية (تحديث من localStorage)
 function simulateRealTimeUpdates() {
-    setInterval(() => {
-        // تحديث من localStorage في حالة تغيير البيانات من لوحة التحكم
-        loadRooms();
-        displayRooms();
-        console.log('تحديث البيانات...');
+    setInterval(async () => {
+        // تحديث من قاعدة البيانات
+        await displayRooms();
+        console.log('🔄 تحديث البيانات...');
     }, 30000);
 }
 
 // تهيئة التطبيق
-document.addEventListener('DOMContentLoaded', () => {
-    loadRooms(); // تحميل الغرف
-    displayRooms();
-    simulateRealTimeUpdates();
-    
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        // تهيئة قاعدة البيانات
+        await hotelDB.init();
+        
+        // إضافة البيانات الافتراضية إذا كانت قاعدة البيانات فارغة
+        await hotelDB.seedDefaultData();
+        
+        // عرض الغرف
+        await displayRooms();
+        
+        // بدء التحديث التلقائي
+        simulateRealTimeUpdates();
+        
+        // عرض الإحصائيات
+        const stats = await hotelDB.getStats();
+        console.log('📊 إحصائيات قاعدة البيانات:', stats);
+        console.log('✅ نظام إدارة الفندق جاهز');
+    } catch (error) {
+        console.error('❌ خطأ في تهيئة النظام:', error);
+    }
     // إضافة رسالة ترحيبية
     console.log('✅ نظام إدارة الفندق جاهز');
 });

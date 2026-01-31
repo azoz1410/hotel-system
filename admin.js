@@ -1,21 +1,5 @@
-// بيانات الغرف (نفس البيانات من app.js)
-let rooms = [
-    { number: 101, type: 'غرفة مفردة', status: 'available', price: 150 },
-    { number: 102, type: 'غرفة مفردة', status: 'occupied', price: 150 },
-    { number: 103, type: 'غرفة مزدوجة', status: 'available', price: 250 },
-    { number: 104, type: 'غرفة مزدوجة', status: 'available', price: 250 },
-    { number: 105, type: 'جناح', status: 'occupied', price: 500 },
-    { number: 201, type: 'غرفة مفردة', status: 'available', price: 150 },
-    { number: 202, type: 'غرفة مفردة', status: 'available', price: 150 },
-    { number: 203, type: 'غرفة مزدوجة', status: 'occupied', price: 250 },
-    { number: 204, type: 'غرفة مزدوجة', status: 'available', price: 250 },
-    { number: 205, type: 'جناح', status: 'available', price: 500 },
-    { number: 301, type: 'غرفة مفردة', status: 'available', price: 150 },
-    { number: 302, type: 'غرفة مفردة', status: 'maintenance', price: 150 },
-    { number: 303, type: 'غرفة مزدوجة', status: 'available', price: 250 },
-    { number: 304, type: 'غرفة مزدوجة', status: 'available', price: 250 },
-    { number: 305, type: 'جناح', status: 'occupied', price: 500 },
-];
+// متغير لتخزين الغرف
+let rooms = [];
 
 // ترجمة حالات الغرف
 const statusTranslations = {
@@ -27,13 +11,25 @@ const statusTranslations = {
 // متغير لتتبع الغرفة قيد التعديل
 let editingRoomNumber = null;
 
+// تحميل الغرف من قاعدة البيانات
+async function loadRooms() {
+    try {
+        rooms = await hotelDB.getAllRooms();
+        console.log('✅ تم تحميل الغرف:', rooms.length);
+    } catch (error) {
+        console.error('❌ خطأ في تحميل الغرف:', error);
+        rooms = [];
+    }
+}
+
 // عرض الغرف في الجدول
 function displayRoomsTable() {
     const tbody = document.getElementById('roomsTableBody');
     tbody.innerHTML = '';
 
     rooms.forEach(room => {
-        const tr = document.createElement('tr');
+async function displayRoomsTable() {
+    await loadRooms();eateElement('tr');
         tr.innerHTML = `
             <td><strong>${room.number}</strong></td>
             <td>${room.type}</td>
@@ -53,53 +49,52 @@ document.getElementById('roomForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
     const roomNumber = parseInt(document.getElementById('roomNumber').value);
+    const roomType = document.getElementById('roomType').value;async function(e) {
+    e.preventDefault();
+
+    const roomNumber = parseInt(document.getElementById('roomNumber').value);
     const roomType = document.getElementById('roomType').value;
     const roomStatus = document.getElementById('roomStatus').value;
     const roomPrice = parseInt(document.getElementById('roomPrice').value);
 
-    if (editingRoomNumber !== null) {
-        // تعديل غرفة موجودة
-        const roomIndex = rooms.findIndex(r => r.number === editingRoomNumber);
-        if (roomIndex !== -1) {
-            rooms[roomIndex] = {
-                number: roomNumber,
-                type: roomType,
-                status: roomStatus,
-                price: roomPrice
-            };
+    const roomData = {
+        number: roomNumber,
+        type: roomType,
+        status: roomStatus,
+        price: roomPrice
+    };
+
+    try {
+        if (editingRoomNumber !== null) {
+            // تعديل غرفة موجودة
+            await hotelDB.updateRoom(roomData);
             alert('✅ تم تعديل الغرفة بنجاح!');
             editingRoomNumber = null;
+        } else {
+            // إضافة غرفة جديدة
+            const existingRoom = await hotelDB.getRoom(roomNumber);
+            if (existingRoom) {
+                alert('❌ رقم الغرفة موجود بالفعل!');
+                return;
+            }
+
+            await hotelDB.addRoom(roomData);
+            alert('✅ تم إضافة الغرفة بنجاح!');
         }
-    } else {
-        // إضافة غرفة جديدة
-        const existingRoom = rooms.find(r => r.number === roomNumber);
-        if (existingRoom) {
-            alert('❌ رقم الغرفة موجود بالفعل!');
-            return;
-        }
 
-        rooms.push({
-            number: roomNumber,
-            type: roomType,
-            status: roomStatus,
-            price: roomPrice
-        });
-        alert('✅ تم إضافة الغرفة بنجاح!');
-    }
-
-    // حفظ البيانات في localStorage
-    saveData();
-    
-    // إعادة تحميل الجدول
-    displayRoomsTable();
-    
-    // إعادة تعيين النموذج
-    this.reset();
-});
-
-// تعديل غرفة
-function editRoom(roomNumber) {
+        // إعادة تحميل الجدول
+        await displayRoomsTable();
+        
+        // إعادة تعيين النموذج
+        this.reset();
+    } catch (error) {
+        console.error('❌ خطأ في حفظ الغرفة:', error);
+        alert('❌ حدث خطأ أثناء حفظ الغرفة');
+    }(roomNumber) {
     const room = rooms.find(r => r.number === roomNumber);
+    if (room) {
+async function editRoom(roomNumber) {
+    const room = await hotelDB.getRoom(roomNumber);
     if (room) {
         document.getElementById('roomNumber').value = room.number;
         document.getElementById('roomType').value = room.type;
@@ -114,31 +109,35 @@ function editRoom(roomNumber) {
 }
 
 // حذف غرفة
-function deleteRoom(roomNumber) {
+async function deleteRoom(roomNumber) {
     if (confirm(`هل أنت متأكد من حذف الغرفة رقم ${roomNumber}؟`)) {
-        rooms = rooms.filter(r => r.number !== roomNumber);
-        saveData();
-        displayRoomsTable();
-        alert('✅ تم حذف الغرفة بنجاح!');
-    }
-}
-
-// حفظ البيانات في localStorage
-function saveData() {
-    localStorage.setItem('hotelRooms', JSON.stringify(rooms));
-}
-
-// تحميل البيانات من localStorage
-function loadData() {
-    const savedData = localStorage.getItem('hotelRooms');
-    if (savedData) {
-        rooms = JSON.parse(savedData);
+        try {
+            await hotelDB.deleteRoom(roomNumber);
+            await displayRoomsTable();
+            alert('✅ تم حذف الغرفة بنجاح!');
+        } catch (error) {
+            console.error('❌ خطأ في حذف الغرفة:', error);
+            alert('❌ حدث خطأ أثناء حذف الغرفة');
+        }
     }
 }
 
 // تهيئة التطبيق
-document.addEventListener('DOMContentLoaded', () => {
-    loadData();
-    displayRoomsTable();
-    console.log('✅ لوحة التحكم جاهزة');
-});
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        // تهيئة قاعدة البيانات
+        await hotelDB.init();
+        
+        // إضافة البيانات الافتراضية إذا لزم الأمر
+        await hotelDB.seedDefaultData();
+        
+        // عرض الغرف
+        await displayRoomsTable();
+        
+        // عرض الإحصائيات
+        const stats = await hotelDB.getStats();
+        console.log('📊 إحصائيات النظام:', stats);
+        console.log('✅ لوحة التحكم جاهزة');
+    } catch (error) {
+        console.error('❌ خطأ في تهيئة لوحة التحكم:', error);
+    }
