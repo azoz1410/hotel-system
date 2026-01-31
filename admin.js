@@ -62,13 +62,21 @@ function displayRoomsTable() {
 }
 
 // إضافة أو تعديل غرفة
-document.getElementById('roomForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('roomForm');
+    if (!form) {
+        console.error('❌ لم يتم العثور على النموذج!');
+        return;
+    }
+    
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        console.log('📝 محاولة حفظ الغرفة...');
 
-    const roomNumber = parseInt(document.getElementById('roomNumber').value);
-    const roomType = document.getElementById('roomType').value;
-    const roomStatus = document.getElementById('roomStatus').value;
-    const roomPrice = parseInt(document.getElementById('roomPrice').value);
+        const roomNumber = parseInt(document.getElementById('roomNumber').value);
+        const roomType = document.getElementById('roomType').value;
+        const roomStatus = document.getElementById('roomStatus').value;
+        const roomPrice = parseInt(document.getElementById('roomPrice').value);
 
     // التحقق من البيانات
     if (!roomNumber || !roomType || !roomStatus || !roomPrice) {
@@ -141,6 +149,7 @@ document.getElementById('roomForm').addEventListener('submit', async function(e)
         console.error('❌ خطأ في حفظ الغرفة:', error);
         alert('❌ حدث خطأ أثناء حفظ الغرفة: ' + error.message);
     }
+    });
 });
 
 // تعديل غرفة
@@ -196,12 +205,32 @@ function cancelEdit() {
     document.querySelector('button[type="submit"]').textContent = '➕ إضافة غرفة';
 }
 
-// تهيئة التطبيق
-document.addEventListener('DOMContentLoaded', () => {
+// تهيئة Firebase والاستماع للتحديثات
+function initializeAdmin() {
     console.log('🔄 جاري الاتصال بـ Firebase...');
+    
+    // التحقق من اتصال Firebase
+    if (typeof firebase === 'undefined') {
+        console.error('❌ Firebase غير محمل!');
+        alert('❌ خطأ: لم يتم تحميل Firebase. تحقق من اتصال الإنترنت.');
+        return;
+    }
+    
+    if (typeof roomsRef === 'undefined') {
+        console.error('❌ لم يتم تهيئة Firebase بشكل صحيح!');
+        alert('❌ خطأ: يجب إعداد Firebase أولاً. راجع ملف FIREBASE-SETUP.md');
+        return;
+    }
     
     // بدء الاستماع للتحديثات
     listenToRooms();
     
     console.log('✅ لوحة التحكم جاهزة - Firebase Realtime Database');
-});
+}
+
+// تهيئة عند تحميل الصفحة
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeAdmin);
+} else {
+    initializeAdmin();
+}
