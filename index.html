@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام الفندق - الغرف المتاحة</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏨 نظام إدارة الفندق</h1>
+            <p class="subtitle">الغرف المتاحة للحجز</p>
+        </header>
+
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">جميع الغرف</button>
+            <button class="filter-btn" data-filter="available">المتاحة فقط</button>
+            <button class="filter-btn" data-filter="occupied">المحجوزة فقط</button>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card available-stat">
+                <h3 id="availableCount">0</h3>
+                <p>غرف متاحة</p>
+            </div>
+            <div class="stat-card occupied-stat">
+                <h3 id="occupiedCount">0</h3>
+                <p>غرف محجوزة</p>
+            </div>
+            <div class="stat-card total-stat">
+                <h3 id="totalCount">0</h3>
+                <p>إجمالي الغرف</p>
+            </div>
+        </div>
+
+        <div class="rooms-grid" id="roomsGrid">
+            <!-- سيتم إضافة الغرف هنا ديناميكياً -->
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <span class="legend-color available"></span>
+                <span>متاحة</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-color occupied"></span>
+                <span>محجوزة</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-color maintenance"></span>
+                <span>صيانة</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

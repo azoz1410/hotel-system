@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>باركود الفندق - QR Code</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .qr-container {
+            background: white;
+            padding: 50px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 600px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.2em;
+        }
+
+        .qr-code {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            display: inline-block;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .instructions {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 30px;
+            text-align: right;
+        }
+
+        .instructions h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .instructions ol {
+            color: #555;
+            font-size: 1.1em;
+            line-height: 2;
+            padding-right: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 10px;
+        }
+
+        .url-display {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            word-break: break-all;
+            font-family: monospace;
+            color: #495057;
+        }
+
+        .buttons {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+            
+            .buttons {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .qr-container {
+                padding: 30px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="qr-container">
+        <div class="icon">🏨</div>
+        <h1>مرحباً بكم في فندقنا</h1>
+        <p class="subtitle">امسح الكود للاطلاع على الغرف المتاحة</p>
+
+        <div class="qr-code" id="qrcode"></div>
+
+        <div class="url-display" id="urlDisplay">
+            جاري تحميل الرابط...
+        </div>
+
+        <div class="instructions">
+            <h3>📱 كيفية الاستخدام:</h3>
+            <ol>
+                <li>افتح كاميرا هاتفك الذكي</li>
+                <li>وجه الكاميرا نحو رمز QR</li>
+                <li>انقر على الرابط الذي يظهر</li>
+                <li>استعرض الغرف المتاحة (باللون الأخضر)</li>
+            </ol>
+        </div>
+
+        <div class="buttons">
+            <button class="btn btn-primary" onclick="printQR()">🖨️ طباعة الكود</button>
+            <button class="btn btn-secondary" onclick="openRooms()">👁️ معاينة الصفحة</button>
+        </div>
+    </div>
+
+    <!-- مكتبة QR Code -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    
+    <script>
+        // الحصول على الرابط الكامل
+        const baseUrl = window.location.origin + window.location.pathname.replace('qrcode.html', 'index.html');
+        
+        // عرض الرابط
+        document.getElementById('urlDisplay').textContent = baseUrl;
+
+        // إنشاء QR Code
+        new QRCode(document.getElementById("qrcode"), {
+            text: baseUrl,
+            width: 300,
+            height: 300,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+
+        // طباعة الكود
+        function printQR() {
+            window.print();
+        }
+
+        // فتح صفحة الغرف
+        function openRooms() {
+            window.open('index.html', '_blank');
+        }
+
+        // نسخ الرابط عند النقر
+        document.getElementById('urlDisplay').addEventListener('click', function() {
+            const text = this.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('✅ تم نسخ الرابط بنجاح!');
+            }).catch(() => {
+                alert('❌ فشل نسخ الرابط');
+            });
+        });
+    </script>
+</body>
+</html>

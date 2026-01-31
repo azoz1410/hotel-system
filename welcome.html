@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مرحباً بك في نظام الفندق</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .welcome-container {
+            background: white;
+            padding: 50px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 5em;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+        }
+
+        .description {
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            border-radius: 20px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .card-desc {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .features {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 20px;
+            margin-top: 30px;
+            text-align: right;
+        }
+
+        .features h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .features ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .features li {
+            color: #555;
+            font-size: 1.1em;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .features li:last-child {
+            border-bottom: none;
+        }
+
+        .features li::before {
+            content: "✅ ";
+            margin-left: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .welcome-container {
+                padding: 30px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome-container">
+        <div class="logo">🏨</div>
+        <h1>مرحباً بك في نظام إدارة الفندق</h1>
+        <p class="description">
+            نظام متكامل لإدارة وعرض الغرف الفندقية مع باركود QR للزوار
+        </p>
+
+        <div class="cards">
+            <a href="qrcode.html" class="card">
+                <div class="card-icon">📱</div>
+                <div class="card-title">صفحة الباركود</div>
+                <div class="card-desc">اعرض الباركود للزوار لمسحه</div>
+            </a>
+
+            <a href="index.html" class="card">
+                <div class="card-icon">🏠</div>
+                <div class="card-title">عرض الغرف</div>
+                <div class="card-desc">شاهد جميع الغرف المتاحة</div>
+            </a>
+
+            <a href="admin.html" class="card">
+                <div class="card-icon">⚙️</div>
+                <div class="card-title">لوحة التحكم</div>
+                <div class="card-desc">إدارة الغرف والحجوزات</div>
+            </a>
+        </div>
+
+        <div class="features">
+            <h2>✨ مميزات النظام:</h2>
+            <ul>
+                <li>عرض الغرف المتاحة باللون الأخضر</li>
+                <li>عرض الغرف المحجوزة باللون الأحمر</li>
+                <li>باركود QR قابل للطباعة</li>
+                <li>لوحة تحكم لإدارة الغرف</li>
+                <li>تصميم متجاوب لجميع الأجهزة</li>
+                <li>تحديث تلقائي للبيانات</li>
+                <li>سهولة الاستخدام</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
