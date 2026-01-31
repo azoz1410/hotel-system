@@ -20,7 +20,10 @@ const statusTranslations = {
 };
 
 // عرض الغرف
-function displayRooms(filter = 'all') {
+async function displayRooms(filter = 'all') {
+    // تحميل الغرف من قاعدة البيانات
+    await loadRooms();
+    
     const roomsGrid = document.getElementById('roomsGrid');
     roomsGrid.innerHTML = '';
 
@@ -36,9 +39,7 @@ function displayRooms(filter = 'all') {
         
         roomCard.innerHTML = `
             <div class="room-number">${room.number}</div>
-async function displayRooms(filter = 'all') {
-    // تحميل الغرف من قاعدة البيانات
-    await loadRooms();om.type}</div>
+            <div class="room-type">${room.type}</div>
             <div class="room-status">${statusTranslations[room.status]}</div>
             <div class="room-price">${room.price} ريال</div>
         `;

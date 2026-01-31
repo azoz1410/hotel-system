@@ -23,13 +23,14 @@ async function loadRooms() {
 }
 
 // عرض الغرف في الجدول
-function displayRoomsTable() {
+async function displayRoomsTable() {
+    await loadRooms();
+    
     const tbody = document.getElementById('roomsTableBody');
     tbody.innerHTML = '';
 
     rooms.forEach(room => {
-async function displayRoomsTable() {
-    await loadRooms();eateElement('tr');
+        const tr = document.createElement('tr');
         tr.innerHTML = `
             <td><strong>${room.number}</strong></td>
             <td>${room.type}</td>
@@ -44,11 +45,7 @@ async function displayRoomsTable() {
     });
 }
 
-// إضافة أو تعديل غرفة
-document.getElementById('roomForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    const roomNumber = parseInt(document.getElementById('roomNumber').value);
+// إضافة أو تعديل غرفةmber').value);
     const roomType = document.getElementById('roomType').value;async function(e) {
     e.preventDefault();
 
@@ -94,9 +91,10 @@ document.getElementById('roomForm').addEventListener('submit', function(e) {
     const room = rooms.find(r => r.number === roomNumber);
     if (room) {
 async function editRoom(roomNumber) {
-    const room = await hotelDB.getRoom(roomNumber);
-    if (room) {
-        document.getElementById('roomNumber').value = room.number;
+    c
+});
+
+// تعديل غرفةt.getElementById('roomNumber').value = room.number;
         document.getElementById('roomType').value = room.type;
         document.getElementById('roomStatus').value = room.status;
         document.getElementById('roomPrice').value = room.price;
