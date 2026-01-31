@@ -11,21 +11,32 @@ const statusTranslations = {
 // متغير لتتبع الغرفة قيد التعديل
 let editingRoomNumber = null;
 
-// تحميل الغرف من قاعدة البيانات
-async function loadRooms() {
-    try {
-        rooms = await hotelAPI.getAllRooms();
-        console.log('✅ تم تحميل الغرف من SQLite:', rooms.length);
-    } catch (error) {
-        console.error('❌ خطأ في تحميل الغرف:', error);
+// الاستماع للتحديثات من Firebase
+function listenToRooms() {
+    roomsRef.on('value', (snapshot) => {
         rooms = [];
-    }
+        const data = snapshot.val();
+        
+        if (data) {
+            Object.keys(data).forEach(key => {
+                rooms.push(data[key]);
+            });
+        }
+        
+        // ترتيب الغرف حسب الرقم
+        rooms.sort((a, b) => a.number - b.number);
+        
+        console.log('✅ تم تحميل الغرف من Firebase:', rooms.length);
+        
+        // عرض الغرف في الجدول
+        displayRoomsTable();
+    }, (error) => {
+        console.error('❌ خطأ في الاتصال بـ Firebase:', error);
+    });
 }
 
 // عرض الغرف في الجدول
-async function displayRoomsTable() {
-    await loadRooms();
-    
+function displayRoomsTable() {
     const tbody = document.getElementById('roomsTableBody');
     tbody.innerHTML = '';
 
@@ -85,19 +96,41 @@ document.getElementById('roomForm').addEventListener('submit', async function(e)
     try {
         if (editingRoomNumber !== null) {
             // تعديل غرفة موجودة
-            await hotelAPI.updateRoom(roomData);
+            await roomsRef.child(editingRoomNumber.toString()).update(roomData);
+            
+            // إضافة سجل
+            await logsRef.push({
+                action: 'update',
+                room: roomNumber,
+                timestamp: new Date().toISOString(),
+                details: `تم تعديل الغرفة ${roomNumber}`
+            });
+            
             alert('✅ تم تعديل الغرفة بنجاح!');
             editingRoomNumber = null;
             document.querySelector('button[type="submit"]').textContent = '➕ إضافة غرفة';
         } else {
+            // التحقق من عدم وجود الغرفة
+            const snapshot = await roomsRef.child(roomNumber.toString()).once('value');
+            if (snapshot.exists()) {
+                alert('❌ رقم الغرفة موجود بالفعل!');
+                return;
+            }
+            
             // إضافة غرفة جديدة
-            await hotelAPI.addRoom(roomData);
+            await roomsRef.child(roomNumber.toString()).set(roomData);
+            
+            // إضافة سجل
+            await logsRef.push({
+                action: 'add',
+                room: roomNumber,
+                timestamp: new Date().toISOString(),
+                details: `تم إضافة الغرفة ${roomNumber}`
+            });
+            
             alert('✅ تم إضافة الغرفة بنجاح!');
         }
 
-        // إعادة تحميل الجدول
-        await displayRoomsTable();
-        
         // إعادة تعيين النموذج
         this.reset();
         
@@ -106,38 +139,30 @@ document.getElementById('roomForm').addEventListener('submit', async function(e)
         document.getElementById('roomNumber').disabled = false;
     } catch (error) {
         console.error('❌ خطأ في حفظ الغرفة:', error);
-        if (error.message && error.message.includes('موجود')) {
-            alert('❌ رقم الغرفة موجود بالفعل!');
-        } else {
-            alert('❌ حدث خطأ أثناء حفظ الغرفة. تأكد من تشغيل السيرفر.');
-        }
+        alert('❌ حدث خطأ أثناء حفظ الغرفة: ' + error.message);
     }
 });
 
 // تعديل غرفة
-async function editRoom(roomNumber) {
-    try {
-        const room = await hotelAPI.getRoom(roomNumber);
-        if (room) {
-            document.getElementById('roomNumber').value = room.number;
-            document.getElementById('roomType').value = room.type;
-            document.getElementById('roomStatus').value = room.status;
-            document.getElementById('roomPrice').value = room.price;
-            
-            editingRoomNumber = roomNumber;
-            
-            // تعطيل حقل رقم الغرفة عند التعديل
-            document.getElementById('roomNumber').disabled = true;
-            
-            // تغيير نص الزر
-            document.querySelector('button[type="submit"]').textContent = '✏️ تحديث الغرفة';
-            
-            // تمرير النموذج إلى الأعلى
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    } catch (error) {
-        console.error('❌ خطأ في تحميل بيانات الغرفة:', error);
-        alert('❌ حدث خطأ أثناء تحميل بيانات الغرفة');
+function editRoom(roomNumber) {
+    const room = rooms.find(r => r.number === roomNumber);
+    
+    if (room) {
+        document.getElementById('roomNumber').value = room.number;
+        document.getElementById('roomType').value = room.type;
+        document.getElementById('roomStatus').value = room.status;
+        document.getElementById('roomPrice').value = room.price;
+        
+        editingRoomNumber = roomNumber;
+        
+        // تعطيل حقل رقم الغرفة عند التعديل
+        document.getElementById('roomNumber').disabled = true;
+        
+        // تغيير نص الزر
+        document.querySelector('button[type="submit"]').textContent = '✏️ تحديث الغرفة';
+        
+        // تمرير النموذج إلى الأعلى
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 }
 
@@ -145,12 +170,20 @@ async function editRoom(roomNumber) {
 async function deleteRoom(roomNumber) {
     if (confirm(`هل أنت متأكد من حذف الغرفة رقم ${roomNumber}؟`)) {
         try {
-            await hotelAPI.deleteRoom(roomNumber);
-            await displayRoomsTable();
+            await roomsRef.child(roomNumber.toString()).remove();
+            
+            // إضافة سجل
+            await logsRef.push({
+                action: 'delete',
+                room: roomNumber,
+                timestamp: new Date().toISOString(),
+                details: `تم حذف الغرفة ${roomNumber}`
+            });
+            
             alert('✅ تم حذف الغرفة بنجاح!');
         } catch (error) {
             console.error('❌ خطأ في حذف الغرفة:', error);
-            alert('❌ حدث خطأ أثناء حذف الغرفة');
+            alert('❌ حدث خطأ أثناء حذف الغرفة: ' + error.message);
         }
     }
 }
@@ -163,51 +196,12 @@ function cancelEdit() {
     document.querySelector('button[type="submit"]').textContent = '➕ إضافة غرفة';
 }
 
-// تحديث الإحصائيات
-async function updateStats() {
-    try {
-        const stats = await hotelAPI.getStats();
-        
-        document.getElementById('totalRooms').textContent = stats.total;
-        document.getElementById('availableRooms').textContent = stats.available;
-        document.getElementById('occupiedRooms').textContent = stats.occupied;
-        document.getElementById('maintenanceRooms').textContent = stats.maintenance;
-    } catch (error) {
-        console.error('❌ خطأ في تحميل الإحصائيات:', error);
-    }
-}
-
 // تهيئة التطبيق
-document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        console.log('🔄 جاري الاتصال بقاعدة البيانات...');
-        
-        // عرض الغرف من قاعدة البيانات SQLite
-        await displayRoomsTable();
-        
-        // تحديث الإحصائيات
-        await updateStats();
-        
-        // عرض معلومات الاتصال
-        const stats = await hotelAPI.getStats();
-        console.log('📊 إحصائيات النظام:', stats);
-        console.log('✅ لوحة التحكم جاهزة - متصلة بقاعدة بيانات SQLite (hotel.db)');
-        console.log('📍 السيرفر: http://localhost:5000');
-    } catch (error) {
-        console.error('❌ خطأ في تهيئة لوحة التحكم:', error);
-        console.error('⚠️ تأكد من تشغيل السيرفر: python3 server.py');
-        
-        // عرض رسالة للمستخدم
-        const tbody = document.getElementById('roomsTableBody');
-        if (tbody) {
-            tbody.innerHTML = `
-                <tr>
-                    <td colspan="5" style="text-align: center; padding: 40px;">
-                        <div style="color: #ff6b6b; font-size: 18px; margin-bottom: 10px;">⚠️ خطأ في الاتصال بالسيرفر</div>
-                        <div style="color: #666;">تأكد من تشغيل السيرفر باستخدام: <code>python3 server.py</code></div>
-                    </td>
-                </tr>
-            `;
-        }
-    }
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('🔄 جاري الاتصال بـ Firebase...');
+    
+    // بدء الاستماع للتحديثات
+    listenToRooms();
+    
+    console.log('✅ لوحة التحكم جاهزة - Firebase Realtime Database');
 });

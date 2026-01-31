@@ -1,17 +1,6 @@
 // متغير لتخزين الغرف
 let rooms = [];
 
-// تحميل الغرف من قاعدة البيانات
-async function loadRooms() {
-    try {
-        rooms = await hotelAPI.getAllRooms();
-        console.log('✅ تم تحميل الغرف من قاعدة البيانات SQLite:', rooms.length);
-    } catch (error) {
-        console.error('❌ خطأ في تحميل الغرف:', error);
-        rooms = [];
-    }
-}
-
 // ترجمة حالات الغرف
 const statusTranslations = {
     available: 'متاحة',
@@ -19,11 +8,32 @@ const statusTranslations = {
     maintenance: 'صيانة'
 };
 
+// الاستماع للتحديثات من Firebase
+function listenToRooms() {
+    roomsRef.on('value', (snapshot) => {
+        rooms = [];
+        const data = snapshot.val();
+        
+        if (data) {
+            Object.keys(data).forEach(key => {
+                rooms.push(data[key]);
+            });
+        }
+        
+        // ترتيب الغرف حسب الرقم
+        rooms.sort((a, b) => a.number - b.number);
+        
+        console.log('✅ تم تحميل الغرف من Firebase:', rooms.length);
+        
+        // عرض الغرف
+        displayRooms();
+    }, (error) => {
+        console.error('❌ خطأ في الاتصال بـ Firebase:', error);
+    });
+}
+
 // عرض الغرف
-async function displayRooms(filter = 'all') {
-    // تحميل الغرف من قاعدة البيانات
-    await loadRooms();
-    
+function displayRooms(filter = 'all') {
     const roomsGrid = document.getElementById('roomsGrid');
     roomsGrid.innerHTML = '';
 
@@ -31,6 +41,12 @@ async function displayRooms(filter = 'all') {
     
     if (filter !== 'all') {
         filteredRooms = rooms.filter(room => room.status === filter);
+    }
+
+    if (filteredRooms.length === 0) {
+        roomsGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 60px; color: #999; font-size: 18px;">لا توجد غرف متاحة</div>';
+        updateStats();
+        return;
     }
 
     filteredRooms.forEach(room => {
@@ -91,29 +107,13 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
         displayRooms(filter);
     });
 });
-function simulateRealTimeUpdates() {
-    setInterval(async () => {
-        // تحديث من قاعدة البيانات
-        await displayRooms();
-        console.log('🔄 تحديث البيانات...');
-    }, 30000);
-}
 
 // تهيئة التطبيق
-document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        // عرض الغرف من قاعدة البيانات SQLite
-        await displayRooms();
-        
-        // بدء التحديث التلقائي
-        simulateRealTimeUpdates();
-        
-        // عرض الإحصائيات
-        const stats = await hotelAPI.getStats();
-        console.log('📊 إحصائيات قاعدة البيانات:', stats);
-        console.log('✅ نظام إدارة الفندق جاهز - متصل بقاعدة بيانات SQLite (hotel.db)');
-    } catch (error) {
-        console.error('❌ خطأ في تهيئة النظام:', error);
-        console.error('⚠️ تأكد من تشغيل السيرفر: python3 server.py');
-    }
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('🔄 جاري الاتصال بـ Firebase...');
+    
+    // بدء الاستماع للتحديثات
+    listenToRooms();
+    
+    console.log('✅ نظام إدارة الفندق جاهز - Firebase Realtime Database');
 });
