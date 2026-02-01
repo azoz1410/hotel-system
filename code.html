@@ -71,21 +71,19 @@
     }
 
     .buttons {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
       margin: 30px 0;
     }
 
     button {
-      padding: 18px 30px;
+      padding: 18px 50px;
       border: none;
       border-radius: 15px;
-      font-size: 1.1em;
+      font-size: 1.2em;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.3s ease;
       font-family: 'Cairo', sans-serif;
+      width: 100%;
     }
 
     .btn-copy {
@@ -99,18 +97,7 @@
       box-shadow: 0 12px 30px rgba(29, 209, 161, 0.4);
     }
 
-    .btn-nfc {
-      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
-      color: white;
-      box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
-    }
-
-    .btn-nfc:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 30px rgba(255, 107, 107, 0.4);
-    }
-
-    .btn-nfc:active, .btn-copy:active {
+    .btn-copy:active {
       transform: translateY(0);
     }
 
@@ -214,9 +201,6 @@
       <button class="btn-copy" onclick="copyCode()">
         📋 نسخ الرمز
       </button>
-      <button class="btn-nfc" onclick="openTTLockInfo()">
-        📱 فتح التطبيق
-      </button>
     </div>
 
     <div id="status"></div>
@@ -226,30 +210,21 @@
     </div>
 
     <div class="instructions">
-      <h3>📝 تعليمات الاستخدام</h3>
+      <h3>📝 طريقة الاستخدام</h3>
       <ol>
-        <li><strong>على لوحة المفاتيح في الجهاز:</strong>
-          <ul>
-            <li>أدخل الرمز <strong>1733</strong> مباشرة</li>
-            <li>اضغط على زر <strong>#</strong> أو <strong>✓</strong> للتأكيد</li>
-          </ul>
-        </li>
-        <li><strong>باستخدام تطبيق TTLock:</strong>
-          <ul>
-            <li>افتح تطبيق TTLock علماً بأن البلوتوث مفعَّل</li>
-            <li>اضغط على القفل لفتحه أو إغلاقه</li>
-          </ul>
-        </li>
-        <li><strong>بواسطة البطاقة الذكية (IC Card):</strong>
-          <ul>
-            <li>قرِّب البطاقة المسجلة من قارئ الجهاز</li>
-            <li>سيفتح القفل تلقائياً</li>
-          </ul>
-        </li>
-        <li>انتظر حتى يضيء المؤشر باللون <strong>الأخضر</strong> وتسمع صوت التأكيد</li>
+        <li>قف أمام جهاز <strong>TTLock</strong></li>
+        <li>أدخل الرقم السري <strong>1733</strong> على لوحة المفاتيح</li>
+        <li>اضغط على زر <strong>#</strong> أو <strong>✓</strong> للتأكيد</li>
+        <li>انتظر حتى يضيء المؤشر باللون <span style="color: #10b981; font-weight: bold;">الأخضر ✓</span></li>
+        <li>ستسمع صوت تأكيد وسيفتح القفل</li>
         <li>افتح الباب خلال <strong>5 ثوانِ</strong></li>
-        <li><strong>ملاحظة:</strong> الرقم السري صالح للاستخدام المتكرر ولا ينتهي</li>
       </ol>
+      <div style="background: #fff3cd; padding: 15px; border-radius: 10px; margin-top: 20px; border-left: 4px solid #ffc107;">
+        <strong>⚠️ ملاحظة مهمة:</strong><br>
+        • الرقم السري صالح للاستخدام المتكرر<br>
+        • لا تشارك الرقم مع أشخاص غير مصرَّح لهم<br>
+        • إذا لم يعمل الرقم، تواصل مع الإدارة
+      </div>
     </div>
   </div>
 
@@ -260,29 +235,21 @@
     // نسخ الرمز
     function copyCode() {
       navigator.clipboard.writeText(accessCode).then(() => {
-        showStatus('✅ تم نسخ الرمز بنجاح! الآن يمكنك إدخاله على الجهاز', 'success');
+        showStatus('✅ تم نسخ الرمز ' + accessCode + ' بنجاح!', 'success');
       }).catch(err => {
-        showStatus('❌ فشل النسخ: ' + err, 'error');
-      });
-    }
-
-    // فتح معلومات التطبيق
-    function openTTLockInfo() {
-      showStatus('📱 قم بتحميل تطبيق TTLock من متجر التطبيقات', 'info');
-      
-      // محاولة فتح التطبيق أو متجر التطبيقات
-      const isAndroid = /Android/i.test(navigator.userAgent);
-      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-      
-      setTimeout(() => {
-        if (isAndroid) {
-          window.location.href = 'https://play.google.com/store/apps/details?id=com.ttlock.blapp';
-        } else if (isIOS) {
-          window.location.href = 'https://apps.apple.com/app/ttlock/id1223850084';
-        } else {
-          alert('ℹ️ قم بتحميل تطبيق TTLock من متجر التطبيقات على هاتفك');
+        // محاولة بديلة للمتصفحات القديمة
+        const textarea = document.createElement('textarea');
+        textarea.value = accessCode;
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+          document.execCommand('copy');
+          showStatus('✅ تم نسخ الرمز ' + accessCode + ' بنجاح!', 'success');
+        } catch (e) {
+          showStatus('❌ فشل النسخ. الرمز هو: 1733', 'error');
         }
-      }, 1000);
+        document.body.removeChild(textarea);
+      });
     }
 
     // عرض رسالة الحالة
@@ -290,20 +257,16 @@
       statusDiv.textContent = message;
       statusDiv.className = type;
       
-      if (type === 'success' || type === 'info') {
-        setTimeout(() => {
-          statusDiv.textContent = '';
-          statusDiv.className = '';
-        }, 5000);
-      }
+      setTimeout(() => {
+        statusDiv.textContent = '';
+        statusDiv.className = '';
+      }, 4000);
     }
 
-    // عرض رسالة ترحيبية
-    window.addEventListener('load', () => {
-      console.log('✅ صفحة رمز الدخول جاهزة');
-      console.log('🔑 الرقم السري: 1733');
-      console.log('📱 للاستخدام مع جهاز TTLock Smart Lock');
-    });
+    // رسالة ترحيبية
+    console.log('✅ صفحة رمز الدخول جاهزة');
+    console.log('🔑 الرقم السري: 1733');
+    console.log('📱 للاستخدام المباشر على جهاز TTLock');
   </script>
 </body>
 </html>
