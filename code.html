@@ -1,46 +1,307 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>إرسال رقم سري عبر NFC</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🔑 رمز الدخول - TTLock Access Code</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cairo:wght@400;600;700;800&display=swap');
+
+    body {
+      font-family: 'Cairo', 'Inter', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      padding: 50px;
+      border-radius: 30px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.15);
+      max-width: 650px;
+      width: 100%;
+      text-align: center;
+    }
+
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 10px;
+      font-size: 2.5em;
+      font-weight: 800;
+    }
+
+    .subtitle {
+      color: #666;
+      margin-bottom: 40px;
+      font-size: 1.1em;
+    }
+
+    .code-box {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 40px;
+      border-radius: 20px;
+      margin: 30px 0;
+      box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
+    }
+
+    .access-code {
+      font-size: 5em;
+      font-weight: 900;
+      color: white;
+      letter-spacing: 20px;
+      font-family: 'Inter', monospace;
+      text-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .code-label {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 1.2em;
+      margin-top: 15px;
+      font-weight: 600;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin: 30px 0;
+    }
+
+    button {
+      padding: 18px 30px;
+      border: none;
+      border-radius: 15px;
+      font-size: 1.1em;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Cairo', sans-serif;
+    }
+
+    .btn-copy {
+      background: linear-gradient(135deg, #1dd1a1 0%, #10ac84 100%);
+      color: white;
+      box-shadow: 0 8px 20px rgba(29, 209, 161, 0.3);
+    }
+
+    .btn-copy:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(29, 209, 161, 0.4);
+    }
+
+    .btn-nfc {
+      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+      color: white;
+      box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+    }
+
+    .btn-nfc:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(255, 107, 107, 0.4);
+    }
+
+    .btn-nfc:active, .btn-copy:active {
+      transform: translateY(0);
+    }
+
+    #status {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 1.1em;
+      min-height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .success {
+      background: #d4edda;
+      color: #155724;
+      border: 2px solid #c3e6cb;
+    }
+
+    .error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 2px solid #f5c6cb;
+    }
+
+    .info {
+      background: #d1ecf1;
+      color: #0c5460;
+      border: 2px solid #bee5eb;
+    }
+
+    .instructions {
+      background: #f8f9fa;
+      padding: 25px;
+      border-radius: 15px;
+      margin-top: 30px;
+      text-align: right;
+    }
+
+    .instructions h3 {
+      color: #667eea;
+      margin-bottom: 15px;
+      font-size: 1.4em;
+    }
+
+    .instructions ol {
+      color: #555;
+      font-size: 1em;
+      line-height: 1.8;
+      padding-right: 20px;
+    }
+
+    .instructions li {
+      margin-bottom: 10px;
+    }
+
+    .device-badge {
+      background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+      padding: 15px 25px;
+      border-radius: 50px;
+      display: inline-block;
+      margin-top: 20px;
+      font-weight: 700;
+      color: #d35400;
+      border: 2px solid #f39c12;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 30px 20px;
+      }
+
+      h1 {
+        font-size: 2em;
+      }
+
+      .access-code {
+        font-size: 3.5em;
+        letter-spacing: 12px;
+      }
+
+      .buttons {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
+    <h1>🔑 رمز الدخول</h1>
+    <p class="subtitle">TTLock Smart Lock Access Code</p>
 
-  <h2>إرسال الرقم السري عبر NFC</h2>
-  <button id="writeNfc">إرسال الرقم 1733</button>
+    <div class="code-box">
+      <div class="access-code" id="accessCode">1733</div>
+      <div class="code-label">الرقم السري</div>
+    </div>
 
-  <p id="status"></p>
+    <div class="buttons">
+      <button class="btn-copy" onclick="copyCode()">
+        📋 نسخ الرمز
+      </button>
+      <button class="btn-nfc" id="writeNfc">
+        📱 إرسال عبر NFC
+      </button>
+    </div>
+
+    <div id="status"></div>
+
+    <div class="device-badge">
+      ⚙️ TTLock Smart Lock • Passcode: 1733
+    </div>
+
+    <div class="instructions">
+      <h3>📝 تعليمات الاستخدام</h3>
+      <ol>
+        <li><strong>باستخدام لوحة المفاتيح:</strong> أدخل الرمز <strong>1733</strong> ثم اضغط # أو ✓</li>
+        <li><strong>باستخدام NFC:</strong> اضغط زر "إرسال عبر NFC" وقرِّب هاتفك من البطاقة/Tag</li>
+        <li>انتظر حتى يضيء المؤشر باللون الأخضر</li>
+        <li>افتح الباب خلال 5 ثوانِ</li>
+        <li><strong>ملاحظة:</strong> يمكن استخدام الرقم السري بشكل متكرر</li>
+      </ol>
+    </div>
+  </div>
 
   <script>
-    const button = document.getElementById("writeNfc");
-    const status = document.getElementById("status");
+    const statusDiv = document.getElementById('status');
+    const accessCode = '1733';
 
-    button.addEventListener("click", async () => {
-      if (!("NDEFReader" in window)) {
-        status.textContent = "❌ NFC غير مدعوم على هذا الجهاز";
+    // نسخ الرمز
+    function copyCode() {
+      navigator.clipboard.writeText(accessCode).then(() => {
+        showStatus('✅ تم نسخ الرمز بنجاح!', 'success');
+      }).catch(err => {
+        showStatus('❌ فشل النسخ: ' + err, 'error');
+      });
+    }
+
+    // إرسال عبر NFC
+    document.getElementById('writeNfc').addEventListener('click', async () => {
+      if (!('NDEFReader' in window)) {
+        showStatus('❌ NFC غير مدعوم على هذا الجهاز/المتصفح', 'error');
         return;
       }
 
       try {
+        showStatus('🔄 جاري الإرسال... قرِّب البطاقة', 'info');
+        
         const ndef = new NDEFReader();
-
         await ndef.write({
           records: [
             {
-              recordType: "text",
-              data: "1733",
-              lang: "ar"
+              recordType: 'text',
+              data: accessCode,
+              lang: 'ar'
             }
           ]
         });
 
-        status.textContent = "✅ تم إرسال الرقم السري بنجاح، قرّب الـ NFC Tag";
+        showStatus('✅ تم إرسال الرقم السري (1733) بنجاح!', 'success');
       } catch (error) {
-        status.textContent = "❌ فشل الإرسال: " + error;
-        console.error(error);
+        if (error.name === 'NotAllowedError') {
+          showStatus('❌ يجب منح إذن NFC للمتصفح', 'error');
+        } else {
+          showStatus('❌ فشل الإرسال: ' + error.message, 'error');
+        }
+        console.error('خطأ NFC:', error);
       }
     });
-  </script>
 
+    // عرض رسالة الحالة
+    function showStatus(message, type) {
+      statusDiv.textContent = message;
+      statusDiv.className = type;
+      
+      if (type === 'success') {
+        setTimeout(() => {
+          statusDiv.textContent = '';
+          statusDiv.className = '';
+        }, 5000);
+      }
+    }
+
+    // فحص دعم NFC عند التحميل
+    if ('NDEFReader' in window) {
+      console.log('✅ NFC مدعوم في هذا المتصفح');
+    } else {
+      console.log('⚠️ NFC غير مدعوم. يعمل فقط على Android مع Chrome');
+      document.getElementById('writeNfc').style.opacity = '0.6';
+    }
+  </script>
 </body>
 </html>
