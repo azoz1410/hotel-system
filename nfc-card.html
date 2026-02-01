@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>برمجة بطاقة NFC - فندق الأزيز</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo h1 {
+            color: #667eea;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .logo p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .card-icon {
+            text-align: center;
+            font-size: 80px;
+            margin: 20px 0;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        .passcode-display {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 25px 0;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .passcode-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .passcode-value {
+            font-size: 48px;
+            font-weight: 700;
+            letter-spacing: 8px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .write-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            font-family: 'Cairo', sans-serif;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .write-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .write-button:active {
+            transform: translateY(0);
+        }
+
+        .write-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .status-message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+
+        .status-message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+
+        .status-message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+
+        .status-message.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 2px solid #bee5eb;
+        }
+
+        .instructions {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 25px;
+            border-right: 4px solid #667eea;
+        }
+
+        .instructions h3 {
+            color: #333;
+            font-size: 16px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .instructions ol {
+            padding-right: 20px;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .instructions li {
+            margin-bottom: 10px;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .warning-title {
+            color: #856404;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .warning-content {
+            color: #856404;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .requirements {
+            background: #e7f3ff;
+            border: 2px solid #2196F3;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .requirements-title {
+            color: #1976D2;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .requirements ul {
+            padding-right: 20px;
+            color: #1976D2;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+            }
+
+            .passcode-value {
+                font-size: 36px;
+                letter-spacing: 5px;
+            }
+
+            .logo h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <h1>🏨 فندق الأزيز</h1>
+            <p>برمجة بطاقة NFC</p>
+        </div>
+
+        <div class="card-icon">💳</div>
+
+        <div class="passcode-display">
+            <div class="passcode-label">الرقم السري للغرفة</div>
+            <div class="passcode-value">1733</div>
+        </div>
+
+        <button class="write-button" id="writeButton" onclick="writeNFC()">
+            ✍️ كتابة البطاقة
+        </button>
+
+        <button onclick="window.location.href='code.html'" style="margin-top: 15px; background: #6c757d; box-shadow: 0 4px 15px rgba(108, 117, 125, 0.4);" class="write-button">
+            ↩️ العودة إلى صفحة الرمز
+        </button>
+
+        <div class="status-message" id="statusMessage"></div>
+
+        <div class="requirements">
+            <div class="requirements-title">
+                📱 المتطلبات
+            </div>
+            <ul>
+                <li>هاتف Android يدعم NFC</li>
+                <li>متصفح Chrome على Android</li>
+                <li>بطاقة NFC فارغة أو قابلة لإعادة الكتابة</li>
+                <li>تفعيل NFC في إعدادات الهاتف</li>
+            </ul>
+        </div>
+
+        <div class="instructions">
+            <h3>📝 طريقة الاستخدام:</h3>
+            <ol>
+                <li>تأكد من تفعيل NFC في إعدادات هاتفك</li>
+                <li>افتح هذه الصفحة في متصفح Chrome على Android</li>
+                <li>أحضر بطاقة NFC فارغة</li>
+                <li>اضغط على زر "كتابة البطاقة"</li>
+                <li>قرّب البطاقة من ظهر الهاتف</li>
+                <li>انتظر رسالة النجاح</li>
+                <li>استخدم البطاقة على قفل TTLock</li>
+            </ol>
+        </div>
+
+        <div class="warning">
+            <div class="warning-title">
+                ⚠️ تنبيه مهم
+            </div>
+            <div class="warning-content">
+                <p><strong>قد لا تعمل هذه الطريقة مع قفل TTLock!</strong></p>
+                <p>• قفل TTLock قد يتطلب تسجيل البطاقة أولاً عبر التطبيق الرسمي</p>
+                <p>• هذه الصفحة تكتب الرقم السري كنص عادي على البطاقة</p>
+                <p>• للحصول على أفضل النتائج، استخدم تطبيق TTLock الرسمي لإضافة بطاقات</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // التحقق من دعم NFC
+        if (!('NDEFReader' in window)) {
+            document.getElementById('writeButton').disabled = true;
+            showMessage('error', '❌ متصفحك لا يدعم NFC. استخدم Chrome على Android.');
+        }
+
+        async function writeNFC() {
+            const button = document.getElementById('writeButton');
+            const passcode = '1733';
+
+            try {
+                // طلب إذن NFC
+                button.disabled = true;
+                button.textContent = '⏳ جاري التحضير...';
+                showMessage('info', '📱 قرّب البطاقة من ظهر هاتفك الآن...');
+
+                const ndef = new NDEFReader();
+                
+                // كتابة البطاقة
+                await ndef.write({
+                    records: [
+                        {
+                            recordType: "text",
+                            data: `TTLock Passcode: ${passcode}`,
+                            lang: "ar"
+                        },
+                        {
+                            recordType: "text",
+                            data: passcode,
+                            lang: "en"
+                        }
+                    ]
+                });
+
+                // نجحت العملية
+                button.textContent = '✅ تمت الكتابة بنجاح!';
+                showMessage('success', '✅ تم كتابة البطاقة بنجاح! يمكنك الآن استخدامها على القفل.');
+                
+                // إعادة تعيين الزر بعد 3 ثوانٍ
+                setTimeout(() => {
+                    button.disabled = false;
+                    button.textContent = '✍️ كتابة بطاقة أخرى';
+                }, 3000);
+
+            } catch (error) {
+                button.disabled = false;
+                button.textContent = '✍️ كتابة البطاقة';
+                
+                console.error('خطأ في كتابة NFC:', error);
+                
+                if (error.name === 'NotAllowedError') {
+                    showMessage('error', '❌ تم رفض إذن الوصول إلى NFC. يرجى السماح بالوصول والمحاولة مرة أخرى.');
+                } else if (error.name === 'NotSupportedError') {
+                    showMessage('error', '❌ جهازك لا يدعم NFC أو NFC غير مفعّل.');
+                } else if (error.name === 'AbortError') {
+                    showMessage('error', '❌ تم إلغاء العملية. تأكد من تقريب البطاقة.');
+                } else {
+                    showMessage('error', `❌ حدث خطأ: ${error.message}`);
+                }
+            }
+        }
+
+        function showMessage(type, text) {
+            const messageEl = document.getElementById('statusMessage');
+            messageEl.className = `status-message ${type}`;
+            messageEl.textContent = text;
+            messageEl.style.display = 'block';
+
+            if (type === 'success') {
+                setTimeout(() => {
+                    messageEl.style.display = 'none';
+                }, 5000);
+            }
+        }
+    </script>
+</body>
+</html>
