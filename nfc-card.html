@@ -245,7 +245,15 @@
         </div>
 
         <button class="write-button" id="writeButton" onclick="writeNFC()">
-            ✍️ كتابة البطاقة
+            ✍️ كتابة بطاقة NFC
+        </button>
+
+        <button onclick="saveToWallet()" style="margin-top: 15px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); box-shadow: 0 4px 15px rgba(240, 147, 251, 0.4);" class="write-button">
+            💳 حفظ في Wallet/Cards
+        </button>
+
+        <button onclick="downloadCard()" style="margin-top: 15px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);" class="write-button">
+            📥 تحميل بطاقة رقمية
         </button>
 
         <button onclick="window.location.href='code.html'" style="margin-top: 15px; background: #6c757d; box-shadow: 0 4px 15px rgba(108, 117, 125, 0.4);" class="write-button">
@@ -299,9 +307,11 @@
             showMessage('error', '❌ متصفحك لا يدعم NFC. استخدم Chrome على Android.');
         }
 
+        const passcode = '1733';
+        const hotelName = 'فندق الأزيز';
+
         async function writeNFC() {
             const button = document.getElementById('writeButton');
-            const passcode = '1733';
 
             try {
                 // طلب إذن NFC
@@ -355,6 +365,90 @@
             }
         }
 
+        // حفظ في Wallet (vCard للأيفون، يحفظ في جهات الاتصال ويمكن الوصول له من Wallet)
+        function saveToWallet() {
+            // إنشاء vCard
+            const vCard = `BEGIN:VCARD
+VERSION:3.0
+FN:${hotelName} - غرفة 101
+ORG:${hotelName}
+NOTE:رمز فتح القفل TTLock\\nالرقم السري: ${passcode}\\n\\nطريقة الاستخدام:\\n1. اذهب إلى القفل\\n2. أدخل ${passcode}\\n3. اضغط # للتأكيد
+TEL;TYPE=HOTEL:${passcode}
+URL:https://github.com/azoz1410/hotel-system
+END:VCARD`;
+
+            // تحويل إلى Blob
+            const blob = new Blob([vCard], { type: 'text/vcard' });
+            const url = URL.createObjectURL(blob);
+            
+            // إنشاء رابط تحميل
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `hotel-card-${passcode}.vcf`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            showMessage('success', '✅ تم تحميل البطاقة! افتح الملف لحفظها في جهات الاتصال.');
+        }
+
+        // تحميل بطاقة رقمية (صورة)
+        function downloadCard() {
+            // إنشاء canvas
+            const canvas = document.createElement('canvas');
+            canvas.width = 800;
+            canvas.height = 500;
+            const ctx = canvas.getContext('2d');
+
+            // الخلفية
+            const gradient = ctx.createLinearGradient(0, 0, 800, 500);
+            gradient.addColorStop(0, '#667eea');
+            gradient.addColorStop(1, '#764ba2');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 800, 500);
+
+            // البطاقة
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+            ctx.roundRect(50, 50, 700, 400, 30);
+            ctx.fill();
+
+            // العنوان
+            ctx.fillStyle = '#2c3e50';
+            ctx.font = 'bold 48px Cairo, Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('🏨 ' + hotelName, 400, 130);
+
+            // نص "الرقم السري"
+            ctx.font = '32px Cairo, Arial';
+            ctx.fillStyle = '#666';
+            ctx.fillText('الرقم السري لفتح القفل', 400, 200);
+
+            // الرقم السري
+            ctx.font = 'bold 120px Inter, monospace';
+            ctx.fillStyle = '#667eea';
+            ctx.fillText(passcode, 400, 320);
+
+            // معلومات إضافية
+            ctx.font = '24px Cairo, Arial';
+            ctx.fillStyle = '#888';
+            ctx.fillText('TTLock Smart Lock Access Code', 400, 400);
+
+            // تحويل إلى صورة وتحميلها
+            canvas.toBlob((blob) => {
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `hotel-card-${passcode}.png`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+                
+                showMessage('success', '✅ تم تحميل البطاقة الرقمية! احفظها في معرض الصور.');
+            });
+        }
+
         function showMessage(type, text) {
             const messageEl = document.getElementById('statusMessage');
             messageEl.className = `status-message ${type}`;
@@ -366,6 +460,24 @@
                     messageEl.style.display = 'none';
                 }, 5000);
             }
+        }
+
+        // دعم roundRect للمتصفحات القديمة
+        if (!CanvasRenderingContext2D.prototype.roundRect) {
+            CanvasRenderingContext2D.prototype.roundRect = function (x, y, width, height, radius) {
+                this.beginPath();
+                this.moveTo(x + radius, y);
+                this.lineTo(x + width - radius, y);
+                this.quadraticCurveTo(x + width, y, x + width, y + radius);
+                this.lineTo(x + width, y + height - radius);
+                this.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+                this.lineTo(x + radius, y + height);
+                this.quadraticCurveTo(x, y + height, x, y + height - radius);
+                this.lineTo(x, y + radius);
+                this.quadraticCurveTo(x, y, x + radius, y);
+                this.closePath();
+                return this;
+            };
         }
     </script>
 </body>
