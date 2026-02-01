@@ -202,8 +202,8 @@
 </head>
 <body>
   <div class="container">
-    <h1>🔑 رمز الدخول</h1>
-    <p class="subtitle">TTLock Smart Lock Access Code</p>
+    <h1>🔑 رمز فتح القفل</h1>
+    <p class="subtitle">استخدم هذا الرمز على جهاز TTLock Smart Lock</p>
 
     <div class="code-box">
       <div class="access-code" id="accessCode">1733</div>
@@ -214,8 +214,8 @@
       <button class="btn-copy" onclick="copyCode()">
         📋 نسخ الرمز
       </button>
-      <button class="btn-nfc" id="writeNfc">
-        📱 إرسال عبر NFC
+      <button class="btn-nfc" onclick="openTTLockInfo()">
+        📱 فتح التطبيق
       </button>
     </div>
 
@@ -228,11 +228,27 @@
     <div class="instructions">
       <h3>📝 تعليمات الاستخدام</h3>
       <ol>
-        <li><strong>باستخدام لوحة المفاتيح:</strong> أدخل الرمز <strong>1733</strong> ثم اضغط # أو ✓</li>
-        <li><strong>باستخدام NFC:</strong> اضغط زر "إرسال عبر NFC" وقرِّب هاتفك من البطاقة/Tag</li>
-        <li>انتظر حتى يضيء المؤشر باللون الأخضر</li>
-        <li>افتح الباب خلال 5 ثوانِ</li>
-        <li><strong>ملاحظة:</strong> يمكن استخدام الرقم السري بشكل متكرر</li>
+        <li><strong>على لوحة المفاتيح في الجهاز:</strong>
+          <ul>
+            <li>أدخل الرمز <strong>1733</strong> مباشرة</li>
+            <li>اضغط على زر <strong>#</strong> أو <strong>✓</strong> للتأكيد</li>
+          </ul>
+        </li>
+        <li><strong>باستخدام تطبيق TTLock:</strong>
+          <ul>
+            <li>افتح تطبيق TTLock علماً بأن البلوتوث مفعَّل</li>
+            <li>اضغط على القفل لفتحه أو إغلاقه</li>
+          </ul>
+        </li>
+        <li><strong>بواسطة البطاقة الذكية (IC Card):</strong>
+          <ul>
+            <li>قرِّب البطاقة المسجلة من قارئ الجهاز</li>
+            <li>سيفتح القفل تلقائياً</li>
+          </ul>
+        </li>
+        <li>انتظر حتى يضيء المؤشر باللون <strong>الأخضر</strong> وتسمع صوت التأكيد</li>
+        <li>افتح الباب خلال <strong>5 ثوانِ</strong></li>
+        <li><strong>ملاحظة:</strong> الرقم السري صالح للاستخدام المتكرر ولا ينتهي</li>
       </ol>
     </div>
   </div>
@@ -244,50 +260,37 @@
     // نسخ الرمز
     function copyCode() {
       navigator.clipboard.writeText(accessCode).then(() => {
-        showStatus('✅ تم نسخ الرمز بنجاح!', 'success');
+        showStatus('✅ تم نسخ الرمز بنجاح! الآن يمكنك إدخاله على الجهاز', 'success');
       }).catch(err => {
         showStatus('❌ فشل النسخ: ' + err, 'error');
       });
     }
 
-    // إرسال عبر NFC
-    document.getElementById('writeNfc').addEventListener('click', async () => {
-      if (!('NDEFReader' in window)) {
-        showStatus('❌ NFC غير مدعوم على هذا الجهاز/المتصفح', 'error');
-        return;
-      }
-
-      try {
-        showStatus('🔄 جاري الإرسال... قرِّب البطاقة', 'info');
-        
-        const ndef = new NDEFReader();
-        await ndef.write({
-          records: [
-            {
-              recordType: 'text',
-              data: accessCode,
-              lang: 'ar'
-            }
-          ]
-        });
-
-        showStatus('✅ تم إرسال الرقم السري (1733) بنجاح!', 'success');
-      } catch (error) {
-        if (error.name === 'NotAllowedError') {
-          showStatus('❌ يجب منح إذن NFC للمتصفح', 'error');
+    // فتح معلومات التطبيق
+    function openTTLockInfo() {
+      showStatus('📱 قم بتحميل تطبيق TTLock من متجر التطبيقات', 'info');
+      
+      // محاولة فتح التطبيق أو متجر التطبيقات
+      const isAndroid = /Android/i.test(navigator.userAgent);
+      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+      
+      setTimeout(() => {
+        if (isAndroid) {
+          window.location.href = 'https://play.google.com/store/apps/details?id=com.ttlock.blapp';
+        } else if (isIOS) {
+          window.location.href = 'https://apps.apple.com/app/ttlock/id1223850084';
         } else {
-          showStatus('❌ فشل الإرسال: ' + error.message, 'error');
+          alert('ℹ️ قم بتحميل تطبيق TTLock من متجر التطبيقات على هاتفك');
         }
-        console.error('خطأ NFC:', error);
-      }
-    });
+      }, 1000);
+    }
 
     // عرض رسالة الحالة
     function showStatus(message, type) {
       statusDiv.textContent = message;
       statusDiv.className = type;
       
-      if (type === 'success') {
+      if (type === 'success' || type === 'info') {
         setTimeout(() => {
           statusDiv.textContent = '';
           statusDiv.className = '';
@@ -295,13 +298,12 @@
       }
     }
 
-    // فحص دعم NFC عند التحميل
-    if ('NDEFReader' in window) {
-      console.log('✅ NFC مدعوم في هذا المتصفح');
-    } else {
-      console.log('⚠️ NFC غير مدعوم. يعمل فقط على Android مع Chrome');
-      document.getElementById('writeNfc').style.opacity = '0.6';
-    }
+    // عرض رسالة ترحيبية
+    window.addEventListener('load', () => {
+      console.log('✅ صفحة رمز الدخول جاهزة');
+      console.log('🔑 الرقم السري: 1733');
+      console.log('📱 للاستخدام مع جهاز TTLock Smart Lock');
+    });
   </script>
 </body>
 </html>
