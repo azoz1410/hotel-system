@@ -53,16 +53,12 @@ function displayRooms(filter = 'all') {
         const roomCard = document.createElement('div');
         roomCard.className = `room-card ${room.status}`;
         
-        const bookButton = room.status === 'available' 
-            ? `<a href="public-booking.html" class="book-btn">📅 احجز الآن</a>`
-            : '';
-        
         roomCard.innerHTML = `
             <div class="room-number">${room.number}</div>
             <div class="room-type">${room.type}</div>
             <div class="room-status">${statusTranslations[room.status]}</div>
             <div class="room-price">${room.price} ريال</div>
-            ${bookButton}
+            ${room.status === 'available' ? '<a href="public-booking.html?room=' + room.number + '" class="book-btn" onclick="event.stopPropagation()">📅 احجز الآن</a>' : ''}
         `;
 
         // إضافة تأثير النقر

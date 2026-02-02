@@ -31,6 +31,16 @@ function loadAvailableRooms() {
 
         // عرض الغرف
         displayRooms();
+        
+        // تحديد الغرفة من URL إذا كانت موجودة
+        const urlParams = new URLSearchParams(window.location.search);
+        const roomNumber = urlParams.get('room');
+        if (roomNumber) {
+            const room = allRooms.find(r => r.number == roomNumber && r.status === 'available');
+            if (room) {
+                setTimeout(() => selectRoom(room), 500);
+            }
+        }
     });
 }
 
@@ -72,7 +82,13 @@ function selectRoom(room) {
     });
 
     // تحديد الغرفة المختارة
-    event.target.closest('.room-option').classList.add('selected');
+    const roomElement = Array.from(document.querySelectorAll('.room-option')).find(
+        el => el.textContent.includes(`غرفة ${room.number}`)
+    );
+    
+    if (roomElement) {
+        roomElement.classList.add('selected');
+    }
 
     bookingData.selectedRoom = room;
     document.getElementById('step1Next').disabled = false;
@@ -182,7 +198,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('totalPreview').textContent = bookingData.totalPrice.toLocaleString() + ' ریال';
                 const pricePreview = document.getElementById('pricePreview');
                 pricePreview.classList.add('show');
-                pricePreview.style.display = 'block';
                 document.getElementById('step2Next').disabled = false;
             } else {
                 document.getElementById('step2Next').disabled = true;
