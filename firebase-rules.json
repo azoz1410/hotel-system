@@ -1,0 +1,67 @@
+{
+  "rules": {
+    "rooms": {
+      ".read": true,
+      ".write": "auth != null",
+      ".indexOn": ["status", "type", "number"]
+    },
+    "bookings": {
+      ".read": "auth != null",
+      ".write": "auth != null",
+      "$bookingId": {
+        ".validate": "newData.hasChildren(['roomNumber', 'customerName', 'customerPhone', 'checkIn', 'checkOut', 'totalPrice', 'status', 'createdAt'])",
+        "roomNumber": {
+          ".validate": "newData.isNumber()"
+        },
+        "customerName": {
+          ".validate": "newData.isString() && newData.val().length > 0"
+        },
+        "customerPhone": {
+          ".validate": "newData.isString() && newData.val().matches(/^05[0-9]{8}$/)"
+        },
+        "checkIn": {
+          ".validate": "newData.isString()"
+        },
+        "checkOut": {
+          ".validate": "newData.isString()"
+        },
+        "totalPrice": {
+          ".validate": "newData.isNumber() && newData.val() > 0"
+        },
+        "status": {
+          ".validate": "newData.isString() && (newData.val() == 'pending' || newData.val() == 'confirmed' || newData.val() == 'cancelled' || newData.val() == 'completed')"
+        }
+      },
+      ".indexOn": ["roomNumber", "status", "checkIn", "checkOut"]
+    },
+    "customers": {
+      ".read": "auth != null",
+      ".write": "auth != null",
+      "$customerId": {
+        ".validate": "newData.hasChildren(['name', 'phone', 'email'])",
+        "name": {
+          ".validate": "newData.isString() && newData.val().length > 0"
+        },
+        "phone": {
+          ".validate": "newData.isString() && newData.val().matches(/^05[0-9]{8}$/)"
+        },
+        "email": {
+          ".validate": "newData.isString()"
+        }
+      },
+      ".indexOn": ["phone", "email"]
+    },
+    "logs": {
+      ".read": "auth != null",
+      ".write": "auth != null",
+      "$logId": {
+        ".validate": "newData.hasChildren(['action', 'timestamp', 'userId'])"
+      },
+      ".indexOn": ["timestamp", "action"]
+    },
+    "stats": {
+      ".read": true,
+      ".write": "auth != null"
+    }
+  }
+}

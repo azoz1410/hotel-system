@@ -11,6 +11,16 @@ const statusTranslations = {
 // متغير لتتبع الغرفة قيد التعديل
 let editingRoomNumber = null;
 
+// عرض معلومات المستخدم
+firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+        const userInfo = document.getElementById('userInfo');
+        if (userInfo) {
+            userInfo.innerHTML = `<span>👤 ${user.email}</span>`;
+        }
+    }
+});
+
 // الاستماع للتحديثات من Firebase
 function listenToRooms() {
     roomsRef.on('value', (snapshot) => {
@@ -80,17 +90,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // التحقق من البيانات
     if (!roomNumber || !roomType || !roomStatus || !roomPrice) {
-        alert('❌ الرجاء ملء جميع الحقول');
+        showToast('❌ الرجاء ملء جميع الحقول', 'error');
         return;
     }
 
     if (roomNumber < 1) {
-        alert('❌ رقم الغرفة يجب أن يكون أكبر من 0');
+        showToast('❌ رقم الغرفة يجب أن يكون أكبر من 0', 'error');
         return;
     }
 
     if (roomPrice < 1) {
-        alert('❌ السعر يجب أن يكون أكبر من 0');
+        showToast('❌ السعر يجب أن يكون أكبر من 0', 'error');
         return;
     }
 
@@ -114,14 +124,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 details: `تم تعديل الغرفة ${roomNumber}`
             });
             
-            alert('✅ تم تعديل الغرفة بنجاح!');
+            showToast('✅ تم تعديل الغرفة بنجاح!', 'success');
             editingRoomNumber = null;
             document.querySelector('button[type="submit"]').textContent = '➕ إضافة غرفة';
         } else {
             // التحقق من عدم وجود الغرفة
             const snapshot = await roomsRef.child(roomNumber.toString()).once('value');
             if (snapshot.exists()) {
-                alert('❌ رقم الغرفة موجود بالفعل!');
+                showToast('❌ رقم الغرفة موجود بالفعل!', 'error');
                 return;
             }
             
@@ -136,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 details: `تم إضافة الغرفة ${roomNumber}`
             });
             
-            alert('✅ تم إضافة الغرفة بنجاح!');
+            showToast('✅ تم إضافة الغرفة بنجاح!', 'success');
         }
 
         // إعادة تعيين النموذج
@@ -147,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('roomNumber').disabled = false;
     } catch (error) {
         console.error('❌ خطأ في حفظ الغرفة:', error);
-        alert('❌ حدث خطأ أثناء حفظ الغرفة: ' + error.message);
+        showToast('❌ حدث خطأ أثناء حفظ الغرفة: ' + error.message, 'error');
     }
     });
 });
@@ -189,10 +199,10 @@ async function deleteRoom(roomNumber) {
                 details: `تم حذف الغرفة ${roomNumber}`
             });
             
-            alert('✅ تم حذف الغرفة بنجاح!');
+            showToast('✅ تم حذف الغرفة بنجاح!', 'success');
         } catch (error) {
             console.error('❌ خطأ في حذف الغرفة:', error);
-            alert('❌ حدث خطأ أثناء حذف الغرفة: ' + error.message);
+            showToast('❌ حدث خطأ أثناء حذف الغرفة: ' + error.message, 'error');
         }
     }
 }
@@ -212,13 +222,13 @@ function initializeAdmin() {
     // التحقق من اتصال Firebase
     if (typeof firebase === 'undefined') {
         console.error('❌ Firebase غير محمل!');
-        alert('❌ خطأ: لم يتم تحميل Firebase. تحقق من اتصال الإنترنت.');
+        showToast('❌ خطأ: لم يتم تحميل Firebase. تحقق من اتصال الإنترنت.', 'error');
         return;
     }
     
     if (typeof roomsRef === 'undefined') {
         console.error('❌ لم يتم تهيئة Firebase بشكل صحيح!');
-        alert('❌ خطأ: يجب إعداد Firebase أولاً. راجع ملف FIREBASE-SETUP.md');
+        showToast('❌ خطأ: يجب إعداد Firebase أولاً. راجع ملف FIREBASE-SETUP.md', 'error');
         return;
     }
     

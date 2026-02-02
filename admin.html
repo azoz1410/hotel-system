@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوحة التحكم - إدارة الفندق</title>
+    <meta name="description" content="لوحة التحكم لإدارة الغرف الفندقية والحجوزات">
+    <meta name="theme-color" content="#667eea">
+    <link rel="manifest" href="manifest.json">
     <style>
         * {
             margin: 0;
@@ -52,6 +55,21 @@
         .header-actions {
             display: flex;
             gap: 15px;
+            align-items: center;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .user-info span {
+            color: #555;
+            font-size: 0.9em;
         }
 
         .btn {
@@ -243,8 +261,13 @@
         <div class="header">
             <h1>🏨 لوحة التحكم - إدارة الفندق</h1>
             <div class="header-actions">
+                <div class="user-info" id="userInfo">
+                    <span>👤 جاري التحميل...</span>
+                </div>
+                <a href="dashboard.html" class="btn btn-primary">📊 الإحصائيات</a>
                 <a href="index.html" class="btn btn-primary" target="_blank">👁️ معاينة الغرف</a>
-                <a href="qrcode.html" class="btn btn-success" target="_blank">📱 QR Code</a>
+                <a href="bookings.html" class="btn btn-success">📅 الحجوزات</a>
+                <button onclick="authModule.logout()" class="btn btn-primary" style="background: linear-gradient(135deg, #ee5a6f, #f368e0);">🚪 تسجيل الخروج</button>
             </div>
         </div>
 
@@ -312,10 +335,12 @@
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     
     <!-- لوحة التحكم -->
     <script src="firebase-config.js"></script>
+    <script src="auth.js"></script>
     <script src="admin.js"></script>
 </body>
 </html>

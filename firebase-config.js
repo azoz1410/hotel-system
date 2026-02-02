@@ -20,5 +20,10 @@ firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 const roomsRef = database.ref('rooms');
 const logsRef = database.ref('logs');
+const bookingsRef = database.ref('bookings');
+const customersRef = database.ref('customers');
+
+// تفعيل المصادقة
+const auth = firebase.auth();
 
 console.log('✅ تم الاتصال بـ Firebase');

@@ -1,0 +1,72 @@
+{
+  "name": "نظام إدارة الفندق",
+  "short_name": "Hotel System",
+  "description": "نظام متكامل لإدارة الغرف الفندقية مع نظام الحجوزات",
+  "start_url": "/welcome.html",
+  "display": "standalone",
+  "background_color": "#667eea",
+  "theme_color": "#667eea",
+  "orientation": "portrait-primary",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "https://via.placeholder.com/192x192.png?text=🏨",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://via.placeholder.com/512x512.png?text=🏨",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "https://via.placeholder.com/540x720.png?text=Screenshot",
+      "sizes": "540x720",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["business", "productivity"],
+  "shortcuts": [
+    {
+      "name": "لوحة التحكم",
+      "short_name": "Admin",
+      "description": "إدارة الغرف والحجوزات",
+      "url": "/admin.html",
+      "icons": [
+        {
+          "src": "https://via.placeholder.com/96x96.png?text=⚙️",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "الحجوزات",
+      "short_name": "Bookings",
+      "description": "إدارة الحجوزات",
+      "url": "/bookings.html",
+      "icons": [
+        {
+          "src": "https://via.placeholder.com/96x96.png?text=📅",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "عرض الغرف",
+      "short_name": "Rooms",
+      "description": "عرض الغرف المتاحة",
+      "url": "/index.html",
+      "icons": [
+        {
+          "src": "https://via.placeholder.com/96x96.png?text=👁️",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
+}

@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مرحباً بك في نظام الفندق</title>
+    <meta name="description" content="نظام متكامل لإدارة الغرف الفندقية مع نظام الحجوزات">
+    <meta name="theme-color" content="#667eea">
+    <link rel="manifest" href="manifest.json">
     <style>
         * {
             margin: 0;
@@ -168,6 +171,24 @@
                 <div class="card-desc">شاهد جميع الغرف المتاحة</div>
             </a>
 
+            <a href="login.html" class="card">
+                <div class="card-icon">🔐</div>
+                <div class="card-title">تسجيل الدخول</div>
+                <div class="card-desc">دخول لوحة التحكم الإدارية</div>
+            </a>
+
+            <a href="bookings.html" class="card">
+                <div class="card-icon">📅</div>
+                <div class="card-title">الحجوزات</div>
+                <div class="card-desc">إدارة حجوزات الغرف</div>
+            </a>
+
+            <a href="dashboard.html" class="card">
+                <div class="card-icon">📊</div>
+                <div class="card-title">الإحصائيات</div>
+                <div class="card-desc">تقارير ورسوم بيانية</div>
+            </a>
+
             <a href="admin.html" class="card">
                 <div class="card-icon">⚙️</div>
                 <div class="card-title">لوحة التحكم</div>
@@ -178,13 +199,18 @@
         <div class="features">
             <h2>✨ مميزات النظام:</h2>
             <ul>
+                <li>نظام مصادقة آمن مع Firebase Authentication</li>
+                <li>نظام حجوزات متكامل مع إدارة العملاء</li>
+                <li>لوحة إحصائيات متقدمة مع رسوم بيانية</li>
+                <li>إشعارات Toast عصرية بدلاً من Alerts</li>
+                <li>دعم PWA - يعمل بدون إنترنت</li>
                 <li>عرض الغرف المتاحة باللون الأخضر</li>
                 <li>عرض الغرف المحجوزة باللون الأحمر</li>
                 <li>باركود QR قابل للطباعة</li>
-                <li>لوحة تحكم لإدارة الغرف</li>
                 <li>تصميم متجاوب لجميع الأجهزة</li>
-                <li>تحديث تلقائي للبيانات</li>
-                <li>سهولة الاستخدام</li>
+                <li>تحديث تلقائي للبيانات في الوقت الفعلي</li>
+                <li>تصدير التقارير بصيغة JSON</li>
+                <li>سهولة الاستخدام والتنقل</li>
             </ul>
         </div>
     </div>
