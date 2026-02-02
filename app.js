@@ -61,11 +61,17 @@ function displayRooms(filter = 'all') {
             ${room.status === 'available' ? '<a href="public-booking.html?room=' + room.number + '" class="book-btn" onclick="event.stopPropagation()">📅 احجز الآن</a>' : ''}
         `;
 
-        // إضافة تأثير النقر
+        // إضافة تأثير النقر - الانتقال للحجز إذا كانت الغرفة متاحة
         roomCard.addEventListener('click', (e) => {
             // عدم فتح التفاصيل إذا كان النقر على زر الحجز
             if (!e.target.classList.contains('book-btn')) {
-                showRoomDetails(room);
+                if (room.status === 'available') {
+                    // الانتقال لصفحة الحجز مباشرة
+                    window.location.href = `public-booking.html?room=${room.number}`;
+                } else {
+                    // عرض تفاصيل الغرفة إذا كانت محجوزة أو في صيانة
+                    showRoomDetails(room);
+                }
             }
         });
 

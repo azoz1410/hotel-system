@@ -11,6 +11,46 @@ const statusTranslations = {
 // متغير لتتبع الغرفة قيد التعديل
 let editingRoomNumber = null;
 
+// ============================================
+// Theme Management Functions
+// ============================================
+
+// حفظ الثيم إلى Firebase
+function saveThemeToFirebase() {
+    const themeSelector = document.getElementById('themeSelector');
+    const selectedTheme = themeSelector.value;
+    
+    firebase.database().ref('settings/theme').set(selectedTheme)
+        .then(() => {
+            alert('✅ تم حفظ الثيم بنجاح! سيظهر لجميع الزوار.');
+            // تطبيق الثيم فوراً
+            window.ThemeSwitcher.loadTheme(selectedTheme);
+        })
+        .catch((error) => {
+            console.error('❌ خطأ في حفظ الثيم:', error);
+            alert('حدث خطأ في حفظ الثيم');
+        });
+}
+
+// تحميل الثيم الحالي من Firebase
+function loadCurrentTheme() {
+    firebase.database().ref('settings/theme').once('value')
+        .then((snapshot) => {
+            const theme = snapshot.val() || 'default';
+            const themeSelector = document.getElementById('themeSelector');
+            if (themeSelector) {
+                themeSelector.value = theme;
+            }
+        })
+        .catch((error) => {
+            console.error('❌ خطأ في تحميل الثيم:', error);
+        });
+}
+
+// ============================================
+// User Management
+// ============================================
+
 // عرض معلومات المستخدم
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
@@ -18,6 +58,8 @@ firebase.auth().onAuthStateChanged((user) => {
         if (userInfo) {
             userInfo.innerHTML = `<span>👤 ${user.email}</span>`;
         }
+        // تحميل الثيم الحالي
+        loadCurrentTheme();
     }
 });
 
