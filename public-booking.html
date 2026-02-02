@@ -14,117 +14,194 @@
             box-sizing: border-box;
         }
 
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap');
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Tajawal', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
+            background-attachment: fixed;
             min-height: 100vh;
             padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            animation: fadeInDown 0.6s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .back-btn {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             color: white;
             text-decoration: none;
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            margin-bottom: 20px;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            margin-bottom: 25px;
             transition: all 0.3s ease;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .back-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.25);
             transform: translateX(5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
 
         h1 {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Tajawal', serif;
             color: white;
-            font-size: 2.5em;
-            margin-bottom: 10px;
+            font-size: 3em;
+            margin-bottom: 12px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            font-weight: 800;
+            letter-spacing: -0.5px;
         }
 
         .subtitle {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 1.1em;
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1.2em;
+            font-weight: 500;
         }
 
         .booking-card {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            padding: 50px;
+            border-radius: 30px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25),
+                        0 0 0 1px rgba(255, 255, 255, 0.3);
+            animation: fadeInUp 0.6s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .step-indicator {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 40px;
-            padding: 0 20px;
+            align-items: center;
+            margin-bottom: 50px;
+            padding: 0 10px;
+            position: relative;
+        }
+
+        .step-indicator::before {
+            content: '';
+            position: absolute;
+            top: 25px;
+            left: 10%;
+            right: 10%;
+            height: 3px;
+            background: linear-gradient(90deg, #e0e0e0 0%, #e0e0e0 100%);
+            z-index: 0;
         }
 
         .step {
             flex: 1;
             text-align: center;
             position: relative;
-        }
-
-        .step::after {
-            content: '';
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            width: 100%;
-            height: 2px;
-            background: #e0e0e0;
-            z-index: 0;
-        }
-
-        .step:last-child::after {
-            display: none;
+            z-index: 1;
         }
 
         .step-number {
-            width: 40px;
-            height: 40px;
-            background: #e0e0e0;
+            width: 50px;
+            height: 50px;
+            background: white;
             color: #999;
             border-radius: 50%;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-weight: 700;
+            font-weight: 800;
+            font-size: 1.3em;
             position: relative;
-            z-index: 1;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            border: 3px solid #e0e0e0;
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         .step.active .step-number {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
             color: white;
+            border-color: #3b82f6;
+            transform: scale(1.15);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
         }
 
         .step.completed .step-number {
-            background: #10ac84;
+            background: linear-gradient(135deg, #10b981, #059669);
             color: white;
+            border-color: #10b981;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .step.completed .step-number::after {
+            content: '✓';
+            position: absolute;
+            font-size: 1.2em;
         }
 
         .step-label {
-            font-size: 0.85em;
+            font-size: 0.9em;
             color: #666;
             font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .step.active .step-label {
+            color: #3b82f6;
+            font-weight: 700;
+        }
+
+        .step.completed .step-label {
+            color: #10b981;
         }
 
         .section {
@@ -148,97 +225,154 @@
         }
 
         .section-title {
-            color: #2c3e50;
-            margin-bottom: 25px;
-            font-size: 1.5em;
-            border-bottom: 2px solid #f0f0f0;
+            color: #1e293b;
+            margin-bottom: 30px;
+            font-size: 1.8em;
+            font-weight: 800;
+            position: relative;
             padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            border-radius: 2px;
         }
 
         .room-selection {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
             margin-bottom: 30px;
         }
 
         .room-option {
-            border: 2px solid #e0e0e0;
-            padding: 20px;
-            border-radius: 12px;
+            border: 2px solid #e5e7eb;
+            padding: 25px;
+            border-radius: 20px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             text-align: center;
+            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .room-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
         }
 
         .room-option:hover {
-            border-color: #667eea;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+            border-color: #3b82f6;
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.25);
+        }
+
+        .room-option:hover::before {
+            transform: scaleX(1);
         }
 
         .room-option.selected {
-            border-color: #667eea;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-color: #3b82f6;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(139, 92, 246, 0.08));
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(59, 130, 246, 0.3);
+        }
+
+        .room-option.selected::before {
+            transform: scaleX(1);
         }
 
         .room-option.unavailable {
             opacity: 0.5;
             cursor: not-allowed;
+            filter: grayscale(0.5);
+        }
+
+        .room-option.unavailable:hover {
+            transform: none;
+            box-shadow: none;
         }
 
         .room-number {
-            font-size: 1.5em;
-            font-weight: 700;
-            color: #2c3e50;
-            margin-bottom: 10px;
+            font-size: 2em;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1e293b, #475569);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
         }
 
         .room-type {
-            color: #666;
-            margin-bottom: 8px;
-            font-size: 0.9em;
+            color: #64748b;
+            margin-bottom: 10px;
+            font-size: 1em;
+            font-weight: 600;
         }
 
         .room-price {
-            color: #667eea;
-            font-weight: 700;
-            font-size: 1.1em;
+            color: #3b82f6;
+            font-weight: 800;
+            font-size: 1.3em;
+            margin-top: 8px;
         }
 
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 28px;
         }
 
         .form-group label {
             display: block;
-            color: #2c3e50;
-            margin-bottom: 8px;
-            font-weight: 600;
-            font-size: 0.95em;
+            color: #1e293b;
+            margin-bottom: 10px;
+            font-weight: 700;
+            font-size: 1em;
         }
 
         .form-group label .required {
-            color: #ee5a6f;
+            color: #ef4444;
             margin-right: 3px;
         }
 
         .form-group input,
         .form-group textarea {
             width: 100%;
-            padding: 14px;
-            border: 2px solid #e9ecef;
-            border-radius: 12px;
-            font-size: 1em;
-            font-family: 'Inter', sans-serif;
+            padding: 16px 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 16px;
+            font-size: 1.05em;
+            font-family: 'Tajawal', 'Inter', sans-serif;
             transition: all 0.3s ease;
+            background: #f9fafb;
         }
 
         .form-group input:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            border-color: #3b82f6;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1),
+                        0 8px 20px rgba(59, 130, 246, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
         }
 
         .form-row {
@@ -248,83 +382,123 @@
         }
 
         .summary-box {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 12px;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            padding: 30px;
+            border-radius: 20px;
             margin-bottom: 30px;
+            border: 2px solid #bae6fd;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.1);
         }
 
         .summary-item {
             display: flex;
             justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid #e0e0e0;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(59, 130, 246, 0.15);
         }
 
         .summary-item:last-child {
             border-bottom: none;
-            padding-top: 20px;
-            font-size: 1.3em;
-            font-weight: 700;
-            color: #667eea;
+            padding-top: 25px;
+            margin-top: 10px;
+            font-size: 1.5em;
+            font-weight: 800;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .summary-label {
-            color: #666;
+            color: #475569;
+            font-weight: 600;
         }
 
         .summary-value {
-            font-weight: 600;
-            color: #2c3e50;
+            font-weight: 700;
+            color: #1e293b;
         }
 
         .buttons {
             display: flex;
             gap: 15px;
             justify-content: space-between;
-            margin-top: 30px;
+            margin-top: 35px;
         }
 
         .btn {
             flex: 1;
-            padding: 16px;
+            padding: 18px 30px;
             border: none;
-            border-radius: 12px;
-            font-size: 1.1em;
-            font-weight: 600;
+            border-radius: 16px;
+            font-size: 1.15em;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Inter', sans-serif;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Tajawal', 'Inter', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
             color: white;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+            position: relative;
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.5);
+        }
+
+        .btn-primary:active {
+            transform: translateY(-1px);
         }
 
         .btn-secondary {
-            background: #f0f0f0;
-            color: #666;
+            background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+            color: #475569;
+            border: 2px solid #cbd5e1;
         }
 
         .btn-secondary:hover {
-            background: #e0e0e0;
+            background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
         }
 
         .btn:disabled {
-            opacity: 0.6;
+            opacity: 0.5;
             cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
         }
 
         .success-message {
             display: none;
             text-align: center;
-            padding: 40px;
+            padding: 60px 40px;
+            animation: fadeInUp 0.6s ease;
         }
 
         .success-message.show {
@@ -332,65 +506,157 @@
         }
 
         .success-icon {
-            font-size: 5em;
-            margin-bottom: 20px;
+            font-size: 6em;
+            margin-bottom: 25px;
+            animation: bounceIn 0.8s ease;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
         .success-title {
-            color: #10ac84;
-            font-size: 2em;
-            font-weight: 700;
-            margin-bottom: 15px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.5em;
+            font-weight: 800;
+            margin-bottom: 20px;
         }
 
         .success-text {
-            color: #666;
-            font-size: 1.1em;
-            line-height: 1.6;
-            margin-bottom: 30px;
+            color: #64748b;
+            font-size: 1.15em;
+            line-height: 1.8;
+            margin-bottom: 35px;
         }
 
         .booking-reference {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 12px;
-            margin: 20px 0;
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            padding: 30px;
+            border-radius: 20px;
+            margin: 25px 0;
+            border: 3px dashed #fbbf24;
+            box-shadow: 0 10px 30px rgba(251, 191, 36, 0.2);
         }
 
         .reference-label {
-            color: #666;
-            font-size: 0.9em;
-            margin-bottom: 8px;
+            color: #92400e;
+            font-size: 1em;
+            margin-bottom: 10px;
+            font-weight: 700;
         }
 
         .reference-code {
-            font-size: 1.5em;
+            font-size: 2em;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 3px;
+        }
+
+        .price-preview {
+            display: none;
+            background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+            padding: 25px;
+            border-radius: 16px;
+            margin-top: 20px;
+            text-align: center;
+            border: 2px solid #6ee7b7;
+            animation: slideInUp 0.4s ease;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .price-preview.show {
+            display: block;
+        }
+
+        .price-preview-title {
+            color: #065f46;
             font-weight: 700;
-            color: #667eea;
-            letter-spacing: 2px;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .price-details {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .price-item {
+            flex: 1;
+        }
+
+        .price-item-label {
+            color: #059669;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .price-item-value {
+            font-size: 1.5em;
+            font-weight: 800;
+            background: linear-gradient(135deg, #10b981, #059669);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
         }
 
         .info-box {
-            background: #e3f2fd;
-            padding: 15px 20px;
-            border-radius: 10px;
-            margin-bottom: 25px;
-            border-left: 4px solid #2196f3;
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            padding: 20px 25px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            border-right: 5px solid #3b82f6;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.1);
         }
 
         .info-box p {
-            color: #1565c0;
-            margin: 5px 0;
-            font-size: 0.95em;
+            color: #1e40af;
+            margin: 8px 0;
+            font-size: 1em;
+            font-weight: 600;
+            line-height: 1.6;
         }
 
         @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
             .booking-card {
-                padding: 25px;
+                padding: 30px 20px;
             }
 
             h1 {
-                font-size: 1.8em;
+                font-size: 2em;
             }
 
             .room-selection {
@@ -402,7 +668,35 @@
             }
 
             .step-label {
-                font-size: 0.75em;
+                font-size: 0.8em;
+            }
+
+            .step-number {
+                width: 45px;
+                height: 45px;
+                font-size: 1.1em;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.6em;
+            }
+
+            .subtitle {
+                font-size: 1em;
+            }
+
+            .section-title {
+                font-size: 1.4em;
             }
         }
     </style>
@@ -437,102 +731,104 @@
 
             <!-- Step 1: Room Selection -->
             <div class="section active" id="step1">
-                <h2 class="section-title">اختر الغرفة المناسبة</h2>
+                <h2 class="section-title">✨ اختر الغرفة المناسبة</h2>
                 <div class="info-box">
-                    <p>💡 اختر الغرفة التي تناسبك. الغرف المتاحة فقط قابلة للحجز.</p>
+                    <p>💡 اختر الغرفة التي تناسبك من الغرف المتاحة للحجز</p>
                 </div>
                 <div class="room-selection" id="roomsList">
                     <!-- سيتم ملؤها ديناميكياً -->
                 </div>
                 <div class="buttons">
-                    <button class="btn btn-secondary" onclick="window.location.href='index.html'">إلغاء</button>
-                    <button class="btn btn-primary" onclick="nextStep(2)" id="step1Next" disabled>التالي →</button>
+                    <button class="btn btn-secondary" onclick="window.location.href='index.html'">✖ إلغاء</button>
+                    <button class="btn btn-primary" onclick="nextStep(2)" id="step1Next" disabled>التالي ←</button>
                 </div>
             </div>
 
             <!-- Step 2: Dates Selection -->
             <div class="section" id="step2">
-                <h2 class="section-title">اختر التواريخ</h2>
+                <h2 class="section-title">📅 اختر تواريخ الإقامة</h2>
                 <div class="form-row">
                     <div class="form-group">
-                        <label><span class="required">*</span>تاريخ الدخول:</label>
+                        <label>📆 <span class="required">*</span> تاريخ الدخول:</label>
                         <input type="date" id="checkIn" required>
                     </div>
                     <div class="form-group">
-                        <label><span class="required">*</span>تاريخ الخروج:</label>
+                        <label>📆 <span class="required">*</span> تاريخ الخروج:</label>
                         <input type="date" id="checkOut" required>
                     </div>
                 </div>
-                <div id="pricePreview" style="display: none; margin-top: 20px;">
-                    <div class="summary-box">
-                        <div class="summary-item">
-                            <span class="summary-label">عدد الليالي:</span>
-                            <span class="summary-value" id="nightsCount">-</span>
+                <div class="price-preview" id="pricePreview">
+                    <div class="price-preview-title">💰 معاينة السعر</div>
+                    <div class="price-details">
+                        <div class="price-item">
+                            <div class="price-item-label">عدد الليالي</div>
+                            <div class="price-item-value" id="nightsCount">-</div>
                         </div>
-                        <div class="summary-item">
-                            <span class="summary-label">السعر الإجمالي:</span>
-                            <span class="summary-value" id="totalPreview">-</span>
+                        <div class="price-item">
+                            <div class="price-item-label">السعر الإجمالي</div>
+                            <div class="price-item-value" id="totalPreview">-</div>
                         </div>
                     </div>
                 </div>
                 <div class="buttons">
-                    <button class="btn btn-secondary" onclick="prevStep(1)">← السابق</button>
-                    <button class="btn btn-primary" onclick="nextStep(3)" id="step2Next" disabled>التالي →</button>
+                    <button class="btn btn-secondary" onclick="prevStep(1)">→ السابق</button>
+                    <button class="btn btn-primary" onclick="nextStep(3)" id="step2Next" disabled>التالي ←</button>
                 </div>
             </div>
 
             <!-- Step 3: Customer Info -->
             <div class="section" id="step3">
-                <h2 class="section-title">بياناتك الشخصية</h2>
+                <h2 class="section-title">👤 بياناتك الشخصية</h2>
                 <div class="form-group">
-                    <label><span class="required">*</span>الاسم الكامل:</label>
+                    <label>📝 <span class="required">*</span> الاسم الكامل:</label>
                     <input type="text" id="customerName" placeholder="أحمد محمد" required>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label><span class="required">*</span>رقم الجوال:</label>
+                        <label>📱 <span class="required">*</span> رقم الجوال:</label>
                         <input type="tel" id="customerPhone" placeholder="05xxxxxxxx" pattern="05[0-9]{8}" required>
                     </div>
                     <div class="form-group">
-                        <label>البريد الإلكتروني:</label>
+                        <label>📧 البريد الإلكتروني:</label>
                         <input type="email" id="customerEmail" placeholder="example@email.com">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>ملاحظات إضافية (اختياري):</label>
+                    <label>📋 ملاحظات إضافية (اختياري):</label>
                     <textarea id="notes" rows="3" placeholder="أي طلبات خاصة أو ملاحظات"></textarea>
                 </div>
                 <div class="buttons">
-                    <button class="btn btn-secondary" onclick="prevStep(2)">← السابق</button>
-                    <button class="btn btn-primary" onclick="nextStep(4)" id="step3Next" disabled>التالي →</button>
+                    <button class="btn btn-secondary" onclick="prevStep(2)">→ السابق</button>
+                    <button class="btn btn-primary" onclick="nextStep(4)" id="step3Next" disabled>التالي ←</button>
                 </div>
             </div>
 
             <!-- Step 4: Review -->
             <div class="section" id="step4">
-                <h2 class="section-title">مراجعة الحجز</h2>
+                <h2 class="section-title">✔️ مراجعة الحجز</h2>
                 <div class="info-box">
-                    <p>📋 راجع تفاصيل حجزك قبل التأكيد</p>
+                    <p>📋 راجع تفاصيل حجزك بعناية قبل التأكيد النهائي</p>
                 </div>
                 <div class="summary-box" id="finalSummary">
                     <!-- سيتم ملؤها ديناميكياً -->
                 </div>
                 <div class="info-box">
-                    <p>⚠️ بعد التأكيد، سيتم مراجعة حجزك من قبل الإدارة وسيتم التواصل معك خلال 24 ساعة.</p>
+                    <p>⚠️ بعد التأكيد، سيتم مراجعة حجزك من قبل الإدارة وسيتم التواصل معك خلال 24 ساعة</p>
                 </div>
                 <div class="buttons">
-                    <button class="btn btn-secondary" onclick="prevStep(3)">← السابق</button>
+                    <button class="btn btn-secondary" onclick="prevStep(3)">→ السابق</button>
                     <button class="btn btn-primary" onclick="confirmBooking()" id="confirmBtn">✅ تأكيد الحجز</button>
                 </div>
             </div>
 
             <!-- Success Message -->
             <div class="success-message" id="successMessage">
-                <div class="success-icon">✅</div>
+                <div class="success-icon">🎉</div>
                 <h2 class="success-title">تم الحجز بنجاح!</h2>
                 <p class="success-text">
-                    شكراً لك! تم استلام طلب حجزك بنجاح.<br>
-                    ستتلقى رسالة تأكيد على رقم جوالك قريباً.
+                    شكراً لك! تم استلام طلب حجزك بنجاح<br>
+                    ستتلقى رسالة تأكيد على رقم جوالك قريباً
+                </p>
                 </p>
                 <div class="booking-reference">
                     <div class="reference-label">رقم الحجز المرجعي:</div>

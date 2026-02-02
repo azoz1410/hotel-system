@@ -179,8 +179,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 bookingData.totalPrice = bookingData.selectedRoom.price * nights;
 
                 document.getElementById('nightsCount').textContent = nights + ' ليلة';
-                document.getElementById('totalPreview').textContent = bookingData.totalPrice.toLocaleString() + ' ريال';
-                document.getElementById('pricePreview').style.display = 'block';
+                document.getElementById('totalPreview').textContent = bookingData.totalPrice.toLocaleString() + ' ریال';
+                const pricePreview = document.getElementById('pricePreview');
+                pricePreview.classList.add('show');
+                pricePreview.style.display = 'block';
                 document.getElementById('step2Next').disabled = false;
             } else {
                 document.getElementById('step2Next').disabled = true;
