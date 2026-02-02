@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>احجز غرفتك - نظام الفندق</title>
+    <meta name="description" content="احجز غرفتك بسهولة وسرعة">
+    <meta name="theme-color" content="#667eea">
+    <link rel="manifest" href="manifest.json">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap');
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(5px);
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            color: white;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1em;
+        }
+
+        .booking-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            padding: 0 20px;
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .step::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background: #e0e0e0;
+            z-index: 0;
+        }
+
+        .step:last-child::after {
+            display: none;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: #e0e0e0;
+            color: #999;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 10px;
+        }
+
+        .step.active .step-number {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .step.completed .step-number {
+            background: #10ac84;
+            color: white;
+        }
+
+        .step-label {
+            font-size: 0.85em;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 1.5em;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 15px;
+        }
+
+        .room-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .room-option {
+            border: 2px solid #e0e0e0;
+            padding: 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .room-option:hover {
+            border-color: #667eea;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .room-option.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        }
+
+        .room-option.unavailable {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .room-number {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .room-type {
+            color: #666;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+
+        .room-price {
+            color: #667eea;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .form-group label .required {
+            color: #ee5a6f;
+            margin-right: 3px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 1em;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .summary-box {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+            padding-top: 20px;
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .summary-label {
+            color: #666;
+        }
+
+        .summary-value {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #666;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .success-icon {
+            font-size: 5em;
+            margin-bottom: 20px;
+        }
+
+        .success-title {
+            color: #10ac84;
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .success-text {
+            color: #666;
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .booking-reference {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .reference-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 8px;
+        }
+
+        .reference-code {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #667eea;
+            letter-spacing: 2px;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 4px solid #2196f3;
+        }
+
+        .info-box p {
+            color: #1565c0;
+            margin: 5px 0;
+            font-size: 0.95em;
+        }
+
+        @media (max-width: 768px) {
+            .booking-card {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .room-selection {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .step-label {
+                font-size: 0.75em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="back-btn">⬅ العودة للغرف</a>
+            <h1>احجز غرفتك</h1>
+            <p class="subtitle">املأ البيانات وأكمل حجزك بسهولة</p>
+        </div>
+
+        <div class="booking-card">
+            <div class="step-indicator">
+                <div class="step active" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">اختر الغرفة</div>
+                </div>
+                <div class="step" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">التواريخ</div>
+                </div>
+                <div class="step" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">البيانات</div>
+                </div>
+                <div class="step" data-step="4">
+                    <div class="step-number">4</div>
+                    <div class="step-label">المراجعة</div>
+                </div>
+            </div>
+
+            <!-- Step 1: Room Selection -->
+            <div class="section active" id="step1">
+                <h2 class="section-title">اختر الغرفة المناسبة</h2>
+                <div class="info-box">
+                    <p>💡 اختر الغرفة التي تناسبك. الغرف المتاحة فقط قابلة للحجز.</p>
+                </div>
+                <div class="room-selection" id="roomsList">
+                    <!-- سيتم ملؤها ديناميكياً -->
+                </div>
+                <div class="buttons">
+                    <button class="btn btn-secondary" onclick="window.location.href='index.html'">إلغاء</button>
+                    <button class="btn btn-primary" onclick="nextStep(2)" id="step1Next" disabled>التالي →</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Dates Selection -->
+            <div class="section" id="step2">
+                <h2 class="section-title">اختر التواريخ</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><span class="required">*</span>تاريخ الدخول:</label>
+                        <input type="date" id="checkIn" required>
+                    </div>
+                    <div class="form-group">
+                        <label><span class="required">*</span>تاريخ الخروج:</label>
+                        <input type="date" id="checkOut" required>
+                    </div>
+                </div>
+                <div id="pricePreview" style="display: none; margin-top: 20px;">
+                    <div class="summary-box">
+                        <div class="summary-item">
+                            <span class="summary-label">عدد الليالي:</span>
+                            <span class="summary-value" id="nightsCount">-</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">السعر الإجمالي:</span>
+                            <span class="summary-value" id="totalPreview">-</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="buttons">
+                    <button class="btn btn-secondary" onclick="prevStep(1)">← السابق</button>
+                    <button class="btn btn-primary" onclick="nextStep(3)" id="step2Next" disabled>التالي →</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Customer Info -->
+            <div class="section" id="step3">
+                <h2 class="section-title">بياناتك الشخصية</h2>
+                <div class="form-group">
+                    <label><span class="required">*</span>الاسم الكامل:</label>
+                    <input type="text" id="customerName" placeholder="أحمد محمد" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><span class="required">*</span>رقم الجوال:</label>
+                        <input type="tel" id="customerPhone" placeholder="05xxxxxxxx" pattern="05[0-9]{8}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>البريد الإلكتروني:</label>
+                        <input type="email" id="customerEmail" placeholder="example@email.com">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>ملاحظات إضافية (اختياري):</label>
+                    <textarea id="notes" rows="3" placeholder="أي طلبات خاصة أو ملاحظات"></textarea>
+                </div>
+                <div class="buttons">
+                    <button class="btn btn-secondary" onclick="prevStep(2)">← السابق</button>
+                    <button class="btn btn-primary" onclick="nextStep(4)" id="step3Next" disabled>التالي →</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Review -->
+            <div class="section" id="step4">
+                <h2 class="section-title">مراجعة الحجز</h2>
+                <div class="info-box">
+                    <p>📋 راجع تفاصيل حجزك قبل التأكيد</p>
+                </div>
+                <div class="summary-box" id="finalSummary">
+                    <!-- سيتم ملؤها ديناميكياً -->
+                </div>
+                <div class="info-box">
+                    <p>⚠️ بعد التأكيد، سيتم مراجعة حجزك من قبل الإدارة وسيتم التواصل معك خلال 24 ساعة.</p>
+                </div>
+                <div class="buttons">
+                    <button class="btn btn-secondary" onclick="prevStep(3)">← السابق</button>
+                    <button class="btn btn-primary" onclick="confirmBooking()" id="confirmBtn">✅ تأكيد الحجز</button>
+                </div>
+            </div>
+
+            <!-- Success Message -->
+            <div class="success-message" id="successMessage">
+                <div class="success-icon">✅</div>
+                <h2 class="success-title">تم الحجز بنجاح!</h2>
+                <p class="success-text">
+                    شكراً لك! تم استلام طلب حجزك بنجاح.<br>
+                    ستتلقى رسالة تأكيد على رقم جوالك قريباً.
+                </p>
+                <div class="booking-reference">
+                    <div class="reference-label">رقم الحجز المرجعي:</div>
+                    <div class="reference-code" id="bookingRef">-</div>
+                </div>
+                <div class="info-box">
+                    <p>📞 يمكنك التواصل معنا على هذا الرقم لمتابعة حجزك</p>
+                    <p>⏰ سيتم مراجعة طلبك خلال 24 ساعة</p>
+                </div>
+                <div class="buttons">
+                    <button class="btn btn-primary" onclick="window.location.href='index.html'">العودة للصفحة الرئيسية</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    
+    <script src="firebase-config.js"></script>
+    <script src="public-booking.js"></script>
+</body>
+</html>
