@@ -22,6 +22,7 @@ const roomsRef = database.ref('rooms');
 const logsRef = database.ref('logs');
 const bookingsRef = database.ref('bookings');
 const customersRef = database.ref('customers');
+const notificationsRef = database.ref('notifications');
 
 // تفعيل المصادقة
 const auth = firebase.auth();

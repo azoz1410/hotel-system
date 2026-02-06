@@ -7,6 +7,7 @@ let currentFilter = 'all';
 const statusTranslations = {
     pending: 'معلقة',
     confirmed: 'مؤكدة',
+    'checkout-requested': 'طلب خروج',
     completed: 'مكتملة',
     cancelled: 'ملغاة'
 };
@@ -131,6 +132,9 @@ function displayBookings() {
                 <div class="action-buttons">
                     ${booking.status === 'pending' ? `
                         <button class="action-btn btn-confirm" onclick="confirmBooking('${booking.id}')" title="تأكيد الحجز">✅</button>
+                    ` : ''}
+                    ${booking.status === 'checkout-requested' ? `
+                        <button class="action-btn btn-confirm" onclick="approveCheckout('${booking.id}')" title="الموافقة على الخروج">✅ خروج</button>
                     ` : ''}
                     ${(booking.status === 'confirmed' || booking.status === 'completed') ? `
                         <button class="action-btn btn-info" onclick="generateInvoice('${booking.id}')" title="إصدار فاتورة">🧾</button>
@@ -338,6 +342,60 @@ document.querySelectorAll('.filter-tab').forEach(tab => {
         displayBookings();
     });
 });
+
+// الموافقة على طلب الخروج
+async function approveCheckout(bookingId) {
+    const booking = allBookings.find(b => b.id === bookingId);
+    if (!booking) {
+        showToast('❌ لم يتم العثور على الحجز', 'error');
+        return;
+    }
+    
+    if (!confirm(`هل أنت متأكد من الموافقة على خروج ${booking.customerName} من غرفة ${booking.roomNumber}؟`)) {
+        return;
+    }
+    
+    try {
+        // تحديث حالة الحجز إلى مكتمل
+        await bookingsRef.child(bookingId).update({
+            status: 'completed',
+            checkoutApprovedDate: new Date().toISOString(),
+            checkoutApprovedBy: firebase.auth().currentUser?.email || 'admin'
+        });
+        
+        // تحديث حالة الغرفة إلى متاحة
+        await roomsRef.child(booking.roomNumber.toString()).update({
+            status: 'available'
+        });
+        
+        // إضافة سجل
+        await logsRef.push({
+            action: 'checkout_approved',
+            bookingId: bookingId,
+            room: booking.roomNumber,
+            timestamp: new Date().toISOString(),
+            userId: firebase.auth().currentUser?.uid || 'admin',
+            details: `تمت الموافقة على خروج ${booking.customerName} من غرفة ${booking.roomNumber}`
+        });
+        
+        // حذف الإشعار المتعلق بطلب الخروج
+        const notifSnapshot = await notificationsRef.orderByChild('bookingId').equalTo(bookingId).once('value');
+        if (notifSnapshot.exists()) {
+            const notifications = notifSnapshot.val();
+            Object.keys(notifications).forEach(async (key) => {
+                if (notifications[key].type === 'checkout_requested') {
+                    await notificationsRef.child(key).remove();
+                }
+            });
+        }
+        
+        showToast('✅ تمت الموافقة على الخروج وتحرير الغرفة', 'success');
+        
+    } catch (error) {
+        console.error('خطأ في الموافقة على الخروج:', error);
+        showToast('❌ حدث خطأ أثناء الموافقة على الخروج', 'error');
+    }
+}
 
 // إصدار فاتورة
 function generateInvoice(bookingId) {

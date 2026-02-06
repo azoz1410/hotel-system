@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تتبع الحجز - نظام الفندق</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .track-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 40px;
+        }
+        
+        .track-form {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        .track-form h2 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .track-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .track-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .track-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .booking-details {
+            display: none;
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            margin-top: 30px;
+        }
+        
+        .booking-details.show {
+            display: block;
+        }
+        
+        .booking-header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+            margin-bottom: 30px;
+        }
+        
+        .booking-header h3 {
+            color: #667eea;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .booking-status {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-confirmed { background: #d4edda; color: #155724; }
+        .status-checkout-requested { background: #d1ecf1; color: #0c5460; }
+        .status-completed { background: #d4edda; color: #155724; }
+        .status-cancelled { background: #f8d7da; color: #721c24; }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .detail-label {
+            color: #666;
+            font-weight: 600;
+        }
+        
+        .detail-value {
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .action-btn {
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-edit {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .btn-checkout {
+            background: linear-gradient(135deg, #10ac84, #1dd1a1);
+            color: white;
+        }
+        
+        .btn-cancel {
+            background: linear-gradient(135deg, #ee5a6f, #f368e0);
+            color: white;
+        }
+        
+        .btn-back {
+            background: #e0e0e0;
+            color: #333;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        
+        .action-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .info-message {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            color: #1976d2;
+        }
+        
+        .edit-form {
+            display: none;
+            margin-top: 30px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+        
+        .edit-form.show {
+            display: block;
+        }
+        
+        .edit-form h4 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="track-container">
+            <div class="track-form">
+                <h2>🔍 تتبع حجزك</h2>
+                <p style="text-align: center; color: #666; margin-bottom: 30px;">
+                    أدخل رقم الحجز ورقم الجوال للاطلاع على تفاصيل حجزك
+                </p>
+                
+                <form id="trackForm">
+                    <div class="form-group">
+                        <label>📋 رقم الحجز:</label>
+                        <input type="text" id="bookingId" required placeholder="مثال: A1B2C3D4">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>📱 رقم الجوال:</label>
+                        <input type="tel" id="phoneNumber" required placeholder="05XXXXXXXX" pattern="05[0-9]{8}">
+                    </div>
+                    
+                    <button type="submit" class="track-btn" id="trackBtn">
+                        🔎 البحث عن الحجز
+                    </button>
+                </form>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <a href="../../index.html" style="color: #667eea; text-decoration: none;">
+                        ← العودة للصفحة الرئيسية
+                    </a>
+                </div>
+            </div>
+            
+            <div class="booking-details" id="bookingDetails">
+                <div class="booking-header">
+                    <h3>📋 تفاصيل الحجز</h3>
+                    <span class="booking-status" id="bookingStatus"></span>
+                </div>
+                
+                <div id="detailsContent"></div>
+                
+                <div class="action-buttons" id="actionButtons"></div>
+                
+                <div class="edit-form" id="editForm">
+                    <h4>✏️ تعديل الحجز</h4>
+                    <div class="form-group">
+                        <label>تاريخ الدخول:</label>
+                        <input type="date" id="editCheckIn">
+                    </div>
+                    <div class="form-group">
+                        <label>تاريخ الخروج:</label>
+                        <input type="date" id="editCheckOut">
+                    </div>
+                    <div class="form-group">
+                        <label>ملاحظات:</label>
+                        <textarea id="editNotes" rows="3" style="width: 100%; padding: 10px; border-radius: 8px; border: 2px solid #e0e0e0;"></textarea>
+                    </div>
+                    <button onclick="saveEdit()" class="action-btn btn-edit" style="width: 100%; margin-top: 10px;">
+                        💾 حفظ التعديلات
+                    </button>
+                    <button onclick="cancelEdit()" class="action-btn btn-back" style="width: 100%; margin-top: 10px;">
+                        ✖ إلغاء
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    
+    <script src="../config/firebase-config.js"></script>
+    <script src="../js/public/track-booking.js"></script>
+</body>
+</html>

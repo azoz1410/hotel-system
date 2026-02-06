@@ -343,6 +343,18 @@ async function confirmBooking() {
             details: `حجز عام جديد - ${bookingData.customerName} - ${bookingData.customerPhone}`
         });
 
+        // إضافة إشعار للإدارة
+        await notificationsRef.push({
+            type: 'booking_created',
+            bookingId: bookingId,
+            roomNumber: bookingData.selectedRoom.number,
+            customerName: bookingData.customerName,
+            message: `حجز جديد من ${bookingData.customerName} - غرفة ${bookingData.selectedRoom.number}`,
+            timestamp: new Date().toISOString(),
+            read: false,
+            priority: 'normal'
+        });
+
         // عرض رسالة النجاح
         document.querySelectorAll('.section').forEach(section => {
             section.classList.remove('active');

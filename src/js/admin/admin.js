@@ -277,7 +277,36 @@ function initializeAdmin() {
     // بدء الاستماع للتحديثات
     listenToRooms();
     
+    // تحديث شارة الإشعارات
+    updateNotificationBadge();
+    
     console.log('✅ لوحة التحكم جاهزة - Firebase Realtime Database');
+}
+
+// تحديث شارة الإشعارات
+function updateNotificationBadge() {
+    notificationsRef.on('value', (snapshot) => {
+        const notifications = snapshot.val();
+        let unreadCount = 0;
+        
+        if (notifications) {
+            Object.values(notifications).forEach(notification => {
+                if (!notification.read) {
+                    unreadCount++;
+                }
+            });
+        }
+        
+        const badge = document.getElementById('notificationBadge');
+        if (badge) {
+            if (unreadCount > 0) {
+                badge.textContent = unreadCount;
+                badge.style.display = 'inline';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+    });
 }
 
 // تهيئة عند تحميل الصفحة

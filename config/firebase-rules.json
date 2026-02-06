@@ -67,6 +67,14 @@
       },
       ".indexOn": ["timestamp", "action"]
     },
+    "notifications": {
+      ".read": "auth != null",
+      ".write": true,
+      "$notificationId": {
+        ".validate": "newData.hasChildren(['type', 'message', 'timestamp', 'read'])"
+      },
+      ".indexOn": ["timestamp", "read", "type"]
+    },
     "stats": {
       ".read": true,
       ".write": "auth != null"

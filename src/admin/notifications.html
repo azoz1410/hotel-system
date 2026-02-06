@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الإشعارات - نظام الفندق</title>
+    <!-- Theme System -->
+    <script src="../js/shared/theme-switcher.js"></script>
+    <style>
+        .notifications-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .notifications-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .notifications-header h2 {
+            color: #667eea;
+            font-size: 28px;
+        }
+        
+        .notification-badge {
+            background: linear-gradient(135deg, #ee5a6f, #f368e0);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .filter-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-tab {
+            padding: 10px 20px;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        
+        .filter-tab.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .notifications-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .notification-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .notification-card:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        
+        .notification-card.unread {
+            background: #f0f4ff;
+            border-left-color: #ee5a6f;
+        }
+        
+        .notification-card.priority-high {
+            border-left-color: #ff6b6b;
+            border-left-width: 6px;
+        }
+        
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        
+        .notification-type {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .notification-icon {
+            font-size: 24px;
+        }
+        
+        .notification-time {
+            color: #999;
+            font-size: 14px;
+        }
+        
+        .notification-message {
+            color: #666;
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+        
+        .notification-details {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #e0e0e0;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .notification-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .notification-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-mark-read {
+            background: #e0e0e0;
+            color: #333;
+        }
+        
+        .btn-view {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .btn-delete {
+            background: linear-gradient(135deg, #ee5a6f, #f368e0);
+            color: white;
+        }
+        
+        .notification-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+        
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        
+        .mark-all-read {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #10ac84, #1dd1a1);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .mark-all-read:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(16, 172, 132, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="notifications-container">
+            <div class="notifications-header">
+                <h2>🔔 الإشعارات</h2>
+                <div style="display: flex; gap: 15px; align-items: center;">
+                    <span class="notification-badge" id="unreadCount">0 غير مقروء</span>
+                    <button class="mark-all-read" onclick="markAllAsRead()">✓ تحديد الكل كمقروء</button>
+                    <a href="../../admin" class="btn btn-primary">← لوحة التحكم</a>
+                </div>
+            </div>
+            
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all" onclick="filterNotifications('all')">
+                    الكل
+                </button>
+                <button class="filter-tab" data-filter="unread" onclick="filterNotifications('unread')">
+                    غير المقروءة
+                </button>
+                <button class="filter-tab" data-filter="booking_modified" onclick="filterNotifications('booking_modified')">
+                    تعديلات الحجوزات
+                </button>
+                <button class="filter-tab" data-filter="checkout_requested" onclick="filterNotifications('checkout_requested')">
+                    طلبات الخروج
+                </button>
+                <button class="filter-tab" data-filter="booking_cancelled" onclick="filterNotifications('booking_cancelled')">
+                    إلغاءات
+                </button>
+            </div>
+            
+            <div class="notifications-list" id="notificationsList">
+                <!-- سيتم ملؤها ديناميكياً -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    
+    <script src="../config/firebase-config.js"></script>
+    <script src="../js/shared/auth.js"></script>
+    <script src="../js/admin/notifications.js"></script>
+</body>
+</html>
