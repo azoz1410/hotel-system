@@ -64,7 +64,8 @@ document.getElementById('trackForm').addEventListener('submit', async (e) => {
         
     } catch (error) {
         console.error('خطأ في البحث:', error);
-        showToast('❌ حدث خطأ أثناء البحث', 'error');
+        console.error('تفاصيل الخطأ:', error.message);
+        showToast(`❌ حدث خطأ أثناء البحث: ${error.message}`, 'error');
         trackBtn.disabled = false;
         trackBtn.textContent = '🔎 البحث عن الحجز';
     }

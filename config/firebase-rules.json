@@ -14,7 +14,7 @@
       ".read": "auth != null",
       ".write": true,
       "$bookingId": {
-        ".validate": "newData.hasChildren(['roomNumber', 'customerName', 'customerPhone', 'nationalId', 'checkIn', 'checkOut', 'totalPrice', 'status', 'createdAt'])",
+        ".validate": "newData.hasChildren(['roomNumber', 'customerName', 'customerPhone', 'checkIn', 'checkOut', 'totalPrice', 'status', 'createdAt'])",
         "roomNumber": {
           ".validate": "newData.isNumber()"
         },
@@ -25,7 +25,7 @@
           ".validate": "newData.isString() && newData.val().matches(/^05[0-9]{8}$/)"
         },
         "nationalId": {
-          ".validate": "newData.isString() && newData.val().matches(/^[12][0-9]{9}$/)"
+          ".validate": "!newData.exists() || (newData.isString() && newData.val().matches(/^[12][0-9]{9}$/))"
         },
         "checkIn": {
           ".validate": "newData.isString()"
@@ -37,7 +37,9 @@
           ".validate": "newData.isNumber() && newData.val() > 0"
         },
         "status": {
-          ".validate": "newData.isString() && (newData.val() == 'pending' || newData.val() == 'confirmed' || newData.val() == 'cancelled' || newData.val() == 'completed')"
+          ".validate": "newData.isString() && (newData.val() == 'pending' || newData.val() == 'confirmed' || newData.val() == 'cancelled' || newData.val() == 'completed' || newData.val() == 'checkout-requested')"
+        }
+      },
         }
       },
       ".indexOn": ["roomNumber", "status", "checkIn", "checkOut"]

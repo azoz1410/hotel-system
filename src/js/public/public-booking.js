@@ -361,20 +361,29 @@ async function confirmBooking() {
         });
         
         const successMessage = document.getElementById('successMessage');
-        successMessage.classList.add('show');
+        if (successMessage) {
+            successMessage.classList.add('show');
+        }
         
         // عرض رقم الحجز المرجعي
-        document.getElementById('bookingRef').textContent = bookingId.substring(0, 8).toUpperCase();
+        const bookingRefEl = document.getElementById('bookingRef');
+        if (bookingRefEl) {
+            bookingRefEl.textContent = bookingId.substring(0, 8).toUpperCase();
+        }
         
         // عرض رقم الهاتف المؤكد
-        document.getElementById('confirmedPhone').textContent = bookingData.customerPhone;
+        const confirmedPhoneEl = document.getElementById('confirmedPhone');
+        if (confirmedPhoneEl) {
+            confirmedPhoneEl.textContent = bookingData.customerPhone;
+        }
 
         // تنبيه صوتي (اختياري)
         showToast('✅ تم الحجز بنجاح! الغرفة محجوزة الآن', 'success');
 
     } catch (error) {
         console.error('خطأ في الحجز:', error);
-        showToast('❌ حدث خطأ أثناء الحجز. الرجاء المحاولة مرة أخرى', 'error');
+        console.error('تفاصيل الخطأ:', error.message);
+        showToast(`❌ حدث خطأ أثناء الحجز: ${error.message}`, 'error');
         confirmBtn.disabled = false;
         confirmBtn.textContent = '✅ تأكيد الحجز';
     }
