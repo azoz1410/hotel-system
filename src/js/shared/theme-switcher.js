@@ -8,28 +8,38 @@ const ThemeSwitcher = {
     themes: {
         'default': {
             name: 'الثيم الافتراضي',
-            file: 'themes/default.css',
+            file: '../../src/css/themes/default.css',
             icon: '🎨'
         },
         'dark': {
             name: 'الثيم الداكن',
-            file: 'themes/dark.css',
+            file: '../../src/css/themes/dark.css',
             icon: '🌙'
         },
         'ocean': {
             name: 'ثيم المحيط',
-            file: 'themes/ocean.css',
+            file: '../../src/css/themes/ocean.css',
             icon: '🌊'
         },
         'professional': {
             name: 'الثيم الاحترافي',
-            file: 'themes/professional.css',
+            file: '../../src/css/themes/professional.css',
             icon: '👔'
         }
     },
 
     // الثيم الحالي
     currentTheme: 'default',
+    
+    // اكتشاف المسار الصحيح حسب الصفحة
+    getBasePath() {
+        const path = window.location.pathname;
+        if (path.includes('/src/admin/') || path.includes('/src/public/')) {
+            return '../css/themes/';
+        } else {
+            return 'src/css/themes/';
+        }
+    },
 
     // تهيئة النظام
     init() {
@@ -76,7 +86,11 @@ const ThemeSwitcher = {
         const link = document.createElement('link');
         link.id = 'theme-stylesheet';
         link.rel = 'stylesheet';
-        link.href = this.themes[themeName].file;
+        
+        // تحديد المسار الصحيح
+        const basePath = this.getBasePath();
+        link.href = basePath + themeName + '.css';
+        
         document.head.appendChild(link);
 
         // حفظ الثيم الحالي
