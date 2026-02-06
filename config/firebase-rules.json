@@ -40,8 +40,6 @@
           ".validate": "newData.isString() && (newData.val() == 'pending' || newData.val() == 'confirmed' || newData.val() == 'cancelled' || newData.val() == 'completed' || newData.val() == 'checkout-requested')"
         }
       },
-        }
-      },
       ".indexOn": ["roomNumber", "status", "checkIn", "checkOut"]
     },
     "customers": {
