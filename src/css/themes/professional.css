@@ -1,4 +1,4 @@
-/* Ocean Theme - ثيم المحيط */
+/* Professional Hotel Theme - الثيم الاحترافي للفنادق */
 
 * {
     margin: 0;
@@ -10,39 +10,65 @@
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #005AA7 0%, #FFFDE4 100%);
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
     min-height: 100vh;
     padding: 20px;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        repeating-linear-gradient(90deg, rgba(218, 165, 32, 0.03) 0px, transparent 1px, transparent 40px, rgba(218, 165, 32, 0.03) 41px),
+        repeating-linear-gradient(0deg, rgba(218, 165, 32, 0.03) 0px, transparent 1px, transparent 40px, rgba(218, 165, 32, 0.03) 41px);
+    pointer-events: none;
+    z-index: 0;
 }
 
 .container {
     max-width: 1400px;
     margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.container .header h1 {
+    color: white;
 }
 
 header {
-    background: rgba(255, 255, 255, 0.95);
+    background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
     padding: 40px;
-    border-radius: 20px;
+    border-radius: 4px;
     margin-bottom: 40px;
-    box-shadow: 0 20px 50px rgba(0, 90, 167, 0.2);
-    border: 1px solid rgba(0, 90, 167, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(218, 165, 32, 0.3);
+    border-top: 3px solid #daa520;
 }
 
 header h1 {
     font-family: 'Playfair Display', serif;
-    color: #005AA7;
+    color: #daa520;
     font-size: 2.8em;
     font-weight: 700;
-    letter-spacing: -1px;
+    letter-spacing: 2px;
     text-align: center;
+    text-transform: uppercase;
+    text-shadow: 0 2px 10px rgba(218, 165, 32, 0.3);
 }
 
 .subtitle {
     text-align: center;
-    color: #006FB9;
+    color: #b8b8b8;
     margin-top: 10px;
     font-size: 1.1em;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 500;
 }
 
 /* Filters */
@@ -56,26 +82,30 @@ header h1 {
 
 .filter-btn {
     padding: 12px 30px;
-    border: 2px solid rgba(255, 255, 255, 0.8);
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 25px;
+    border: 2px solid rgba(218, 165, 32, 0.5);
+    background: rgba(42, 42, 42, 0.9);
+    border-radius: 4px;
     cursor: pointer;
     font-size: 1em;
     font-weight: 600;
     transition: all 0.3s ease;
-    color: #005AA7;
+    color: #daa520;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
 .filter-btn:hover {
-    background: white;
+    background: rgba(218, 165, 32, 0.1);
+    border-color: #daa520;
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 90, 167, 0.2);
+    box-shadow: 0 4px 12px rgba(218, 165, 32, 0.3);
 }
 
 .filter-btn.active {
-    background: linear-gradient(135deg, #005AA7, #00C9FF);
-    color: white;
+    background: linear-gradient(135deg, #daa520, #b8860b);
+    color: #1a1a1a;
     border-color: transparent;
+    box-shadow: 0 4px 15px rgba(218, 165, 32, 0.5);
 }
 
 /* Stats Cards */
@@ -87,42 +117,46 @@ header h1 {
 }
 
 .stat-card {
-    background: rgba(255, 255, 255, 0.95);
+    background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
     padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 15px 40px rgba(0, 90, 167, 0.15);
+    border-radius: 4px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
     text-align: center;
     transition: transform 0.3s ease;
-    border: 1px solid rgba(0, 90, 167, 0.1);
+    border: 1px solid rgba(218, 165, 32, 0.2);
+    border-top: 3px solid #daa520;
 }
 
 .stat-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 20px 50px rgba(0, 90, 167, 0.25);
+    box-shadow: 0 8px 25px rgba(218, 165, 32, 0.3);
 }
 
 .stat-card h3 {
     font-size: 3em;
     font-weight: 700;
     margin-bottom: 10px;
+    font-family: 'Playfair Display', serif;
 }
 
 .stat-card.available-stat h3 {
-    color: #00C9FF;
+    color: #50C878;
 }
 
 .stat-card.occupied-stat h3 {
-    color: #FF6B6B;
+    color: #dc143c;
 }
 
 .stat-card.total-stat h3 {
-    color: #005AA7;
+    color: #daa520;
 }
 
 .stat-card p {
-    color: #006FB9;
+    color: #b8b8b8;
     font-size: 1em;
     font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
 /* Rooms Grid */
@@ -134,15 +168,15 @@ header h1 {
 }
 
 .room-card {
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 20px;
+    background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
+    border-radius: 4px;
     padding: 30px;
-    box-shadow: 0 10px 30px rgba(0, 90, 167, 0.15);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
     transition: all 0.3s ease;
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    border: 1px solid rgba(0, 90, 167, 0.1);
+    border: 1px solid rgba(218, 165, 32, 0.2);
 }
 
 .room-card::before {
@@ -151,71 +185,76 @@ header h1 {
     top: 0;
     left: 0;
     right: 0;
-    height: 5px;
-    transition: transform 0.3s ease;
+    height: 3px;
+    transition: all 0.3s ease;
 }
 
 .room-card.available::before {
-    background: linear-gradient(90deg, #00C9FF, #92FE9D);
+    background: linear-gradient(90deg, #50C878, #3CB371);
 }
 
 .room-card.occupied::before {
-    background: linear-gradient(90deg, #FF6B6B, #FFE66D);
+    background: linear-gradient(90deg, #dc143c, #b22222);
 }
 
 .room-card.maintenance::before {
-    background: linear-gradient(90deg, #FFB347, #FFCC33);
+    background: linear-gradient(90deg, #daa520, #b8860b);
 }
 
 .room-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 20px 50px rgba(0, 90, 167, 0.25);
+    box-shadow: 0 12px 35px rgba(218, 165, 32, 0.4);
+    border-color: #daa520;
 }
 
 .room-number {
     font-size: 2.5em;
     font-weight: 800;
     margin-bottom: 15px;
-    background: linear-gradient(135deg, #005AA7, #00C9FF);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #daa520;
+    font-family: 'Playfair Display', serif;
+    letter-spacing: 2px;
 }
 
 .room-type {
-    color: #006FB9;
+    color: #b8b8b8;
     margin-bottom: 10px;
     font-size: 1em;
+    letter-spacing: 0.5px;
 }
 
 .room-price {
-    color: #005AA7;
+    color: #ffffff;
     font-weight: 700;
     font-size: 1.2em;
     margin-bottom: 15px;
+    letter-spacing: 1px;
 }
 
 .room-status {
     display: inline-block;
     padding: 8px 20px;
-    border-radius: 20px;
+    border-radius: 2px;
     font-size: 0.9em;
     font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
 .room-card.available .room-status {
-    background: linear-gradient(135deg, #00C9FF, #92FE9D);
+    background: linear-gradient(135deg, #50C878, #3CB371);
     color: white;
 }
 
 .room-card.occupied .room-status {
-    background: linear-gradient(135deg, #FF6B6B, #FFE66D);
+    background: linear-gradient(135deg, #dc143c, #b22222);
     color: white;
 }
 
 .room-card.maintenance .room-status {
-    background: linear-gradient(135deg, #FFB347, #FFCC33);
-    color: white;
+    background: linear-gradient(135deg, #daa520, #b8860b);
+    color: #1a1a1a;
+    font-weight: 700;
 }
 
 /* Legend */
@@ -224,75 +263,82 @@ header h1 {
     justify-content: center;
     gap: 30px;
     flex-wrap: wrap;
-    background: rgba(255, 255, 255, 0.95);
+    background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
     padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 90, 167, 0.15);
-    border: 1px solid rgba(0, 90, 167, 0.1);
+    border-radius: 4px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(218, 165, 32, 0.2);
 }
 
 .legend-item {
     display: flex;
     align-items: center;
     gap: 10px;
-    color: #005AA7;
 }
 
 .legend-color {
     width: 30px;
     height: 30px;
-    border-radius: 8px;
+    border-radius: 2px;
 }
 
 .legend-color.available {
-    background: linear-gradient(135deg, #00C9FF, #92FE9D);
+    background: linear-gradient(135deg, #50C878, #3CB371);
 }
 
 .legend-color.occupied {
-    background: linear-gradient(135deg, #FF6B6B, #FFE66D);
+    background: linear-gradient(135deg, #dc143c, #b22222);
 }
 
 .legend-color.maintenance {
-    background: linear-gradient(135deg, #FFB347, #FFCC33);
+    background: linear-gradient(135deg, #daa520, #b8860b);
+}
+
+.legend-item span {
+    color: #b8b8b8;
+    font-weight: 600;
+    letter-spacing: 0.5px;
 }
 
 /* Theme Control Section */
 .theme-control-section {
-    background: linear-gradient(135deg, rgba(0, 90, 167, 0.1), rgba(0, 111, 185, 0.1));
+    background: linear-gradient(135deg, rgba(218, 165, 32, 0.1), rgba(184, 134, 11, 0.1));
     padding: 25px;
-    border-radius: 20px;
+    border-radius: 4px;
     margin-bottom: 30px;
-    border: 2px solid rgba(0, 90, 167, 0.2);
+    border: 1px solid rgba(218, 165, 32, 0.3);
+    border-top: 3px solid #daa520;
 }
 
 .theme-control-section h2 {
     margin-bottom: 20px;
-    color: #005AA7;
+    color: #daa520;
 }
 
 .theme-selector {
     width: 100%;
     padding: 12px 16px;
-    border: 2px solid #b3d9ff;
-    border-radius: 12px;
+    border: 2px solid rgba(218, 165, 32, 0.3);
+    border-radius: 4px;
     font-size: 1em;
     font-family: 'Inter', sans-serif;
-    background: white;
+    background: #1f1f1f;
+    color: #ffffff;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
 .theme-selector:focus {
     outline: none;
-    border-color: #005AA7;
-    box-shadow: 0 0 0 4px rgba(0, 90, 167, 0.1);
+    border-color: #daa520;
+    box-shadow: 0 0 0 4px rgba(218, 165, 32, 0.2);
 }
 
 /* Buttons */
 .btn {
     padding: 14px 28px;
     border: none;
-    border-radius: 12px;
+    border-radius: 4px;
     cursor: pointer;
     font-size: 1em;
     font-weight: 600;
@@ -300,23 +346,25 @@ header h1 {
     transition: all 0.3s ease;
     text-decoration: none;
     display: inline-block;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #005AA7, #00C9FF);
-    color: white;
-    box-shadow: 0 8px 25px rgba(0, 90, 167, 0.25);
+    background: linear-gradient(135deg, #daa520, #b8860b);
+    color: #1a1a1a;
+    box-shadow: 0 4px 15px rgba(218, 165, 32, 0.3);
 }
 
 .btn-success {
-    background: linear-gradient(135deg, #00C9FF, #92FE9D);
+    background: linear-gradient(135deg, #50C878, #3CB371);
     color: white;
-    box-shadow: 0 8px 25px rgba(0, 201, 255, 0.25);
+    box-shadow: 0 4px 15px rgba(80, 200, 120, 0.3);
 }
 
 .btn:hover {
     transform: translateY(-3px);
-    box-shadow: 0 15px 35px rgba(0, 90, 167, 0.3);
+    box-shadow: 0 8px 25px rgba(218, 165, 32, 0.5);
 }
 
 /* Responsive */
@@ -335,7 +383,7 @@ header h1 {
 }
 
 /* ========================================
-   Booking Page Styles - Ocean Theme
+   Booking Page Styles - Professional
    ======================================== */
 
 .header {
@@ -359,31 +407,35 @@ header h1 {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    color: white;
+    color: #daa520;
     text-decoration: none;
     padding: 12px 24px;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(218, 165, 32, 0.1);
     backdrop-filter: blur(10px);
-    border-radius: 50px;
+    border-radius: 4px;
     margin-bottom: 25px;
     transition: all 0.3s ease;
     font-weight: 600;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(218, 165, 32, 0.3);
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
 .back-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(218, 165, 32, 0.2);
     transform: translateX(5px);
-    box-shadow: 0 8px 20px rgba(0, 90, 167, 0.3);
+    box-shadow: 0 4px 12px rgba(218, 165, 32, 0.3);
 }
 
 .booking-card {
-    background: rgba(255, 255, 255, 0.98);
+    background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
     backdrop-filter: blur(20px);
     padding: 50px;
-    border-radius: 30px;
-    box-shadow: 0 30px 80px rgba(0, 90, 167, 0.3), 0 0 0 1px rgba(0, 90, 167, 0.1);
+    border-radius: 4px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
     animation: fadeInUp 0.6s ease;
+    border: 1px solid rgba(218, 165, 32, 0.2);
+    border-top: 3px solid #daa520;
 }
 
 @keyframes fadeInUp {
@@ -412,8 +464,8 @@ header h1 {
     top: 25px;
     left: 10%;
     right: 10%;
-    height: 3px;
-    background: linear-gradient(90deg, #b3d9ff 0%, #b3d9ff 100%);
+    height: 2px;
+    background: rgba(218, 165, 32, 0.2);
     z-index: 0;
 }
 
@@ -427,9 +479,9 @@ header h1 {
 .step-number {
     width: 50px;
     height: 50px;
-    background: white;
-    color: #999;
-    border-radius: 50%;
+    background: #1f1f1f;
+    color: #666;
+    border-radius: 2px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -437,24 +489,25 @@ header h1 {
     font-size: 1.3em;
     position: relative;
     margin-bottom: 12px;
-    border: 3px solid #b3d9ff;
+    border: 2px solid rgba(218, 165, 32, 0.2);
     transition: all 0.4s ease;
-    box-shadow: 0 4px 15px rgba(0, 90, 167, 0.15);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    font-family: 'Playfair Display', serif;
 }
 
 .step.active .step-number {
-    background: linear-gradient(135deg, #005AA7, #006FB9);
-    color: white;
-    border-color: #005AA7;
+    background: linear-gradient(135deg, #daa520, #b8860b);
+    color: #1a1a1a;
+    border-color: #daa520;
     transform: scale(1.15);
-    box-shadow: 0 8px 25px rgba(0, 90, 167, 0.5);
+    box-shadow: 0 8px 25px rgba(218, 165, 32, 0.5);
 }
 
 .step.completed .step-number {
-    background: linear-gradient(135deg, #10b981, #059669);
+    background: linear-gradient(135deg, #50C878, #3CB371);
     color: white;
-    border-color: #10b981;
-    box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+    border-color: #50C878;
+    box-shadow: 0 4px 20px rgba(80, 200, 120, 0.5);
 }
 
 .step.completed .step-number::after {
@@ -465,18 +518,20 @@ header h1 {
 
 .step-label {
     font-size: 0.9em;
-    color: #666;
+    color: #888;
     font-weight: 600;
     transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
 .step.active .step-label {
-    color: #005AA7;
+    color: #daa520;
     font-weight: 700;
 }
 
 .step.completed .step-label {
-    color: #10b981;
+    color: #50C878;
 }
 
 .section {
@@ -500,12 +555,15 @@ header h1 {
 }
 
 .section-title {
-    color: #005AA7;
+    color: #daa520;
     margin-bottom: 30px;
     font-size: 1.8em;
     font-weight: 800;
     position: relative;
     padding-bottom: 15px;
+    font-family: 'Playfair Display', serif;
+    letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
 .section-title::after {
@@ -514,9 +572,8 @@ header h1 {
     bottom: 0;
     right: 0;
     width: 80px;
-    height: 4px;
-    background: linear-gradient(90deg, #005AA7, #006FB9);
-    border-radius: 2px;
+    height: 3px;
+    background: linear-gradient(90deg, #daa520, #b8860b);
 }
 
 .room-selection {
@@ -527,13 +584,13 @@ header h1 {
 }
 
 .room-option {
-    border: 2px solid #b3d9ff;
+    border: 2px solid rgba(218, 165, 32, 0.2);
     padding: 25px;
-    border-radius: 20px;
+    border-radius: 4px;
     cursor: pointer;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     text-align: center;
-    background: linear-gradient(135deg, #ffffff 0%, #f0f8ff 100%);
+    background: linear-gradient(135deg, #1f1f1f 0%, #1a1a1a 100%);
     position: relative;
     overflow: hidden;
 }
@@ -544,16 +601,16 @@ header h1 {
     top: 0;
     left: 0;
     right: 0;
-    height: 5px;
-    background: linear-gradient(90deg, #005AA7, #006FB9);
+    height: 3px;
+    background: linear-gradient(90deg, #daa520, #b8860b);
     transform: scaleX(0);
     transition: transform 0.4s ease;
 }
 
 .room-option:hover {
-    border-color: #005AA7;
+    border-color: #daa520;
     transform: translateY(-8px);
-    box-shadow: 0 15px 40px rgba(0, 90, 167, 0.3);
+    box-shadow: 0 12px 30px rgba(218, 165, 32, 0.4);
 }
 
 .room-option:hover::before {
@@ -561,10 +618,10 @@ header h1 {
 }
 
 .room-option.selected {
-    border-color: #005AA7;
-    background: linear-gradient(135deg, rgba(0, 90, 167, 0.08), rgba(0, 111, 185, 0.08));
+    border-color: #daa520;
+    background: linear-gradient(135deg, rgba(218, 165, 32, 0.15), rgba(184, 134, 11, 0.15));
     transform: translateY(-5px);
-    box-shadow: 0 12px 35px rgba(0, 90, 167, 0.4);
+    box-shadow: 0 12px 35px rgba(218, 165, 32, 0.5);
 }
 
 .room-option.selected::before {
@@ -572,38 +629,14 @@ header h1 {
 }
 
 .room-option.unavailable {
-    opacity: 0.5;
+    opacity: 0.3;
     cursor: not-allowed;
-    filter: grayscale(0.5);
+    filter: grayscale(1);
 }
 
 .room-option.unavailable:hover {
     transform: none;
     box-shadow: none;
-}
-
-.room-number {
-    font-size: 2em;
-    font-weight: 800;
-    background: linear-gradient(135deg, #005AA7, #006FB9);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 12px;
-}
-
-.room-type {
-    color: #64748b;
-    margin-bottom: 10px;
-    font-size: 1em;
-    font-weight: 600;
-}
-
-.room-price {
-    color: #005AA7;
-    font-weight: 800;
-    font-size: 1.3em;
-    margin-top: 8px;
 }
 
 .form-group {
@@ -612,14 +645,16 @@ header h1 {
 
 .form-group label {
     display: block;
-    color: #005AA7;
+    color: #daa520;
     margin-bottom: 10px;
     font-weight: 700;
     font-size: 1em;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
 .form-group label .required {
-    color: #ef4444;
+    color: #dc143c;
     margin-right: 3px;
 }
 
@@ -627,20 +662,21 @@ header h1 {
 .form-group textarea {
     width: 100%;
     padding: 16px 20px;
-    border: 2px solid #b3d9ff;
-    border-radius: 16px;
+    border: 2px solid rgba(218, 165, 32, 0.2);
+    border-radius: 4px;
     font-size: 1.05em;
     font-family: 'Inter', sans-serif;
     transition: all 0.3s ease;
-    background: #f0f8ff;
+    background: #1f1f1f;
+    color: #ffffff;
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: #005AA7;
-    background: white;
-    box-shadow: 0 0 0 4px rgba(0, 90, 167, 0.1), 0 8px 20px rgba(0, 90, 167, 0.2);
+    border-color: #daa520;
+    background: #1a1a1a;
+    box-shadow: 0 0 0 4px rgba(218, 165, 32, 0.2);
     transform: translateY(-2px);
 }
 
@@ -656,12 +692,12 @@ header h1 {
 }
 
 .summary-box {
-    background: linear-gradient(135deg, #e6f3ff 0%, #cce6ff 100%);
+    background: linear-gradient(135deg, rgba(218, 165, 32, 0.15) 0%, rgba(184, 134, 11, 0.15) 100%);
     padding: 30px;
-    border-radius: 20px;
+    border-radius: 4px;
     margin-bottom: 30px;
-    border: 2px solid #99ccff;
-    box-shadow: 0 10px 30px rgba(0, 90, 167, 0.15);
+    border: 2px solid rgba(218, 165, 32, 0.3);
+    box-shadow: 0 4px 20px rgba(218, 165, 32, 0.2);
 }
 
 .summary-item {
@@ -669,7 +705,7 @@ header h1 {
     justify-content: space-between;
     align-items: center;
     padding: 15px 0;
-    border-bottom: 1px solid rgba(0, 90, 167, 0.2);
+    border-bottom: 1px solid rgba(218, 165, 32, 0.2);
 }
 
 .summary-item:last-child {
@@ -678,20 +714,19 @@ header h1 {
     margin-top: 10px;
     font-size: 1.5em;
     font-weight: 800;
-    background: linear-gradient(135deg, #005AA7, #006FB9);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #daa520;
+    font-family: 'Playfair Display', serif;
 }
 
 .summary-label {
-    color: #475569;
+    color: #b8b8b8;
     font-weight: 600;
+    letter-spacing: 0.5px;
 }
 
 .summary-value {
     font-weight: 700;
-    color: #005AA7;
+    color: #ffffff;
 }
 
 .buttons {
@@ -702,12 +737,12 @@ header h1 {
 }
 
 .btn-secondary {
-    background: linear-gradient(135deg, #e6f3ff, #cce6ff);
-    color: #005AA7;
-    border: 2px solid #99ccff;
+    background: linear-gradient(135deg, #3a3a3a, #2a2a2a);
+    color: #b8b8b8;
+    border: 2px solid rgba(218, 165, 32, 0.3);
     flex: 1;
     padding: 18px 30px;
-    border-radius: 16px;
+    border-radius: 4px;
     font-size: 1.15em;
     font-weight: 700;
     cursor: pointer;
@@ -715,16 +750,19 @@ header h1 {
     font-family: 'Inter', sans-serif;
     position: relative;
     overflow: hidden;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
 .btn-secondary:hover {
-    background: linear-gradient(135deg, #cce6ff, #b3d9ff);
+    background: linear-gradient(135deg, #4a4a4a, #3a3a3a);
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 90, 167, 0.2);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    border-color: #daa520;
 }
 
 .btn:disabled {
-    opacity: 0.5;
+    opacity: 0.3;
     cursor: not-allowed;
     transform: none !important;
     box-shadow: none !important;
@@ -762,56 +800,55 @@ header h1 {
 }
 
 .success-title {
-    background: linear-gradient(135deg, #10b981, #059669);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #50C878;
     font-size: 2.5em;
     font-weight: 800;
     margin-bottom: 20px;
+    font-family: 'Playfair Display', serif;
+    letter-spacing: 2px;
 }
 
 .success-text {
-    color: #64748b;
+    color: #b8b8b8;
     font-size: 1.15em;
     line-height: 1.8;
     margin-bottom: 35px;
 }
 
 .booking-reference {
-    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    background: linear-gradient(135deg, rgba(218, 165, 32, 0.2), rgba(184, 134, 11, 0.2));
     padding: 30px;
-    border-radius: 20px;
+    border-radius: 4px;
     margin: 25px 0;
-    border: 3px dashed #fbbf24;
-    box-shadow: 0 10px 30px rgba(251, 191, 36, 0.2);
+    border: 2px dashed #daa520;
+    box-shadow: 0 4px 20px rgba(218, 165, 32, 0.3);
 }
 
 .reference-label {
-    color: #92400e;
+    color: #daa520;
     font-size: 1em;
     margin-bottom: 10px;
     font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
 .reference-code {
     font-size: 2em;
     font-weight: 800;
-    background: linear-gradient(135deg, #f59e0b, #d97706);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #daa520;
     letter-spacing: 3px;
+    font-family: 'Playfair Display', serif;
 }
 
 .price-preview {
     display: none;
-    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+    background: linear-gradient(135deg, rgba(80, 200, 120, 0.15), rgba(60, 179, 113, 0.15));
     padding: 25px;
-    border-radius: 16px;
+    border-radius: 4px;
     margin-top: 20px;
     text-align: center;
-    border: 2px solid #6ee7b7;
+    border: 2px solid rgba(80, 200, 120, 0.3);
     animation: slideInUp 0.4s ease;
 }
 
@@ -831,10 +868,12 @@ header h1 {
 }
 
 .price-preview-title {
-    color: #065f46;
+    color: #50C878;
     font-weight: 700;
     margin-bottom: 15px;
     font-size: 1.1em;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
 .price-details {
@@ -849,39 +888,38 @@ header h1 {
 }
 
 .price-item-label {
-    color: #059669;
+    color: #50C878;
     font-size: 0.9em;
     margin-bottom: 5px;
     font-weight: 600;
+    letter-spacing: 0.5px;
 }
 
 .price-item-value {
     font-size: 1.5em;
     font-weight: 800;
-    background: linear-gradient(135deg, #10b981, #059669);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #50C878;
+    font-family: 'Playfair Display', serif;
 }
 
 .info-box {
-    background: linear-gradient(135deg, #e6f3ff, #cce6ff);
+    background: linear-gradient(135deg, rgba(218, 165, 32, 0.1), rgba(184, 134, 11, 0.1));
     padding: 20px 25px;
-    border-radius: 16px;
+    border-radius: 4px;
     margin-bottom: 30px;
-    border-right: 5px solid #005AA7;
-    box-shadow: 0 4px 15px rgba(0, 90, 167, 0.15);
+    border-right: 5px solid #daa520;
+    box-shadow: 0 4px 15px rgba(218, 165, 32, 0.2);
 }
 
 .info-box p {
-    color: #005AA7;
+    color: #daa520;
     margin: 8px 0;
     font-size: 1em;
     font-weight: 600;
     line-height: 1.6;
 }
 
-/* Booking Page Responsive - Ocean */
+/* Booking Page Responsive - Professional */
 @media (max-width: 768px) {
     .booking-card {
         padding: 30px 20px;
@@ -921,19 +959,21 @@ header h1 {
 }
 
 /* ========================================
-   Login Page Styles - Ocean Theme
+   Login Page Styles - Professional
    ======================================== */
 
 .login-container {
     max-width: 450px;
     margin: 100px auto;
-    background: rgba(255, 255, 255, 0.98);
+    background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
     backdrop-filter: blur(20px);
     padding: 50px 40px;
-    border-radius: 30px;
-    box-shadow: 0 30px 80px rgba(0, 90, 167, 0.3);
+    border-radius: 4px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
     text-align: center;
     animation: fadeInUp 0.6s ease;
+    border: 1px solid rgba(218, 165, 32, 0.2);
+    border-top: 3px solid #daa520;
 }
 
 .logo {
@@ -943,30 +983,29 @@ header h1 {
 }
 
 .login-container h1 {
-    color: #005AA7;
+    color: #daa520;
     font-size: 2.5em;
     font-weight: 800;
     margin-bottom: 10px;
-    background: linear-gradient(135deg, #005AA7, #006FB9);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-family: 'Playfair Display', serif;
+    letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
 .subtitle {
-    color: #64748b;
+    color: #b8b8b8;
     margin-bottom: 30px;
     font-size: 1.1em;
 }
 
 .error-message {
-    background: linear-gradient(135deg, #fee, #fcc);
-    color: #c00;
+    background: linear-gradient(135deg, rgba(220, 20, 60, 0.2), rgba(178, 34, 34, 0.2));
+    color: #dc143c;
     padding: 15px;
-    border-radius: 12px;
+    border-radius: 4px;
     margin-bottom: 20px;
     display: none;
-    border: 2px solid #faa;
+    border: 2px solid rgba(220, 20, 60, 0.4);
     font-weight: 600;
 }
 
@@ -992,27 +1031,29 @@ header h1 {
 
 .login-container .form-group label {
     display: block;
-    color: #005AA7;
+    color: #daa520;
     margin-bottom: 8px;
     font-weight: 700;
     font-size: 1em;
+    letter-spacing: 0.5px;
 }
 
 .login-container .form-group input {
     width: 100%;
     padding: 16px 20px;
-    border: 2px solid #b3d9ff;
-    border-radius: 16px;
+    border: 2px solid rgba(218, 165, 32, 0.2);
+    border-radius: 4px;
     font-size: 1.05em;
     transition: all 0.3s ease;
-    background: #f0f8ff;
+    background: #1f1f1f;
+    color: #ffffff;
 }
 
 .login-container .form-group input:focus {
     outline: none;
-    border-color: #005AA7;
-    background: white;
-    box-shadow: 0 0 0 4px rgba(0, 90, 167, 0.1);
+    border-color: #daa520;
+    background: #1a1a1a;
+    box-shadow: 0 0 0 4px rgba(218, 165, 32, 0.2);
     transform: translateY(-2px);
 }
 
@@ -1031,7 +1072,7 @@ header h1 {
 }
 
 .remember-me label {
-    color: #64748b;
+    color: #b8b8b8;
     cursor: pointer;
     font-weight: 600;
 }
@@ -1039,20 +1080,22 @@ header h1 {
 .btn-login {
     width: 100%;
     padding: 18px;
-    background: linear-gradient(135deg, #005AA7, #006FB9);
-    color: white;
+    background: linear-gradient(135deg, #daa520, #b8860b);
+    color: #1a1a1a;
     border: none;
-    border-radius: 16px;
+    border-radius: 4px;
     font-size: 1.2em;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.4s ease;
-    box-shadow: 0 10px 30px rgba(0, 90, 167, 0.4);
+    box-shadow: 0 4px 15px rgba(218, 165, 32, 0.4);
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
 .btn-login:hover {
     transform: translateY(-3px);
-    box-shadow: 0 15px 40px rgba(0, 90, 167, 0.5);
+    box-shadow: 0 8px 25px rgba(218, 165, 32, 0.6);
 }
 
 .btn-login:active {
@@ -1060,27 +1103,28 @@ header h1 {
 }
 
 .btn-login:disabled {
-    opacity: 0.6;
+    opacity: 0.4;
     cursor: not-allowed;
     transform: none;
 }
 
 .demo-credentials {
-    background: linear-gradient(135deg, #fff9e6, #ffe6cc);
+    background: linear-gradient(135deg, rgba(218, 165, 32, 0.15), rgba(184, 134, 11, 0.15));
     padding: 20px;
-    border-radius: 16px;
+    border-radius: 4px;
     margin-bottom: 25px;
-    border: 2px dashed #ffb84d;
+    border: 2px dashed rgba(218, 165, 32, 0.5);
 }
 
 .demo-credentials h4 {
-    color: #cc7a00;
+    color: #daa520;
     margin-bottom: 12px;
     font-size: 1.1em;
+    letter-spacing: 1px;
 }
 
 .demo-credentials p {
-    color: #996600;
+    color: #b8b8b8;
     margin: 8px 0;
     font-size: 0.95em;
     font-weight: 600;
@@ -1099,14 +1143,14 @@ header h1 {
     left: 0;
     right: 0;
     height: 1px;
-    background: #b3d9ff;
+    background: rgba(218, 165, 32, 0.2);
 }
 
 .divider span {
     position: relative;
-    background: white;
+    background: #1f1f1f;
     padding: 0 15px;
-    color: #64748b;
+    color: #888;
     font-weight: 600;
 }
 
@@ -1117,22 +1161,25 @@ header h1 {
 .btn-guest {
     display: inline-block;
     padding: 14px 28px;
-    background: linear-gradient(135deg, #e6f3ff, #cce6ff);
-    color: #005AA7;
+    background: linear-gradient(135deg, #3a3a3a, #2a2a2a);
+    color: #b8b8b8;
     text-decoration: none;
-    border-radius: 16px;
+    border-radius: 4px;
     font-weight: 700;
     transition: all 0.3s ease;
-    border: 2px solid #99ccff;
+    border: 2px solid rgba(218, 165, 32, 0.3);
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
 .btn-guest:hover {
-    background: linear-gradient(135deg, #cce6ff, #b3d9ff);
+    background: linear-gradient(135deg, #4a4a4a, #3a3a3a);
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 90, 167, 0.2);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    border-color: #daa520;
 }
 
-/* Login Page Responsive - Ocean */
+/* Login Page Responsive - Professional */
 @media (max-width: 768px) {
     .login-container {
         margin: 50px 20px;
@@ -1164,7 +1211,7 @@ header h1 {
 }
 
 /* ========================================
-   Bookings Page Styles - Ocean Theme
+   Bookings Page Styles - Professional
    ======================================== */
 
 .stats-grid {
@@ -1181,21 +1228,23 @@ header h1 {
 }
 
 .booking-form-card {
-    background: rgba(255, 255, 255, 0.98);
+    background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
     padding: 35px;
-    border-radius: 20px;
-    box-shadow: 0 15px 40px rgba(0, 90, 167, 0.15);
-    border: 1px solid rgba(0, 90, 167, 0.1);
+    border-radius: 4px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(218, 165, 32, 0.2);
     height: fit-content;
 }
 
 .booking-form-card h2 {
-    color: #005AA7;
+    color: #daa520;
     font-size: 1.5em;
     margin-bottom: 25px;
     display: flex;
     align-items: center;
     gap: 8px;
+    font-family: 'Playfair Display', serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 .form-group {
@@ -1204,73 +1253,80 @@ header h1 {
 
 .form-group label {
     display: block;
-    color: #006FB9;
+    color: #c0c0c0;
     font-weight: 600;
     margin-bottom: 8px;
     font-size: 0.95em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .form-group input,
 .form-group select {
     width: 100%;
     padding: 14px 18px;
-    border: 2px solid rgba(0, 90, 167, 0.2);
-    border-radius: 12px;
+    border: 2px solid rgba(218, 165, 32, 0.3);
+    border-radius: 4px;
     font-size: 1em;
     transition: all 0.3s ease;
-    background: rgba(0, 201, 255, 0.05);
-    color: #004d7a;
+    background: rgba(0, 0, 0, 0.4);
+    color: #ffffff;
 }
 
 .form-group input:focus,
 .form-group select:focus {
     outline: none;
-    border-color: #00C9FF;
-    background: white;
-    box-shadow: 0 0 0 3px rgba(0, 201, 255, 0.15);
+    border-color: #daa520;
+    background: rgba(0, 0, 0, 0.6);
+    box-shadow: 0 0 0 3px rgba(218, 165, 32, 0.15);
 }
 
 .form-group input[readonly] {
-    background: rgba(0, 201, 255, 0.1);
+    background: rgba(218, 165, 32, 0.15);
     cursor: not-allowed;
     font-weight: 700;
-    color: #005AA7;
+    color: #daa520;
 }
 
 .btn-submit {
     width: 100%;
     padding: 16px;
-    background: linear-gradient(135deg, #005AA7, #00C9FF);
-    color: white;
+    background: #daa520;
+    color: #000000;
     border: none;
-    border-radius: 12px;
+    border-radius: 4px;
     font-size: 1.1em;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.3s ease;
     margin-top: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 .btn-submit:hover {
+    background: #b8860b;
     transform: translateY(-2px);
-    box-shadow: 0 12px 30px rgba(0, 90, 167, 0.35);
+    box-shadow: 0 12px 30px rgba(218, 165, 32, 0.5);
 }
 
 .bookings-list {
-    background: rgba(255, 255, 255, 0.98);
+    background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
     padding: 35px;
-    border-radius: 20px;
-    box-shadow: 0 15px 40px rgba(0, 90, 167, 0.15);
-    border: 1px solid rgba(0, 90, 167, 0.1);
+    border-radius: 4px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(218, 165, 32, 0.2);
 }
 
 .bookings-list h2 {
-    color: #005AA7;
+    color: #daa520;
     font-size: 1.5em;
     margin-bottom: 25px;
     display: flex;
     align-items: center;
     gap: 8px;
+    font-family: 'Playfair Display', serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 .filter-tabs {
@@ -1282,59 +1338,61 @@ header h1 {
 
 .filter-tab {
     padding: 10px 20px;
-    border: 2px solid rgba(0, 90, 167, 0.2);
-    background: white;
-    border-radius: 25px;
+    border: 2px solid rgba(218, 165, 32, 0.3);
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 4px;
     cursor: pointer;
     font-size: 0.95em;
     font-weight: 600;
     transition: all 0.3s ease;
-    color: #006FB9;
+    color: #c0c0c0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .filter-tab:hover {
-    border-color: #00C9FF;
-    color: #005AA7;
+    border-color: #daa520;
+    color: #daa520;
     transform: translateY(-2px);
 }
 
 .filter-tab.active {
-    background: linear-gradient(135deg, #005AA7, #00C9FF);
-    color: white;
-    border-color: transparent;
-    box-shadow: 0 4px 15px rgba(0, 90, 167, 0.3);
+    background: #daa520;
+    color: #000000;
+    border-color: #daa520;
+    box-shadow: 0 4px 15px rgba(218, 165, 32, 0.4);
 }
 
 #bookingsTableContainer {
     overflow-x: auto;
-    border-radius: 12px;
+    border-radius: 4px;
 }
 
 .bookings-table {
     width: 100%;
     border-collapse: collapse;
-    background: white;
+    background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
 }
 
 .bookings-table thead {
-    background: linear-gradient(135deg, #005AA7, #00C9FF);
+    background: #daa520;
 }
 
 .bookings-table th {
     padding: 16px 12px;
     text-align: right;
-    color: white;
-    font-weight: 600;
+    color: #000000;
+    font-weight: 700;
     font-size: 0.95em;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 1.5px;
 }
 
 .bookings-table td {
     padding: 16px 12px;
     text-align: right;
-    border-bottom: 1px solid rgba(0, 90, 167, 0.1);
-    color: #004d7a;
+    border-bottom: 1px solid rgba(218, 165, 32, 0.2);
+    color: #e0e0e0;
     font-size: 0.95em;
 }
 
@@ -1343,40 +1401,40 @@ header h1 {
 }
 
 .bookings-table tbody tr:hover {
-    background: rgba(0, 201, 255, 0.05);
+    background: rgba(218, 165, 32, 0.05);
 }
 
 .status-badge {
     display: inline-block;
     padding: 6px 14px;
-    border-radius: 20px;
+    border-radius: 4px;
     font-size: 0.85em;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
 }
 
 .status-pending {
-    background: #fef3c7;
-    color: #92400e;
+    background: rgba(251, 191, 36, 0.2);
+    color: #fbbf24;
     border: 1px solid #fbbf24;
 }
 
 .status-confirmed {
-    background: #dbeafe;
-    color: #1e40af;
+    background: rgba(59, 130, 246, 0.2);
+    color: #60a5fa;
     border: 1px solid #60a5fa;
 }
 
 .status-completed {
-    background: #d1fae5;
-    color: #065f46;
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
     border: 1px solid #10b981;
 }
 
 .status-cancelled {
-    background: #fee2e2;
-    color: #991b1b;
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
     border: 1px solid #ef4444;
 }
 
@@ -1389,40 +1447,44 @@ header h1 {
 .action-btn {
     width: 36px;
     height: 36px;
-    border: none;
-    border-radius: 8px;
+    border: 1px solid rgba(218, 165, 32, 0.3);
+    border-radius: 4px;
     cursor: pointer;
     transition: all 0.2s ease;
     font-size: 1.1em;
     display: flex;
     align-items: center;
     justify-content: center;
+    background: rgba(0, 0, 0, 0.4);
 }
 
 .btn-confirm {
-    background: #d1fae5;
+    background: rgba(16, 185, 129, 0.2);
+    border-color: #10b981;
 }
 
 .btn-confirm:hover {
-    background: #6ee7b7;
+    background: #10b981;
     transform: scale(1.1);
 }
 
 .btn-cancel {
-    background: #fee2e2;
+    background: rgba(239, 68, 68, 0.2);
+    border-color: #ef4444;
 }
 
 .btn-cancel:hover {
-    background: #fca5a5;
+    background: #ef4444;
     transform: scale(1.1);
 }
 
 .btn-delete {
-    background: rgba(0, 90, 167, 0.1);
+    background: rgba(148, 163, 184, 0.2);
+    border-color: #94a3b8;
 }
 
 .btn-delete:hover {
-    background: rgba(0, 90, 167, 0.2);
+    background: #94a3b8;
     transform: scale(1.1);
 }
 
@@ -1434,13 +1496,15 @@ header h1 {
 .empty-state-icon {
     font-size: 4em;
     margin-bottom: 15px;
-    opacity: 0.4;
+    opacity: 0.3;
 }
 
 .empty-state p {
-    color: #006FB9;
+    color: #64748b;
     font-size: 1.1em;
     font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 @media (max-width: 1024px) {
@@ -1467,7 +1531,7 @@ header h1 {
 }
 
 /* ========================================
-   Admin Dashboard Styles - Ocean Theme
+   Admin Dashboard Styles - Professional
    ======================================== */
 
 .dashboard {
@@ -1477,22 +1541,22 @@ header h1 {
 }
 
 .dashboard .header {
-    background: rgba(255, 255, 255, 0.95);
+    background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
     padding: 30px;
-    border-radius: 20px;
+    border-radius: 4px;
     margin-bottom: 30px;
-    box-shadow: 0 10px 30px rgba(0, 90, 167, 0.2);
-    border: 1px solid rgba(0, 90, 167, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(218, 165, 32, 0.2);
+    border-top: 3px solid #daa520;
 }
 
 .dashboard .header h1 {
-    color: #005AA7;
+    color: #daa520;
     font-size: 2em;
     margin-bottom: 20px;
-    background: linear-gradient(135deg, #005AA7, #006FB9);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-family: 'Playfair Display', serif;
+    letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
 .header-actions {
@@ -1505,11 +1569,11 @@ header h1 {
 .user-info {
     flex: 1;
     min-width: 150px;
-    color: #64748b;
+    color: #b8b8b8;
     font-weight: 600;
 }
 
-/* Dashboard Stats Grid - Ocean */
+/* Dashboard Stats Grid - Professional */
 .stat-icon {
     font-size: 3em;
     margin-bottom: 15px;
@@ -1519,20 +1583,17 @@ header h1 {
 .stat-value {
     font-size: 2.5em;
     font-weight: 800;
-    color: #005AA7;
+    color: #daa520;
     margin-bottom: 8px;
-    background: linear-gradient(135deg, #005AA7, #00C9FF);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-family: 'Playfair Display', serif;
 }
 
 .stat-label {
-    color: #006FB9;
+    color: #c0c0c0;
     font-size: 1em;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 1.5px;
 }
 
 .stat-change {
@@ -1541,22 +1602,24 @@ header h1 {
     font-weight: 700;
     display: inline-block;
     padding: 4px 12px;
-    border-radius: 20px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .stat-change.positive {
-    background: rgba(16, 185, 129, 0.2);
-    color: #059669;
-    border: 1px solid #10b981;
+    background: rgba(80, 200, 120, 0.2);
+    color: #50C878;
+    border: 1px solid #50C878;
 }
 
 .stat-change.negative {
-    background: rgba(239, 68, 68, 0.2);
-    color: #dc2626;
-    border: 1px solid #ef4444;
+    background: rgba(220, 20, 60, 0.2);
+    color: #dc143c;
+    border: 1px solid #dc143c;
 }
 
-/* Quick Actions - Ocean */
+/* Quick Actions - Professional */
 .quick-actions {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -1565,21 +1628,21 @@ header h1 {
 }
 
 .action-card {
-    background: rgba(255, 255, 255, 0.98);
+    background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
     padding: 30px;
-    border-radius: 16px;
+    border-radius: 4px;
     text-align: center;
     text-decoration: none;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 90, 167, 0.15);
-    border: 2px solid rgba(0, 90, 167, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    border: 2px solid rgba(218, 165, 32, 0.2);
 }
 
 .action-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 12px 30px rgba(0, 90, 167, 0.3);
-    border-color: #00C9FF;
-    background: white;
+    box-shadow: 0 8px 25px rgba(218, 165, 32, 0.4);
+    border-color: #daa520;
+    background: linear-gradient(135deg, #2f2f2f 0%, #252525 100%);
 }
 
 .action-icon {
@@ -1588,12 +1651,14 @@ header h1 {
 }
 
 .action-title {
-    color: #005AA7;
+    color: #daa520;
     font-size: 1.1em;
     font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-/* Charts Grid - Ocean */
+/* Charts Grid - Professional */
 .charts-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
@@ -1602,20 +1667,23 @@ header h1 {
 }
 
 .chart-card {
-    background: rgba(255, 255, 255, 0.98);
+    background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
     padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 90, 167, 0.15);
-    border: 1px solid rgba(0, 90, 167, 0.1);
+    border-radius: 4px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(218, 165, 32, 0.2);
 }
 
 .chart-card h2 {
-    color: #005AA7;
+    color: #daa520;
     font-size: 1.3em;
     margin-bottom: 25px;
     display: flex;
     align-items: center;
     gap: 8px;
+    font-family: 'Playfair Display', serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 .chart-container {
@@ -1655,21 +1723,23 @@ header h1 {
 }
 
 .sidebar {
-    background: rgba(255, 255, 255, 0.95);
+    background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
     padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 90, 167, 0.15);
+    border-radius: 4px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     height: fit-content;
-    border: 1px solid rgba(0, 90, 167, 0.1);
+    border: 1px solid rgba(218, 165, 32, 0.2);
 }
 
 .sidebar h2 {
-    color: #005AA7;
+    color: #daa520;
     font-size: 1.5em;
     margin-bottom: 20px;
     display: flex;
     align-items: center;
     gap: 8px;
+    font-family: 'Playfair Display', serif;
+    letter-spacing: 1px;
 }
 
 .sidebar .form-group {
@@ -1678,56 +1748,60 @@ header h1 {
 
 .sidebar .form-group label {
     display: block;
-    color: #005AA7;
+    color: #b8b8b8;
     margin-bottom: 8px;
     font-weight: 700;
     font-size: 0.95em;
+    letter-spacing: 0.5px;
 }
 
 .sidebar .form-group input,
 .sidebar .form-group select {
     width: 100%;
     padding: 12px 16px;
-    border: 2px solid #b3d9ff;
-    border-radius: 12px;
+    border: 2px solid rgba(218, 165, 32, 0.2);
+    border-radius: 4px;
     font-size: 1em;
     transition: all 0.3s ease;
-    background: #f0f8ff;
+    background: #1f1f1f;
+    color: #ffffff;
     font-family: 'Inter', sans-serif;
 }
 
 .sidebar .form-group input:focus,
 .sidebar .form-group select:focus {
     outline: none;
-    border-color: #005AA7;
-    background: white;
-    box-shadow: 0 0 0 4px rgba(0, 90, 167, 0.1);
+    border-color: #daa520;
+    background: #1a1a1a;
+    box-shadow: 0 0 0 4px rgba(218, 165, 32, 0.2);
 }
 
 .rooms-management {
-    background: rgba(255, 255, 255, 0.95);
+    background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
     padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 90, 167, 0.15);
-    border: 1px solid rgba(0, 90, 167, 0.1);
+    border-radius: 4px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(218, 165, 32, 0.2);
 }
 
 .rooms-management h2 {
-    color: #005AA7;
+    color: #daa520;
     font-size: 1.8em;
     margin-bottom: 25px;
+    font-family: 'Playfair Display', serif;
+    letter-spacing: 1px;
 }
 
 .rooms-table {
     width: 100%;
     border-collapse: collapse;
     overflow: hidden;
-    border-radius: 12px;
+    border-radius: 4px;
 }
 
 .rooms-table thead {
-    background: linear-gradient(135deg, #005AA7, #006FB9);
-    color: white;
+    background: linear-gradient(135deg, #daa520, #b8860b);
+    color: #1a1a1a;
 }
 
 .rooms-table th {
@@ -1735,44 +1809,48 @@ header h1 {
     text-align: right;
     font-weight: 700;
     font-size: 1em;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
 .rooms-table tbody tr {
-    border-bottom: 1px solid #b3d9ff;
+    border-bottom: 1px solid rgba(218, 165, 32, 0.1);
     transition: all 0.3s ease;
 }
 
 .rooms-table tbody tr:hover {
-    background: #f0f8ff;
+    background: rgba(218, 165, 32, 0.05);
 }
 
 .rooms-table td {
     padding: 16px;
-    color: #475569;
+    color: #b8b8b8;
     font-weight: 600;
 }
 
 .rooms-table .status-badge {
     display: inline-block;
     padding: 6px 14px;
-    border-radius: 20px;
+    border-radius: 2px;
     font-size: 0.9em;
     font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
 .rooms-table .status-badge.available {
-    background: linear-gradient(135deg, #10b981, #059669);
+    background: linear-gradient(135deg, #50C878, #3CB371);
     color: white;
 }
 
 .rooms-table .status-badge.occupied {
-    background: linear-gradient(135deg, #ef4444, #dc2626);
+    background: linear-gradient(135deg, #dc143c, #b22222);
     color: white;
 }
 
 .rooms-table .status-badge.maintenance {
-    background: linear-gradient(135deg, #f59e0b, #d97706);
-    color: white;
+    background: linear-gradient(135deg, #daa520, #b8860b);
+    color: #1a1a1a;
 }
 
 .rooms-table .action-buttons {
@@ -1784,11 +1862,13 @@ header h1 {
 .rooms-table .btn-delete {
     padding: 8px 16px;
     border: none;
-    border-radius: 8px;
+    border-radius: 4px;
     font-size: 0.9em;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
 .rooms-table .btn-edit {
@@ -1802,16 +1882,16 @@ header h1 {
 }
 
 .rooms-table .btn-delete {
-    background: linear-gradient(135deg, #ef4444, #dc2626);
+    background: linear-gradient(135deg, #dc143c, #b22222);
     color: white;
 }
 
 .rooms-table .btn-delete:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+    box-shadow: 0 4px 12px rgba(220, 20, 60, 0.4);
 }
 
-/* Admin Responsive - Ocean */
+/* Admin Responsive - Professional */
 @media (max-width: 1200px) {
     .main-content {
         grid-template-columns: 350px 1fr;

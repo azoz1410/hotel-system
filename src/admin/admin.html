@@ -6,9 +6,10 @@
     <title>لوحة التحكم - إدارة الفندق</title>
     <meta name="description" content="لوحة التحكم لإدارة الغرف الفندقية والحجوزات">
     <meta name="theme-color" content="#667eea">
-    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="manifest" href="../../manifest.json">
     <!-- Theme System -->
-    <script src="theme-switcher.js"></script>
+    <script src="../js/shared/theme-switcher.js"></script>
 </head>
 <body>
     <div class="dashboard">
@@ -19,7 +20,7 @@
                     <span>👤 جاري التحميل...</span>
                 </div>
                 <a href="dashboard.html" class="btn btn-primary">📊 الإحصائيات</a>
-                <a href="index.html" class="btn btn-primary" target="_blank">👁️ معاينة الغرف</a>
+                <a href="../../index.html" class="btn btn-primary" target="_blank">👁️ معاينة الغرف</a>
                 <a href="bookings.html" class="btn btn-success">📅 الحجوزات</a>
                 <button onclick="authModule.logout()" class="btn btn-primary">🚪 تسجيل الخروج</button>
             </div>
@@ -110,8 +111,8 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     
     <!-- لوحة التحكم -->
-    <script src="firebase-config.js"></script>
-    <script src="auth.js"></script>
-    <script src="admin.js"></script>
+    <script src="../config/firebase-config.js"></script>
+    <script src="../js/shared/auth.js"></script>
+    <script src="../js/admin/admin.js"></script>
 </body>
 </html>

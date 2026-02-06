@@ -6,12 +6,13 @@
     <title>احجز غرفتك - نظام الفندق</title>
     <meta name="description" content="احجز غرفتك بسهولة وسرعة">
     <meta name="theme-color" content="#667eea">
-    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="manifest" href="../../manifest.json">
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <a href="index.html" class="back-btn">⬅ العودة للغرف</a>
+            <a href="../../index.html" class="back-btn">⬅ العودة للغرف</a>
             <h1>احجز غرفتك</h1>
             <p class="subtitle">املأ البيانات وأكمل حجزك بسهولة</p>
         </div>
@@ -46,7 +47,7 @@
                     <!-- سيتم ملؤها ديناميكياً -->
                 </div>
                 <div class="buttons">
-                    <button class="btn btn-secondary" onclick="window.location.href='index.html'">✖ إلغاء</button>
+                    <button class="btn btn-secondary" onclick="window.location.href='../../index.html'">✖ إلغاء</button>
                     <button class="btn btn-primary" onclick="nextStep(2)" id="step1Next" disabled>التالي ←</button>
                 </div>
             </div>
@@ -157,9 +158,9 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     
     <!-- Theme System -->
-    <script src="theme-switcher.js"></script>
+    <script src="../js/shared/theme-switcher.js"></script>
     
-    <script src="firebase-config.js"></script>
-    <script src="public-booking.js"></script>
+    <script src="../config/firebase-config.js"></script>
+    <script src="../js/public/public-booking.js"></script>
 </body>
 </html>
