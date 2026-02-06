@@ -849,8 +849,65 @@ h1::after {
     height: 300px;
 }
 
-@media (max-width: 768px) {
-    .content-grid {
+/* أنماط أزرار الفاتورة والعقد */
+.action-buttons {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.action-btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-confirm {
+    background: linear-gradient(135deg, #10ac84, #1dd1a1);
+    color: white;
+}
+
+.btn-confirm:hover {
+    background: linear-gradient(135deg, #0e9c75, #1ab892);
+}
+
+.btn-cancel {
+    background: linear-gradient(135deg, #ee5a6f, #f368e0);
+    color: white;
+}
+
+.btn-cancel:hover {
+    background: linear-gradient(135deg, #d94d62, #dc5cd1);
+}
+
+.btn-delete {
+    background: linear-gradient(135deg, #ff6b6b, #ff8787);
+    color: white;
+}
+
+.btn-delete:hover {
+    background: linear-gradient(135deg, #e65c5c, #e77676);
+}
+
+.btn-info {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+}
+
+.btn-info:hover {
+    background: linear-gradient(135deg, #5568d3, #654093);
+}
+
         grid-template-columns: 1fr;
     }
     

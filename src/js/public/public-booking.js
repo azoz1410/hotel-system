@@ -6,6 +6,7 @@ let bookingData = {
     customerName: null,
     customerPhone: null,
     customerEmail: null,
+    nationalId: null,
     notes: null,
     totalPrice: 0,
     nights: 0
@@ -123,8 +124,9 @@ function nextStep(step) {
     if (step === 4) {
         const name = document.getElementById('customerName').value.trim();
         const phone = document.getElementById('customerPhone').value.trim();
+        const nationalId = document.getElementById('nationalId').value.trim();
 
-        if (!name || !phone) {
+        if (!name || !phone || !nationalId) {
             showToast('الرجاء ملء جميع الحقول المطلوبة', 'error');
             return;
         }
@@ -134,8 +136,14 @@ function nextStep(step) {
             return;
         }
 
+        if (!/^[12][0-9]{9}$/.test(nationalId)) {
+            showToast('رقم الإقامة/الهوية يجب أن يبدأ بـ 1 أو 2 ويتكون من 10 أرقام', 'error');
+            return;
+        }
+
         bookingData.customerName = name;
         bookingData.customerPhone = phone;
+        bookingData.nationalId = nationalId;
         bookingData.customerEmail = document.getElementById('customerEmail').value.trim();
         bookingData.notes = document.getElementById('notes').value.trim();
 
@@ -211,16 +219,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // التحقق من حقول الخطوة 3
     const nameInput = document.getElementById('customerName');
     const phoneInput = document.getElementById('customerPhone');
+    const nationalIdInput = document.getElementById('nationalId');
 
     function validateStep3() {
         const name = nameInput.value.trim();
         const phone = phoneInput.value.trim();
-        const isValid = name && phone && /^05[0-9]{8}$/.test(phone);
+        const nationalId = nationalIdInput.value.trim();
+        const isValid = name && phone && nationalId && 
+                       /^05[0-9]{8}$/.test(phone) && 
+                       /^[12][0-9]{9}$/.test(nationalId);
         document.getElementById('step3Next').disabled = !isValid;
     }
 
     nameInput.addEventListener('input', validateStep3);
     phoneInput.addEventListener('input', validateStep3);
+    nationalIdInput.addEventListener('input', validateStep3);
 
     // تحميل الغرف
     loadAvailableRooms();
@@ -251,6 +264,10 @@ function displayFinalSummary() {
         <div class="summary-item">
             <span class="summary-label">الاسم:</span>
             <span class="summary-value">${bookingData.customerName}</span>
+        </div>
+        <div class="summary-item">
+            <span class="summary-label">رقم الإقامة/الهوية:</span>
+            <span class="summary-value">${bookingData.nationalId}</span>
         </div>
         <div class="summary-item">
             <span class="summary-label">الجوال:</span>
@@ -288,6 +305,7 @@ async function confirmBooking() {
             customerName: bookingData.customerName,
             customerPhone: bookingData.customerPhone,
             customerEmail: bookingData.customerEmail || '',
+            nationalId: bookingData.nationalId,
             checkIn: bookingData.checkIn,
             checkOut: bookingData.checkOut,
             totalPrice: bookingData.totalPrice,
