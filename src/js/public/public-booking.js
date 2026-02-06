@@ -302,11 +302,9 @@ async function confirmBooking() {
         const bookingRef = await bookingsRef.push(booking);
         const bookingId = bookingRef.key;
 
-        // تحديث حالة الغرفة إلى محجوزة
-        await roomsRef.child(bookingData.selectedRoom.number.toString()).update({ 
-            status: 'occupied' 
-        });
-
+        // ملاحظة: لن نقوم بتحديث حالة الغرفة مباشرة
+        // سيتم تحديثها من قبل المشرف عند تأكيد الحجز
+        
         // حفظ معلومات العميل
         if (bookingData.customerPhone) {
             await customersRef.child(bookingData.customerPhone.replace(/\D/g, '')).set({
@@ -335,9 +333,12 @@ async function confirmBooking() {
         
         // عرض رقم الحجز المرجعي
         document.getElementById('bookingRef').textContent = bookingId.substring(0, 8).toUpperCase();
+        
+        // عرض رقم الهاتف المؤكد
+        document.getElementById('confirmedPhone').textContent = bookingData.customerPhone;
 
         // تنبيه صوتي (اختياري)
-        showToast('✅ تم الحجز بنجاح!', 'success');
+        showToast('✅ تم إرسال طلب الحجز بنجاح!', 'success');
 
     } catch (error) {
         console.error('خطأ في الحجز:', error);

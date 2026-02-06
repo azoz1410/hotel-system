@@ -7,6 +7,7 @@
     <meta name="description" content="احجز غرفتك بسهولة وسرعة">
     <meta name="theme-color" content="#667eea">
     <link rel="manifest" href="../../manifest.json">
+    <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
     <div class="container">
@@ -131,22 +132,22 @@
             <!-- Success Message -->
             <div class="success-message" id="successMessage">
                 <div class="success-icon">🎉</div>
-                <h2 class="success-title">تم الحجز بنجاح!</h2>
+                <h2 class="success-title">تم إرسال طلب الحجز بنجاح!</h2>
                 <p class="success-text">
-                    شكراً لك! تم استلام طلب حجزك بنجاح<br>
-                    ستتلقى رسالة تأكيد على رقم جوالك قريباً
-                </p>
+                    شكراً لك! تم استلام طلب حجزك وهو الآن قيد المراجعة<br>
+                    سيتم التواصل معك للتأكيد خلال 24 ساعة
                 </p>
                 <div class="booking-reference">
                     <div class="reference-label">رقم الحجز المرجعي:</div>
                     <div class="reference-code" id="bookingRef">-</div>
                 </div>
                 <div class="info-box">
-                    <p>📞 يمكنك التواصل معنا على هذا الرقم لمتابعة حجزك</p>
-                    <p>⏰ سيتم مراجعة طلبك خلال 24 ساعة</p>
+                    <p>� حالة الحجز: <strong>قيد المراجعة</strong></p>
+                    <p>📞 سيتم التواصل معك على رقم: <strong id="confirmedPhone"></strong></p>
+                    <p>⏰ سيتم مراجعة طلبك والرد عليك خلال 24 ساعة</p>
                 </div>
                 <div class="buttons">
-                    <button class="btn btn-primary" onclick="window.location.href='index.html'">العودة للصفحة الرئيسية</button>
+                    <button class="btn btn-primary" onclick="window.location.href='../../index.html'">العودة للصفحة الرئيسية</button>
                 </div>
             </div>
         </div>
