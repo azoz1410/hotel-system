@@ -1,0 +1,52 @@
+# تفعيل محرك إعادة الكتابة
+RewriteEngine On
+
+# إعادة توجيه www إلى non-www (اختياري)
+# RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+# RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+
+# إعادة توجيه HTTP إلى HTTPS (اختياري)
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# السماح بالوصول للملفات والمجلدات الموجودة
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# إضافة index.html تلقائياً للمجلدات
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^/]+)/?$ $1/index.html [L]
+
+# خيارات الأمان
+Options -Indexes
+ServerSignature Off
+
+# تفعيل الضغط (gzip)
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
+</IfModule>
+
+# التخزين المؤقت للمتصفح
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType text/html "access plus 1 hour"
+</IfModule>
+
+# حماية ملفات النظام
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# حماية ملفات التكوين
+<FilesMatch "\.(htaccess|htpasswd|ini|log|sh|sql|md)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
