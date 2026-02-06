@@ -58,7 +58,7 @@ function displayRooms(filter = 'all') {
             <div class="room-type">${room.type}</div>
             <div class="room-status">${statusTranslations[room.status]}</div>
             <div class="room-price">${room.price} ريال</div>
-            ${room.status === 'available' ? '<a href="public-booking.html?room=' + room.number + '" class="book-btn" onclick="event.stopPropagation()">📅 احجز الآن</a>' : ''}
+            ${room.status === 'available' ? '<a href="src/public/public-booking.html?room=' + room.number + '" class="book-btn" onclick="event.stopPropagation()">📅 احجز الآن</a>' : ''}
         `;
 
         // إضافة تأثير النقر - الانتقال للحجز إذا كانت الغرفة متاحة
@@ -67,7 +67,7 @@ function displayRooms(filter = 'all') {
             if (!e.target.classList.contains('book-btn')) {
                 if (room.status === 'available') {
                     // الانتقال لصفحة الحجز مباشرة
-                    window.location.href = `public-booking.html?room=${room.number}`;
+                    window.location.href = `src/public/public-booking.html?room=${room.number}`;
                 } else {
                     // عرض تفاصيل الغرفة إذا كانت محجوزة أو في صيانة
                     showRoomDetails(room);
