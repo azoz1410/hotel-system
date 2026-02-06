@@ -11,7 +11,7 @@
       ".indexOn": ["status", "type", "number"]
     },
     "bookings": {
-      ".read": "auth != null",
+      ".read": true,
       ".write": true,
       "$bookingId": {
         ".validate": "newData.hasChildren(['roomNumber', 'customerName', 'customerPhone', 'checkIn', 'checkOut', 'totalPrice', 'status', 'createdAt'])",

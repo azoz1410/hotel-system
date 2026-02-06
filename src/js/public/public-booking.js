@@ -365,10 +365,11 @@ async function confirmBooking() {
             successMessage.classList.add('show');
         }
         
-        // عرض رقم الحجز المرجعي
+        // عرض رقم الحجز المرجعي (إزالة الرموز)
         const bookingRefEl = document.getElementById('bookingRef');
         if (bookingRefEl) {
-            bookingRefEl.textContent = bookingId.substring(0, 8).toUpperCase();
+            const cleanId = bookingId.replace(/[^A-Z0-9]/gi, '').substring(0, 8).toUpperCase();
+            bookingRefEl.textContent = cleanId;
         }
         
         // عرض رقم الهاتف المؤكد

@@ -39,7 +39,8 @@ document.getElementById('trackForm').addEventListener('submit', async (e) => {
         
         Object.keys(bookings).forEach(key => {
             const booking = bookings[key];
-            const shortId = key.substring(0, 8).toUpperCase();
+            const cleanKey = key.replace(/[^A-Z0-9]/gi, '');
+            const shortId = cleanKey.substring(0, 8).toUpperCase();
             
             if (shortId === bookingId && booking.customerPhone === phoneNumber) {
                 foundBooking = booking;
