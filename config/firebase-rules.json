@@ -3,6 +3,11 @@
     "rooms": {
       ".read": true,
       ".write": "auth != null",
+      "$roomNumber": {
+        "status": {
+          ".write": "newData.val() == 'occupied' || newData.val() == 'available' || auth != null"
+        }
+      },
       ".indexOn": ["status", "type", "number"]
     },
     "bookings": {
