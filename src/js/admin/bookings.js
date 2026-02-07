@@ -246,7 +246,7 @@ document.getElementById('bookingForm').addEventListener('submit', async (e) => {
 });
 
 // تأكيد الحجز
-async function confirmBooking(bookingId) {
+window.confirmBooking = async function(bookingId) {
     if (confirm('هل تريد تأكيد هذا الحجز؟')) {
         try {
             await bookingsRef.child(bookingId).update({ 
@@ -269,10 +269,10 @@ async function confirmBooking(bookingId) {
             showToast('❌ حدث خطأ في تأكيد الحجز', 'error');
         }
     }
-}
+};
 
 // إلغاء الحجز
-async function cancelBooking(bookingId) {
+window.cancelBooking = async function(bookingId) {
     if (confirm('هل تريد إلغاء هذا الحجز؟')) {
         try {
             const booking = allBookings.find(b => b.id === bookingId);
@@ -302,10 +302,10 @@ async function cancelBooking(bookingId) {
             showToast('❌ حدث خطأ في إلغاء الحجز', 'error');
         }
     }
-}
+};
 
 // حذف الحجز
-async function deleteBooking(bookingId) {
+window.deleteBooking = async function(bookingId) {
     if (confirm('هل تريد حذف هذا الحجز نهائياً؟')) {
         try {
             const booking = allBookings.find(b => b.id === bookingId);
@@ -331,7 +331,7 @@ async function deleteBooking(bookingId) {
             showToast('❌ حدث خطأ في حذف الحجز', 'error');
         }
     }
-}
+};
 
 // التصفية
 document.querySelectorAll('.filter-tab').forEach(tab => {
@@ -344,7 +344,7 @@ document.querySelectorAll('.filter-tab').forEach(tab => {
 });
 
 // الموافقة على طلب الخروج
-async function approveCheckout(bookingId) {
+window.approveCheckout = async function(bookingId) {
     const booking = allBookings.find(b => b.id === bookingId);
     if (!booking) {
         showToast('❌ لم يتم العثور على الحجز', 'error');
@@ -395,10 +395,10 @@ async function approveCheckout(bookingId) {
         console.error('خطأ في الموافقة على الخروج:', error);
         showToast('❌ حدث خطأ أثناء الموافقة على الخروج', 'error');
     }
-}
+};
 
 // إصدار فاتورة
-function generateInvoice(bookingId) {
+window.generateInvoice = function(bookingId) {
     const booking = allBookings.find(b => b.id === bookingId);
     if (!booking) {
         showToast('❌ لم يتم العثور على الحجز', 'error');
@@ -615,10 +615,10 @@ function generateInvoice(bookingId) {
         </html>
     `);
     invoiceWindow.document.close();
-}
+};
 
 // إصدار عقد
-function generateContract(bookingId) {
+window.generateContract = function(bookingId) {
     const booking = allBookings.find(b => b.id === bookingId);
     if (!booking) {
         showToast('❌ لم يتم العثور على الحجز', 'error');
@@ -860,7 +860,7 @@ function generateContract(bookingId) {
         </html>
     `);
     contractWindow.document.close();
-}
+};
 
 // حساب السعر عند تغيير التواريخ أو الغرفة
 document.getElementById('roomNumber').addEventListener('change', calculateTotalPrice);
