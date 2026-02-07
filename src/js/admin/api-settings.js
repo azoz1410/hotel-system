@@ -220,16 +220,43 @@ window.testWhatsApp = async function() {
             .replace('{code}', testCode)
             .replace('{hotel}', currentSettings.hotel?.name || 'الفندق');
         
-        // هنا يجب استدعاء Cloud Function أو Backend API
-        // لأن Twilio يتطلب Server-side authentication
-        showToast('⚠️ ملاحظة: لإتمام الاختبار، تحتاج إلى إعداد Cloud Function', 'warning');
-        console.log('Test Message:', message);
-        console.log('To:', phoneNumber);
-        console.log('From:', whatsappSettings.phoneNumber);
+        // استدعاء Cloud Function
+        const cloudFunctionUrl = 'https://us-central1-hotel-system-f50a4.cloudfunctions.net/sendWhatsApp';
+        
+        const response = await fetch(cloudFunctionUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                to: phoneNumber,
+                message: message,
+                accountSid: whatsappSettings.accountSid,
+                authToken: whatsappSettings.authToken,
+                from: whatsappSettings.phoneNumber,
+                tenantId: tenantId
+            })
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok && result.success) {
+            showToast(`✅ تم إرسال رسالة اختبار بنجاح! الكود: ${testCode}`, 'success');
+            console.log('Twilio SID:', result.sid);
+        } else {
+            throw new Error(result.error || result.details || 'فشل الإرسال');
+        }
         
     } catch (error) {
         console.error('خطأ في الاختبار:', error);
-        showToast('❌ خطأ في إرسال الرسالة الاختبارية', 'error');
+        
+        if (error.message.includes('Authentication failed')) {
+            showToast('❌ خطأ في بيانات Twilio - تحقق من Account SID و Auth Token', 'error');
+        } else if (error.message.includes('Invalid phone')) {
+            showToast('❌ رقم الجوال غير صحيح - استخدم صيغة دولية (+966...)', 'error');
+        } else {
+            showToast('❌ خطأ في إرسال الرسالة: ' + error.message, 'error');
+        }
     }
 };
 

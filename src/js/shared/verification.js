@@ -79,28 +79,32 @@ async function sendWhatsAppVerification(phoneNumber, settings) {
         .replace('{hotel}', hotelName);
     
     try {
-        // حفظ الكود في Firebase
-        const codeId = await saveVerificationCode(phoneNumber, code, 'phone');
+        // استدعاء Cloud Function
+        const cloudFunctionUrl = 'https://us-central1-hotel-system-f50a4.cloudfunctions.net/sendWhatsApp';
         
-        // إرسال عبر Twilio (يتطلب Cloud Function)
-        const response = await fetch('YOUR_CLOUD_FUNCTION_URL/sendWhatsApp', {
+        const response = await fetch(cloudFunctionUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 to: phoneNumber,
-                from: settings.whatsapp.phoneNumber,
                 message: message,
                 accountSid: settings.whatsapp.accountSid,
                 authToken: settings.whatsapp.authToken,
+                from: settings.whatsapp.phoneNumber,
                 tenantId: getTenantId()
             })
         });
         
-        if (!response.ok) {
-            throw new Error('فشل إرسال الرسالة');
+        const result = await response.json();
+        
+        if (!response.ok || !result.success) {
+            throw new Error(result.error || result.details || 'فشل إرسال الرسالة');
         }
+        
+        // حفظ الكود في Firebase
+        const codeId = await saveVerificationCode(phoneNumber, code, 'phone');
         
         return {
             success: true,
