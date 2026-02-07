@@ -85,6 +85,27 @@
       "theme": {
         ".validate": "newData.isString() && (newData.val() == 'default' || newData.val() == 'dark' || newData.val() == 'ocean' || newData.val() == 'professional')"
       }
+    },
+    "tenants": {
+      ".read": "auth != null",
+      ".write": "auth != null",
+      "$tenantId": {
+        "settings": {
+          ".read": true,
+          ".write": "auth != null"
+        },
+        "verifications": {
+          ".read": true,
+          ".write": true,
+          "$verificationId": {
+            ".indexOn": ["identifier", "type"]
+          }
+        },
+        "bookings": {
+          ".read": true,
+          ".write": true
+        }
+      }
     }
   }
 }
