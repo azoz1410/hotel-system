@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إعدادات API - نظام الفندق</title>
+    <!-- Theme System -->
+    <script src="../js/shared/theme-switcher.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚙️ إعدادات API والتكاملات</h1>
+            <div class="header-actions">
+                <a href="../../admin" class="btn btn-primary">⬅️ لوحة التحكم</a>
+            </div>
+        </div>
+
+        <div class="settings-container">
+            <!-- معلومات مهمة -->
+            <div class="info-card">
+                <h3>📌 معلومات مهمة</h3>
+                <p>هذه الإعدادات خاصة بفندقك فقط. يرجى الحفاظ على سرية API Keys وعدم مشاركتها مع أحد.</p>
+                <p>بعد إدخال الإعدادات، سيتم تفعيل نظام التحقق من رقم الجوال والبريد الإلكتروني للعملاء.</p>
+            </div>
+
+            <!-- إعدادات WhatsApp / SMS -->
+            <div class="settings-card">
+                <h2>📱 إعدادات التحقق من رقم الجوال (WhatsApp/SMS)</h2>
+                <p class="card-description">للتحقق من رقم الجوال عبر WhatsApp أو SMS باستخدام Twilio API</p>
+                
+                <form id="whatsappSettingsForm">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span>تفعيل التحقق من الجوال</span>
+                            <small>تفعيل/إيقاف نظام التحقق من رقم الجوال</small>
+                        </label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="whatsappEnabled">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span>نوع الخدمة</span>
+                        </label>
+                        <select id="whatsappProvider" class="form-input">
+                            <option value="twilio">Twilio (موصى به)</option>
+                            <option value="unifonic">Unifonic (عربي)</option>
+                            <option value="custom">خدمة مخصصة</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span>Account SID</span>
+                            <small>معرف حسابك في Twilio</small>
+                        </label>
+                        <input type="text" id="twilioAccountSid" class="form-input" placeholder="ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span>Auth Token</span>
+                            <small>رمز المصادقة السري</small>
+                        </label>
+                        <div class="password-input-wrapper">
+                            <input type="password" id="twilioAuthToken" class="form-input" placeholder="••••••••••••••••••••••••••••••••">
+                            <button type="button" class="toggle-password" onclick="togglePasswordVisibility('twilioAuthToken')">👁️</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span>رقم المرسل</span>
+                            <small>رقم WhatsApp أو SMS المسجل في Twilio (مثال: +966501234567)</small>
+                        </label>
+                        <input type="text" id="twilioPhoneNumber" class="form-input" placeholder="+966501234567" dir="ltr">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span>نص رسالة التحقق</span>
+                            <small>استخدم {code} للكود و {hotel} لاسم الفندق</small>
+                        </label>
+                        <textarea id="whatsappMessageTemplate" class="form-textarea" rows="3">مرحباً! كود التحقق الخاص بك من {hotel} هو: {code}
+الرجاء إدخال هذا الكود خلال 5 دقائق.</textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-success">💾 حفظ إعدادات الجوال</button>
+                    <button type="button" class="btn btn-info" onclick="testWhatsApp()">🧪 اختبار الإرسال</button>
+                </form>
+            </div>
+
+            <!-- إعدادات البريد الإلكتروني -->
+            <div class="settings-card">
+                <h2>📧 إعدادات التحقق من البريد الإلكتروني</h2>
+                <p class="card-description">للتحقق من البريد الإلكتروني باستخدام EmailJS أو SendGrid</p>
+                
+                <form id="emailSettingsForm">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span>تفعيل التحقق من البريد</span>
+                            <small>تفعيل/إيقاف نظام التحقق من البريد الإلكتروني</small>
+                        </label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="emailEnabled">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span>نوع الخدمة</span>
+                        </label>
+                        <select id="emailProvider" class="form-input">
+                            <option value="emailjs">EmailJS (مجاني - موصى به)</option>
+                            <option value="sendgrid">SendGrid</option>
+                            <option value="smtp">SMTP مخصص</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span>Service ID (EmailJS)</span>
+                            <small>معرف الخدمة من لوحة تحكم EmailJS</small>
+                        </label>
+                        <input type="text" id="emailjsServiceId" class="form-input" placeholder="service_xxxxxxx">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span>Template ID (EmailJS)</span>
+                            <small>معرف القالب من لوحة تحكم EmailJS</small>
+                        </label>
+                        <input type="text" id="emailjsTemplateId" class="form-input" placeholder="template_xxxxxxx">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span>Public Key (EmailJS)</span>
+                            <small>المفتاح العام</small>
+                        </label>
+                        <input type="text" id="emailjsPublicKey" class="form-input" placeholder="xxxxxxxxxxxxxxxx">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span>اسم المرسل</span>
+                            <small>الاسم الذي سيظهر للعملاء</small>
+                        </label>
+                        <input type="text" id="emailSenderName" class="form-input" placeholder="فندق النجوم الخمس">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span>بريد المرسل</span>
+                            <small>البريد الإلكتروني للمرسل</small>
+                        </label>
+                        <input type="email" id="emailSenderEmail" class="form-input" placeholder="no-reply@yourhotel.com" dir="ltr">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span>موضوع الرسالة</span>
+                        </label>
+                        <input type="text" id="emailSubject" class="form-input" value="كود التحقق من البريد الإلكتروني">
+                    </div>
+
+                    <button type="submit" class="btn btn-success">💾 حفظ إعدادات البريد</button>
+                    <button type="button" class="btn btn-info" onclick="testEmail()">🧪 اختبار الإرسال</button>
+                </form>
+            </div>
+
+            <!-- معلومات الفندق -->
+            <div class="settings-card">
+                <h2>🏨 معلومات الفندق</h2>
+                <p class="card-description">معلومات عامة تظهر في رسائل التحقق</p>
+                
+                <form id="hotelInfoForm">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span>اسم الفندق</span>
+                        </label>
+                        <input type="text" id="hotelName" class="form-input" placeholder="فندق النجوم الخمس">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span>رقم التواصل</span>
+                        </label>
+                        <input type="tel" id="hotelPhone" class="form-input" placeholder="+966501234567">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span>البريد الإلكتروني</span>
+                        </label>
+                        <input type="email" id="hotelEmail" class="form-input" placeholder="info@yourhotel.com">
+                    </div>
+
+                    <button type="submit" class="btn btn-success">💾 حفظ معلومات الفندق</button>
+                </form>
+            </div>
+
+            <!-- أدلة الاستخدام -->
+            <div class="info-card guide-card">
+                <h3>📖 دليل الإعداد السريع</h3>
+                
+                <div class="guide-section">
+                    <h4>1️⃣ إعداد Twilio (للجوال):</h4>
+                    <ol>
+                        <li>سجل في <a href="https://www.twilio.com/try-twilio" target="_blank">Twilio.com</a></li>
+                        <li>احصل على رقم هاتف مجاني من لوحة التحكم</li>
+                        <li>انسخ Account SID و Auth Token من Dashboard</li>
+                        <li>الصقهم في الحقول أعلاه</li>
+                    </ol>
+                </div>
+
+                <div class="guide-section">
+                    <h4>2️⃣ إعداد EmailJS (للبريد):</h4>
+                    <ol>
+                        <li>سجل في <a href="https://www.emailjs.com/" target="_blank">EmailJS.com</a> (مجاني)</li>
+                        <li>أنشئ Email Service جديد</li>
+                        <li>أنشئ Email Template واستخدم المتغيرات: {{code}}, {{hotel_name}}</li>
+                        <li>انسخ Service ID, Template ID, و Public Key</li>
+                        <li>الصقهم في الحقول أعلاه</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    
+    <script src="../config/firebase-config.js"></script>
+    <script src="../js/shared/auth.js"></script>
+    <script src="../js/admin/api-settings.js"></script>
+</body>
+</html>

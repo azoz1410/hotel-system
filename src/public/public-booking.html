@@ -32,6 +32,10 @@
                 </div>
                 <div class="step" data-step="4">
                     <div class="step-number">4</div>
+                    <div class="step-label">التحقق</div>
+                </div>
+                <div class="step" data-step="5">
+                    <div class="step-number">5</div>
                     <div class="step-label">المراجعة</div>
                 </div>
             </div>
@@ -111,12 +115,66 @@
                 </div>
                 <div class="buttons">
                     <button class="btn btn-secondary" onclick="prevStep(2)">→ السابق</button>
-                    <button class="btn btn-primary" onclick="nextStep(4)" id="step3Next" disabled>التالي ←</button>
+                    <button class="btn btn-primary" onclick="nextStep(4)" id="step3Next" disabled>التالي - التحقق ←</button>
                 </div>
             </div>
 
-            <!-- Step 4: Review -->
+            <!-- Step 4: Verification -->
             <div class="section" id="step4">
+                <h2 class="section-title">🔐 التحقق من الهوية</h2>
+                <div class="info-box">
+                    <p>🛡️ للتأكد من صحة بياناتك، يرجى التحقق من رقم الجوال أو البريد الإلكتروني</p>
+                </div>
+
+                <div class="verification-container" id="verificationContainer">
+                    <!-- خطوة اختيار نوع التحقق -->
+                    <div class="verification-step active" id="verificationChoice">
+                        <h3 style="margin-bottom: 20px;">اختر طريقة التحقق:</h3>
+                        <div class="verification-options">
+                            <button class="verification-option" onclick="startVerification('phone')" id="phoneVerifyBtn">
+                                <span class="option-icon">📱</span>4
+                                <span class="option-title">التحقق عبر الجوال</span>
+                                <span class="option-desc">سنرسل كود التحقق إلى رقم جوالك</span>
+                            </button>
+                            <button class="verification-option" onclick="startVerification('email')" id="emailVerifyBtn">
+                                <span class="option-icon">📧</span>
+                                <span class="option-title">التحقق عبر البريد</span>
+                                <span class="option-desc">سنرسل كود التحقق إلى بريدك الإلكتروني</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- خطوة إدخال الكود -->
+                    <div class="verification-step" id="verificationCode">
+                        <div id="verificationMessage" style="margin-bottom: 20px;"></div>
+                        <div class="form-group">
+                            <label>🔢 أدخل كود التحقق (6 أرقام):</label>
+                            <input type="text" id="verificationCodeInput" class="verification-input" maxlength="6" pattern="[0-9]{6}" placeholder="000000">
+                        </div>
+                        <div class="verification-timer" id="verificationTimer"></div>
+                        <button class="btn btn-primary" onclick="submitVerificationCode()" style="width: 100%; margin-top: 15px;">✅ تأكيد الكود</button>
+                        <button class="btn btn-secondary" onclick="resendVerificationCode()" style="width: 100%; margin-top: 10px;" id="resendBtn">🔄 إعادة إرسال الكود</button>
+                    </div>
+
+                    <!-- خطوة التحقق الناجح -->
+                    <div class="verification-step" id="verificationSuccess">
+                        <div class="verification-success">
+                            <div style="font-size: 60px; margin-bottom: 15px;">✅</div>
+                            <h3>تم التحقق بنجاح!</h3>
+                            <p>تم التأكد من صحة بياناتك بنجاح</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="buttons" style="margin-top: 20px;">
+                    <button class="btn btn-secondary" onclick="prevStep(3)">→ السابق</button>
+                    <button class="btn btn-primary" onclick="nextStep(5)" id="step4Next" disabled>التالي - المراجعة ←</button>
+                </div>shared/verification.js"></script>
+    <script src="../js/
+            </div>
+
+            <!-- Step 5: Review -->
+            <div class="section" id="step5">
                 <h2 class="section-title">✔️ مراجعة الحجز</h2>
                 <div class="info-box">
                     <p>📋 راجع تفاصيل حجزك بعناية قبل التأكيد النهائي</p>
